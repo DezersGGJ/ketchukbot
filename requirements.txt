@@ -1,0 +1,8 @@
+discord.py==1.7.3
+dislash.py==1.4.9
+pymongo==4.0.1
+dnspython==2.1.0
+Cybernator==0.6.3
+requests==2.26.0
+discord-components==2.1.2
+asyncio==3.4.3
