@@ -763,8 +763,7 @@ async def ping(ctx):
 async def rand(ctx, amount=1, *, args):
     spisok = args.split()
     rand = random.choices(spisok, k=amount)
-    deo = str(rand)
-    await ctx.send(f"{deo}")
+    await ctx.send(", ".join(rand))
 
 #games
 @bot.command()
