@@ -770,7 +770,7 @@ async def ping(ctx):
 
 
 @bot.command()
-async def rand(ctx, amount = int, *, args):
+async def rand(ctx, amount = 1, *, args):
     spisok = args.split()
     rand = random.choices(spisok, k=amount)
     await ctx.send(", ".join(rand))
