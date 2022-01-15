@@ -759,6 +759,12 @@ async def ping(ctx):
     await ctx.send(embed = embed)
 
 
+@bot.command()
+async def rand(ctx, amount=1, *, args):
+    spisok = args.split()
+    rand = random.choices(spisok, k=amount)
+    await ctx.send(f"{rand}")
+
 #games
 @bot.command()
 async def poker(ctx):
