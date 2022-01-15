@@ -1,4 +1,4 @@
-#biblite
+#biblites
 import discord
 import datetime
 import random
@@ -775,63 +775,15 @@ async def rand(ctx, amount = int, *, args):
     rand = random.choices(spisok, k=amount)
     await ctx.send(", ".join(rand))
 
-#games
-@bot.command()
-async def poker(ctx):
-    data = {
-        "max_age": 86400,
-        "max_uses": 0,
-        "target_application_id": 755827207812677713, # YouTube Together
-        "target_type": 2,
-        "temporary": False,
-        "validate": None
-    }
-    headers = {
-        "Authorization": "Bot ODQwMTUzNzEwMzY1Mzc2NTgz.YJUEHQ.iP2pIRY4KTlBq1q665L0nmuIXoA",
-        "Content-Type": "application/json"
-    }
- 
-    if ctx.author.voice is not None:
-        if ctx.author.voice.channel is not None:
-            channel = ctx.author.voice.channel.id
-        else:
-            await ctx.send("Зайдите в канал")
-    else:
-        await ctx.send("Зайдите в канал")
- 
-    response = requests.post(f"https://discord.com/api/v8/channels/{channel}/invites", data=json.dumps(data), headers=headers)
-    link = json.loads(response.content)
- 
-    await ctx.send(f"https://discord.com/invite/{link['code']}")
-
 
 @bot.command()
-async def chess(ctx):
-    data = {
-        "max_age": 86400,
-        "max_uses": 0,
-        "target_application_id": 832012774040141894, # YouTube Together
-        "target_type": 2,
-        "temporary": False,
-        "validate": None
-    }
-    headers = {
-        "Authorization": "Bot ODQwMTUzNzEwMzY1Mzc2NTgz.YJUEHQ.iP2pIRY4KTlBq1q665L0nmuIXoA",
-        "Content-Type": "application/json"
-    }
- 
-    if ctx.author.voice is not None:
-        if ctx.author.voice.channel is not None:
-            channel = ctx.author.voice.channel.id
-        else:
-            await ctx.send("Зайдите в канал")
-    else:
-        await ctx.send("Зайдите в канал")
- 
-    response = requests.post(f"https://discord.com/api/v8/channels/{channel}/invites", data=json.dumps(data), headers=headers)
-    link = json.loads(response.content)
- 
-    await ctx.send(f"https://discord.com/invite/{link['code']}")
+async def rules(ctx):
+    embed = discord.Embed(
+        title = 'Правила:',
+        description = '1. Спам (в том числе и командами ботов) (мут 1ч/предупреждение)\n2. Чрезмерный спам (снятие всех сообщений)2. Попрошайничество (мут 4ч/предупреждение)\n3. Срач в чате (мут обоим на 2ч)\n4. Нацизм, свастика (мут 72ч/бан)\n5. 18+ Контент (в том числе и в войсе) (мут 72ч/бан)\n6. Сильные оскорбления участников сервера (мут 6ч/12ч/бан)\n7. Копирование ников администраторов (снятие ника/мут 1ч)\n8. Материться в голосовом канале "⊰🥳⊱・Без Матов" (мут на 48ч/бан)',
+        color = 0xff2400
+    )
+    await ctx.send(embed)
 
 
 #owner command
