@@ -719,6 +719,13 @@ async def clear(ctx, amount: int):
 
 
 @bot.command()
+async def mute(ctx, member: discord.Member, time):
+    time_convert = {"s":1, "m":60, "h":3600, "d":86400, "w":604800}
+    tempmute = int(time[0]) * time_convert[time[-1]]
+    await ctx.send(f"{tempmute}")
+
+
+@bot.command()
 async def test(ctx):
     time = int(datetime.datetime.utcnow().timestamp())
     await ctx.send(embed = discord.Embed(
@@ -762,7 +769,7 @@ async def ping(ctx):
 
 
 @bot.command()
-async def rand(ctx, amount=1, *, args):
+async def rand(ctx, amount = int, *, args):
     spisok = args.split()
     rand = random.choices(spisok, k=amount)
     await ctx.send(", ".join(rand))
