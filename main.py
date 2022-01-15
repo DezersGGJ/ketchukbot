@@ -722,6 +722,7 @@ async def clear(ctx, amount: int):
 async def mute(ctx, member: discord.Member, time):
     time_convert = {"s":1, "m":60, "h":3600, "d":86400, "w":604800}
     tempmute = int(time[0]) * time_convert[time[-1]]
+    await asyncio.sleep(tempmute)
     await ctx.send(f"{tempmute}")
 
 
