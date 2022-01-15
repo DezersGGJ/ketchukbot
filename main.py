@@ -1,4 +1,4 @@
-#biblites
+#biblite
 import discord
 import datetime
 import random
