@@ -38,7 +38,8 @@ async def on_ready():
                 "warns": 0,
                 "reasons": [],
                 "notes": [],
-                "note": 0
+                "note": 0,
+                "mute": []
             }
             server = {
                 "_id": guild.id,
@@ -73,7 +74,8 @@ async def on_member_join(member):
         "warns": 0,
         "reasons": [],
         "notes": [],
-        "note": 0
+        "note": 0,
+        "mute": []
     }
 
     if collection.count_documents({"_id": member.id}) == 0:
