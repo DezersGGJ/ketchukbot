@@ -401,7 +401,7 @@ async def balance(ctx, member: discord.Member = None):
 
 
 @bot.command(aliases = ["add-messages"])
-@commands.has_any_role(902849136041295883)
+@commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214)
 async def add_messages(ctx, amount: int, member: discord.Member = None):
     if amount > 0:
         if member is None:
@@ -425,7 +425,7 @@ async def add_messages(ctx, amount: int, member: discord.Member = None):
 
 
 @bot.command(aliases = ["remove-messages"])
-@commands.has_any_role(902849136041295883)
+@commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214)
 async def remove_messages(ctx, amount: int, member: discord.Member = None):
     if amount > 0:
         if member is None:
@@ -449,7 +449,7 @@ async def remove_messages(ctx, amount: int, member: discord.Member = None):
 
 
 @bot.command(aliases = ["add-money"])
-@commands.has_any_role(902849136041295883)
+@commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214)
 async def add_money(ctx, amount: int, member: discord.Member = None):
     if amount > 0:
         if member is None:
@@ -473,7 +473,7 @@ async def add_money(ctx, amount: int, member: discord.Member = None):
 
 
 @bot.command(aliases = ["remove-money"])
-@commands.has_any_role(902849136041295883)
+@commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214)
 async def remove_money(ctx, amount: int, member: discord.Member = None):
     if amount > 0:
         if member is None:
@@ -498,7 +498,7 @@ async def remove_money(ctx, amount: int, member: discord.Member = None):
             
 #basic command
 @bot.command()
-@commands.has_any_role(902849136041295883)
+@commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461)
 async def warn(ctx, member: discord.Member, *, reason = "Нету"):
     collserver.update_one(
         {
@@ -572,7 +572,7 @@ async def infractions(ctx, member: discord.Member = None):
 
 
 @bot.command(aliases = ["remove-warn"])
-@commands.has_any_role(902849136041295883)
+@commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461)
 async def remove_warn(ctx, case: int):
     if collection.count_documents({"reasons.case": case}) == 0:
         await ctx.send("Даного случая не найдено.")
@@ -600,7 +600,7 @@ async def remove_warn(ctx, case: int):
 
 
 @bot.command()
-@commands.has_any_role(902849136041295883)
+@commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808)
 async def note(ctx, member: discord.Member, *, reason_note = "Нету"):
     collserver.update_one(
         {
@@ -674,7 +674,7 @@ async def notes(ctx, member: discord.Member = None):
 
 
 @bot.command(aliases = ["remove-note"])
-@commands.has_any_role(902849136041295883)
+@commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808)
 async def remove_note(ctx, note: int):
     if collection.count_documents({"notes.note": note}) == 0:
         await ctx.send("Даного случая не найдено.")
@@ -702,7 +702,7 @@ async def remove_note(ctx, note: int):
 
 
 @bot.command(aliases = ["purge"])
-@commands.has_any_role(902849136041295883)
+@commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461)
 async def clear(ctx, amount: int):
     if amount > 0:
         if amount < 200:
