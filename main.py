@@ -119,72 +119,65 @@ async def on_message_edit(before, after):
 async def on_message(message):
     if message.author.bot == False:
         if message.channel.id == 902855972509327400:
-            umes = collection.find_one({"_id": message.author.id})["mes"]
-            collection.update_one({"_id": message.author.id}, {"$set": {"mes": umes + 1}})
-            if umes == 149:
+            if len(message) > 10:
                 umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
-                guild = bot.get_guild(message.guild.id)
-                role_id = guild.get_role(903385564781350962)
-                await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 15000}})
-            elif umes == 299:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
-                guild = bot.get_guild(message.guild.id)
-                role_id = guild.get_role(905008758277681153)
-                await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 30000}})
-            elif umes == 499:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
-                guild = bot.get_guild(message.guild.id)
-                role_id = guild.get_role(904708571156066314)
-                await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 50000}})
-            elif umes == 999:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
-                guild = bot.get_guild(message.guild.id)
-                role_id = guild.get_role(904712301255467058)
-                await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 100000}})
-            elif umes == 1749:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
-                guild = bot.get_guild(message.guild.id)
-                role_id = guild.get_role(904714252089188382)
-                await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 175000}})
-            elif umes == 2999:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
-                guild = bot.get_guild(message.guild.id)
-                role_id = guild.get_role(904714499804790786)
-                await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 300000}})
-            elif umes == 4999:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
-                guild = bot.get_guild(message.guild.id)
-                role_id = guild.get_role(904715362715721769)
-                await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 500000}})
+                collection.update_one({"_id": message.author.id}, {"$set": {"mes": umes + 1}})
+                if umes == 149:
+                    umes = collection.find_one({"_id": message.author.id})["mes"]
+                    umoney = collection.find_one({"_id": message.author.id})["money"]
+                    guild = bot.get_guild(message.guild.id)
+                    role_id = guild.get_role(903385564781350962)
+                    await message.author.add_roles(role_id)
+                    collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 15000}})
+                elif umes == 299:
+                    umes = collection.find_one({"_id": message.author.id})["mes"]
+                    umoney = collection.find_one({"_id": message.author.id})["money"]
+                    guild = bot.get_guild(message.guild.id)
+                    role_id = guild.get_role(905008758277681153)
+                    await message.author.add_roles(role_id)
+                    collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 30000}})
+                elif umes == 499:
+                    umes = collection.find_one({"_id": message.author.id})["mes"]
+                    umoney = collection.find_one({"_id": message.author.id})["money"]
+                    guild = bot.get_guild(message.guild.id)
+                    role_id = guild.get_role(904708571156066314)
+                    await message.author.add_roles(role_id)
+                    collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 50000}})
+                elif umes == 999:
+                    umes = collection.find_one({"_id": message.author.id})["mes"]
+                    umoney = collection.find_one({"_id": message.author.id})["money"]
+                    guild = bot.get_guild(message.guild.id)
+                    role_id = guild.get_role(904712301255467058)
+                    await message.author.add_roles(role_id)
+                    collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 100000}})
+                elif umes == 1749:
+                    umes = collection.find_one({"_id": message.author.id})["mes"]
+                    umoney = collection.find_one({"_id": message.author.id})["money"]
+                    guild = bot.get_guild(message.guild.id)
+                    role_id = guild.get_role(904714252089188382)
+                    await message.author.add_roles(role_id)
+                    collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 175000}})
+                elif umes == 2999:
+                    umes = collection.find_one({"_id": message.author.id})["mes"]
+                    umoney = collection.find_one({"_id": message.author.id})["money"]
+                    guild = bot.get_guild(message.guild.id)
+                    role_id = guild.get_role(904714499804790786)
+                    await message.author.add_roles(role_id)
+                    collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 300000}})
+                elif umes == 4999:
+                    umes = collection.find_one({"_id": message.author.id})["mes"]
+                    umoney = collection.find_one({"_id": message.author.id})["money"]
+                    guild = bot.get_guild(message.guild.id)
+                    role_id = guild.get_role(904715362715721769)
+                    await message.author.add_roles(role_id)
+                    collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 500000}})
+                elif umes > 5000:
+                    umoney = collection.find_one({"_id": message.author.id})["money"]
+                    collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 100}})
 
     await bot.process_commands(message)
 
 #economy
-@bot.command()
-async def roulette(ctx):
-    color = ["red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "red", "black", "green"]
-    if random.choice(color) == "red":
-        await ctx.send("Выпал красный")
-    elif random.choice(color) == "black":
-        await ctx.send("Выпал чёрный")
-    elif random.choice(color) == "green":
-        await ctx.send("Выпал зеленый")
-
-
 @bot.command()
 async def daily(ctx):
     if collection.find_one({'_id': ctx.author.id})['cddaily'] == 0:
@@ -271,56 +264,56 @@ async def weekly(ctx):
 async def messages(ctx, member: discord.Member = None):
     if member is None:
         umes = collection.find_one({"_id": ctx.author.id})["mes"]
-        if umes < 150:
+        if umes < 149:
             embed = discord.Embed(
                 description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{150 - umes}` нужно для получения <@&903385564781350962>",
                 color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
-        elif umes < 300:
+        elif umes < 299:
             embed = discord.Embed(
                 description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{300 - umes}` нужно для получения <@&905008758277681153>",
                 color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
-        elif umes < 500:
+        elif umes < 499:
             embed = discord.Embed(
                 description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{500 - umes}` нужно для получения <@&904708571156066314>",
                 color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
-        elif umes < 1000:
+        elif umes < 999:
             embed = discord.Embed(
                 description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{1000 - umes}` нужно для получения <@&904712301255467058>",
                 color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
-        elif umes < 1750:
+        elif umes < 1749:
             embed = discord.Embed(
                 description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{1750 - umes}` нужно для получения <@&904714252089188382>",
                 color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
-        elif umes < 3000:
+        elif umes < 2999:
             embed = discord.Embed(
                 description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{3000 - umes}` нужно для получения <@&904714499804790786>",
                 color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
-        elif umes < 5000:
+        elif umes < 4999:
             embed = discord.Embed(
                 description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{5000 - umes}` нужно для получения <@&904715362715721769>",
                 color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
-        elif umes > 5000:
+        elif umes > 4999:
             embed = discord.Embed(
                 description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений.",
                 color = 0x00ff00
@@ -330,56 +323,56 @@ async def messages(ctx, member: discord.Member = None):
 
     else:
         mmes = collection.find_one({"_id": member.id})["mes"]
-        if mmes < 150:
+        if mmes < 149:
             embed = discord.Embed(
                 description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений. `{150 - mmes}` нужно для получения <@&903385564781350962>",
                 color = 0x00ff00
             )
             embed.set_author(name=member, icon_url=member.avatar_url)
             await ctx.send(embed = embed)
-        elif mmes < 300:
+        elif mmes < 299:
             embed = discord.Embed(
                 description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений. `{300 - mmes}` нужно для получения <@&905008758277681153>",
                 color = 0x00ff00
             )
             embed.set_author(name=member, icon_url=member.avatar_url)
             await ctx.send(embed = embed)
-        elif mmes < 500:
+        elif mmes < 499:
             embed = discord.Embed(
                 description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений. `{500 - mmes}` нужно для получения <@&904708571156066314>",
                 color = 0x00ff00
             )
             embed.set_author(name=member, icon_url=member.avatar_url)
             await ctx.send(embed = embed)
-        elif mmes < 1000:
+        elif mmes < 999:
             embed = discord.Embed(
                 description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений. `{1000 - mmes}` нужно для получения <@&904712301255467058>",
                 color = 0x00ff00
             )
             embed.set_author(name=member, icon_url=member.avatar_url)
             await ctx.send(embed = embed)
-        elif mmes < 1750:
+        elif mmes < 1749:
             embed = discord.Embed(
                 description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений. `{1750 - mmes}` нужно для получения <@&904714252089188382>",
                 color = 0x00ff00
             )
             embed.set_author(name=member, icon_url=member.avatar_url)
             await ctx.send(embed = embed)
-        elif mmes < 3000:
+        elif mmes < 2999:
             embed = discord.Embed(
                 description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений. `{3000 - mmes}` нужно для получения <@&904714499804790786>",
                 color = 0x00ff00
             )
             embed.set_author(name=member, icon_url=member.avatar_url)
             await ctx.send(embed = embed)
-        elif mmes < 5000:
+        elif mmes < 4999:
             embed = discord.Embed(
                 description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений. `{5000 - mmes}` нужно для получения <@&904715362715721769>",
                 color = 0x00ff00
             )
             embed.set_author(name=member, icon_url=member.avatar_url)
             await ctx.send(embed = embed)
-        elif mmes > 5000:
+        elif mmes > 4999:
             embed = discord.Embed(
                 description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений.",
                 color = 0x00ff00
@@ -503,6 +496,7 @@ async def remove_money(ctx, amount: int, member: discord.Member = None):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
 
+            
 #basic command
 @bot.command()
 @commands.has_any_role(902849136041295883)
