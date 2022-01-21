@@ -545,12 +545,11 @@ async def roulette(ctx, amount: int, color = None):
             if amount < 2000:
                 await ctx.send("Введите сумму больше 2000<:cash:903999146569138216>")
             else:
-                await ctx.send("Введите сумму")
                 if color == None:
                     await ctx.send("Введите цвет.")
                 else:
                     colorr = ['red', 'black', 'green']
-                    if colorr == color:
+                    if 'color' in colorr:
                         if color == num[random.randint(0,36)]:
                             collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
                             embed = discord.Embed(
