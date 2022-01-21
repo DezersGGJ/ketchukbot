@@ -546,7 +546,7 @@ async def roulette(ctx, amount: int, color = None):
                 await ctx.send("Введите сумму больше 2000<:cash:903999146569138216>")
             else:
                 await ctx.send("Введите сумму")
-                if color is None:
+                if color == None:
                     await ctx.send("Введите цвет.")
                 else:
                     colorr = ['red', 'black', 'green']
