@@ -119,6 +119,7 @@ async def on_message_edit(before, after):
 async def on_message(message):
     if message.author.bot == False:
         if message.channel.id == 902855972509327400:
+            if len(message.attachments) > 0 and message.content != '':
                 umes = collection.find_one({"_id": message.author.id})["mes"]
                 collection.update_one({"_id": message.author.id}, {"$set": {"mes": umes + 1}})
                 if umes == 149:
@@ -495,7 +496,79 @@ async def remove_money(ctx, amount: int, member: discord.Member = None):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
 
-            
+
+@bot.command()
+async def roulette(ctx, amount: int, color = None):
+    num = {
+        0: "green",
+        1: "red",
+        3: "red",
+        5: "red",
+        7: "red",
+        9: "red",
+        12: "red",
+        14: "red",
+        16: "red",
+        18: "red",
+        19: "red",
+        21: "red",
+        23: "red",
+        25: "red",
+        27: "red",
+        30: "red",
+        32: "red",
+        34: "red",
+        36: "red",
+        2: "black",
+        4: "black",
+        6: "black",
+        8: "black",
+        10: "black",
+        11: "black",
+        13: "black",
+        15: "black",
+        17: "black",
+        20: "black",
+        22: "black",
+        24: "black",
+        26: "black",
+        28: "black",
+        29: "black",
+        31: "black",
+        33: "black",
+        35: "black",
+    }
+    if amount <= collection.find_one({"_id": ctx.author.id})["money"]:
+        if amount > 20000:
+            await ctx.send("Введите сумму меньше 20000<:cash:903999146569138216>")
+        else:
+            if amount < 2000:
+                await ctx.send("Введите сумму больше 2000<:cash:903999146569138216>")
+            else:
+                await ctx.send("Введите сумму")
+                if color is None:
+                    await ctx.send("Введите цвет.")
+                else:
+                    colorr = ['red', 'black', 'green']
+                    if colorr == color:
+                        if color == num[random.randint(0,36)]:
+                            collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
+                            embed = discord.Embed(
+                                description = "Вы выйграли!",
+                                color = 0x00ff00
+                            )
+                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                        else:
+                            collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
+                            embed = discord.Embed(
+                                description = "Вы проиграли!",
+                                color = 0xFF2400
+                            )
+                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    else:
+                        await ctx.send("Неправильный цвет")
+
+       
 #basic command
 @bot.command()
 @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153)
