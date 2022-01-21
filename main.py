@@ -119,57 +119,58 @@ async def on_message_edit(before, after):
 async def on_message(message):
     if message.author.bot == False:
         if message.channel.id == 902855972509327400:
-            umes = collection.find_one({"_id": message.author.id})["mes"]
-            collection.update_one({"_id": message.author.id}, {"$set": {"mes": umes + 1}})
-            if umes == 149:
+            if len(message) > 10:
                 umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
-                guild = bot.get_guild(message.guild.id)
-                role_id = guild.get_role(903385564781350962)
-                await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 15000}})
-            elif umes == 299:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
-                guild = bot.get_guild(message.guild.id)
-                role_id = guild.get_role(905008758277681153)
-                await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 30000}})
-            elif umes == 499:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
-                guild = bot.get_guild(message.guild.id)
-                role_id = guild.get_role(904708571156066314)
-                await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 50000}})
-            elif umes == 999:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
-                guild = bot.get_guild(message.guild.id)
-                role_id = guild.get_role(904712301255467058)
-                await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 100000}})
-            elif umes == 1749:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
-                guild = bot.get_guild(message.guild.id)
-                role_id = guild.get_role(904714252089188382)
-                await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 175000}})
-            elif umes == 2999:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
-                guild = bot.get_guild(message.guild.id)
-                role_id = guild.get_role(904714499804790786)
-                await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 300000}})
-            elif umes == 4999:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
-                guild = bot.get_guild(message.guild.id)
-                role_id = guild.get_role(904715362715721769)
-                await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 500000}})
+                collection.update_one({"_id": message.author.id}, {"$set": {"mes": umes + 1}})
+                if umes == 149:
+                    umes = collection.find_one({"_id": message.author.id})["mes"]
+                    umoney = collection.find_one({"_id": message.author.id})["money"]
+                    guild = bot.get_guild(message.guild.id)
+                    role_id = guild.get_role(903385564781350962)
+                    await message.author.add_roles(role_id)
+                    collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 15000}})
+                elif umes == 299:
+                    umes = collection.find_one({"_id": message.author.id})["mes"]
+                    umoney = collection.find_one({"_id": message.author.id})["money"]
+                    guild = bot.get_guild(message.guild.id)
+                    role_id = guild.get_role(905008758277681153)
+                    await message.author.add_roles(role_id)
+                    collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 30000}})
+                elif umes == 499:
+                    umes = collection.find_one({"_id": message.author.id})["mes"]
+                    umoney = collection.find_one({"_id": message.author.id})["money"]
+                    guild = bot.get_guild(message.guild.id)
+                    role_id = guild.get_role(904708571156066314)
+                    await message.author.add_roles(role_id)
+                    collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 50000}})
+                elif umes == 999:
+                    umes = collection.find_one({"_id": message.author.id})["mes"]
+                    umoney = collection.find_one({"_id": message.author.id})["money"]
+                    guild = bot.get_guild(message.guild.id)
+                    role_id = guild.get_role(904712301255467058)
+                    await message.author.add_roles(role_id)
+                    collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 100000}})
+                elif umes == 1749:
+                    umes = collection.find_one({"_id": message.author.id})["mes"]
+                    umoney = collection.find_one({"_id": message.author.id})["money"]
+                    guild = bot.get_guild(message.guild.id)
+                    role_id = guild.get_role(904714252089188382)
+                    await message.author.add_roles(role_id)
+                    collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 175000}})
+                elif umes == 2999:
+                    umes = collection.find_one({"_id": message.author.id})["mes"]
+                    umoney = collection.find_one({"_id": message.author.id})["money"]
+                    guild = bot.get_guild(message.guild.id)
+                    role_id = guild.get_role(904714499804790786)
+                    await message.author.add_roles(role_id)
+                    collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 300000}})
+                elif umes == 4999:
+                    umes = collection.find_one({"_id": message.author.id})["mes"]
+                    umoney = collection.find_one({"_id": message.author.id})["money"]
+                    guild = bot.get_guild(message.guild.id)
+                    role_id = guild.get_role(904715362715721769)
+                    await message.author.add_roles(role_id)
+                    collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 500000}})
 
     await bot.process_commands(message)
 
