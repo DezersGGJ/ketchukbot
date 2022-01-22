@@ -542,7 +542,7 @@ async def roulette(ctx, color, amount: int):
     minbet, maxbet = 2000, 20000
     if color not in colors:
         embed = discord.Embed(
-            description = "<:noe:911292323365781515>Неправильно указан аргумент `<red|black|green>`.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
+            description = "<:noe:911292323365781515>Неправильно указан аргумент `<red|black>`.\n\nИспользование:\n`roulette <red|black> <amount>`",
             color = 0xff2400
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
