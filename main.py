@@ -119,7 +119,6 @@ async def on_message_edit(before, after):
 async def on_message(message):
     if message.author.bot == False:
         if message.channel.id == 902855972509327400:
-            if len(message.attachments) > 0 and message.content != '':
                 umes = collection.find_one({"_id": message.author.id})["mes"]
                 collection.update_one({"_id": message.author.id}, {"$set": {"mes": umes + 1}})
                 if umes == 149:
