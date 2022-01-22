@@ -570,8 +570,8 @@ async def roulette(ctx, color, amount: int):
                         description = f"<:noe:911292323365781515>У вас недостаточно средств.",
                         color = 0xff2400
                     )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                return await ctx.send(embed = embed)
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    return await ctx.send(embed = embed)
                 else:
                     if color == num[random.randint(0,36)]:
                         collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
