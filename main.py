@@ -10,7 +10,7 @@ from discord.ext import commands
 from pymongo import MongoClient
 from Cybernator import Paginator
 from discord_components import DiscordComponents, Button, ButtonStyle, Select, SelectOption
-from redbot.core.utils.chat_formatting import box, humanize_number, humanize_timedelta
+import humanize
 
 
 bot = commands.Bot(command_prefix = '#', intents = discord.Intents.all())
@@ -551,7 +551,7 @@ async def roulette(ctx, color, amount: int):
     else:
         if amount < minbet:
             embed = discord.Embed(
-                description = f"<:noe:911292323365781515>Минимальная ставка <:cash:903999146569138216>{humanize_number(minbet)}.",
+                description = f"<:noe:911292323365781515>Минимальная ставка <:cash:903999146569138216>{humanize.intcomma(minbet)}.",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -559,7 +559,7 @@ async def roulette(ctx, color, amount: int):
         else:
             if amount > maxbet:
                 embed = discord.Embed(
-                    description = f"<:noe:911292323365781515>Максимальная ставка <:cash:903999146569138216>{humanize_number(maxbet)}.",
+                    description = f"<:noe:911292323365781515>Максимальная ставка <:cash:903999146569138216>{humanize.intcomma(maxbet)}.",
                     color = 0xff2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
