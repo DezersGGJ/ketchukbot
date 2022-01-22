@@ -537,7 +537,7 @@ async def roulette(ctx, color, amount: int):
         33: "black",
         35: "black",
     }
-    colors = ["red", "black", "green"]
+    colors = ["red", "black"]
     data = collection.find_one({"_id": ctx.author.id})
     minbet, maxbet = 2000, 20000
     if color not in colors:
