@@ -500,6 +500,7 @@ async def remove_money(ctx, amount: int, member: discord.Member = None):
 @bot.command()
 async def roulette(ctx, color, amount: int):
     num = {
+        0: "green",
         1: "red",
         3: "red",
         5: "red",
@@ -573,7 +574,7 @@ async def roulette(ctx, color, amount: int):
                     return await ctx.send(embed = embed)
                 else:
                     if color == num[random.randint(0,36)]:
-                        collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
+                        ollection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount / 2}})
                         embed = discord.Embed(
                             description = f"Вы поставили на {color} и выйграли.",
                             color = 0x00ff00
