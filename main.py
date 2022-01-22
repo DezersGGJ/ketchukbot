@@ -10,6 +10,7 @@ from discord.ext import commands
 from pymongo import MongoClient
 from Cybernator import Paginator
 from discord_components import DiscordComponents, Button, ButtonStyle, Select, SelectOption
+from redbot.core.utils.chat_formatting import box, humanize_number, humanize_timedelta
 
 
 bot = commands.Bot(command_prefix = '#', intents = discord.Intents.all())
@@ -497,7 +498,7 @@ async def remove_money(ctx, amount: int, member: discord.Member = None):
 
 
 @bot.command()
-async def roulette(ctx, amount: int, color = None):
+async def roulette(ctx, color, amount: int):
     num = {
         0: "green",
         1: "red",
@@ -537,34 +538,57 @@ async def roulette(ctx, amount: int, color = None):
         33: "black",
         35: "black",
     }
-    if amount <= collection.find_one({"_id": ctx.author.id})["money"]:
-        if amount > 20000:
-            await ctx.send("Введите сумму меньше 20000<:cash:903999146569138216>")
+    colors = ["red", "black", "green"]
+    data = collection.find_one({"_id": ctx.author.id})
+    minbet, maxbet = 2000, 20000
+    if color not in colors:
+        embed = discord.Embed(
+            description = "<:noe:911292323365781515>Неправильно указан аргумент `<red|black|green>`.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
+            color = 0xff2400
+        )
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        return await ctx.send(embed = embed)
+    else:
+        if amount < minbet:
+            embed = discord.Embed(
+                description = f"<:noe:911292323365781515>Минимальная ставка <:cash:903999146569138216>{humanize_number(minbet)}.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            return await ctx.send(embed = embed)
         else:
-            if amount < 2000:
-                await ctx.send("Введите сумму больше 2000<:cash:903999146569138216>")
+            if amount > maxbet:
+                embed = discord.Embed(
+                    description = f"<:noe:911292323365781515>Максимальная ставка <:cash:903999146569138216>{humanize_number(maxbet)}.",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                return await ctx.send(embed = embed)
             else:
-                if color == None:
-                    await ctx.send("Введите цвет.")
+                if amount > data["money"]:
+                    embed = discord.Embed(
+                        description = f"<:noe:911292323365781515>У вас недостаточно средств.",
+                        color = 0xff2400
+                    )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                return await ctx.send(embed = embed)
                 else:
-                    colorr = ['red', 'black', 'green']
-                    if color in colorr:
-                        if color == num[random.randint(0,36)]:
-                            collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
-                            embed = discord.Embed(
-                                description = "Вы выйграли!",
-                                color = 0x00ff00
-                            )
-                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                        else:
-                            collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
-                            embed = discord.Embed(
-                                description = "Вы проиграли!",
-                                color = 0xFF2400
-                            )
-                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    if color == num[random.randint(0,36)]:
+                        collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
+                        embed = discord.Embed(
+                            description = f"Вы поставили на {color} и выйграли.",
+                            color = 0x00ff00
+                        )
+                        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                        return await ctx.send(embed = embed)
                     else:
-                        await ctx.send("Неправильный цвет")
+                        collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
+                        embed = discord.Embed(
+                            description = f"Вы поставили на {color} и проиграли.",
+                            color = 0xff2400
+                        )
+                        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                        return await ctx.send(embed = embed)
 
        
 #basic command
