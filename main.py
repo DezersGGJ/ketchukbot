@@ -574,7 +574,7 @@ async def roulette(ctx, color, amount: int):
                     return await ctx.send(embed = embed)
                 else:
                     if color == num[random.randint(0,36)]:
-                        ollection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount / 2}})
+                        collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount / 2}})
                         embed = discord.Embed(
                             description = f"Вы поставили на {color} и выйграли.",
                             color = 0x00ff00
