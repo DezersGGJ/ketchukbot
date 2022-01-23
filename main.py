@@ -544,7 +544,7 @@ async def roulette(ctx, color, amount: int):
     rand = random.randint(0,36)
     if color not in colors:
         embed = discord.Embed(
-            description = "<:noe:911292323365781515>Неправильно указан аргумент `<red|black>`.\n\nИспользование:\n`roulette <red|black> <amount>`",
+            description = "<:noe:911292323365781515>Неправильно указан аргумент `<red|black|green>`.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
             color = 0xff2400
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -575,7 +575,7 @@ async def roulette(ctx, color, amount: int):
                     return await ctx.send(embed = embed)
                 else:
                     if color == num[rand]:
-                        if num[rand] == red:
+                        if num[rand] == "red":
                             collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount // 2}})
                             embed = discord.Embed(
                                 description = f"Вы поставили на {color} и выйграли.",
@@ -583,7 +583,7 @@ async def roulette(ctx, color, amount: int):
                             )
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                             return await ctx.send(embed = embed)
-                        elif num[rand] == black:
+                        elif num[rand] == "black":
                             collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount // 2}})
                             embed = discord.Embed(
                                 description = f"Вы поставили на {color} и выйграли.",
@@ -591,7 +591,7 @@ async def roulette(ctx, color, amount: int):
                             )
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                             return await ctx.send(embed = embed)
-                        elif num[rand] == green:
+                        elif num[rand] == "green":
                             collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount * 14}})
                             embed = discord.Embed(
                                 description = f"Вы поставили на {color} и выйграли.",
