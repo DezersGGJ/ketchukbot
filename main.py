@@ -181,13 +181,13 @@ async def on_message(message):
 @bot.command()
 async def daily(ctx):
     if collection.find_one({'_id': ctx.author.id})['cddaily'] == 0:
-        amount = humanize.intcomma(random.randint(2000,5000))
+        amount = random.randint(2000,5000)
         umoney = collection.find_one({"_id": ctx.author.id})["money"]
         time = int(datetime.datetime.utcnow().timestamp())
         collection.update_one({"_id": ctx.author.id}, {"$set": {"cddaily": time}})
         collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
         embed = discord.Embed(
-            description = f"Твоя ежедневная награда составила <:cash:903999146569138216>{amount}.",
+            description = f"Твоя ежедневная награда составила <:cash:903999146569138216>{humanize.intcomma(amount)}.",
             color = 0x00ff00
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -196,13 +196,13 @@ async def daily(ctx):
         time = collection.find_one({"_id": ctx.author.id})["cddaily"]
         cdtime = int(datetime.datetime.utcnow().timestamp()) - 86400
         if time < cdtime:
-            amount = humanize.intcomma(random.randint(2000,5000))
+            amount = random.randint(2000,5000)
             umoney = collection.find_one({"_id": ctx.author.id})["money"]
             time = int(datetime.datetime.utcnow().timestamp())
             collection.update_one({"_id": ctx.author.id}, {"$set": {"cddaily": time}})
             collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
             embed = discord.Embed(
-                description = f"Твоя ежедневная награда составила <:cash:903999146569138216>{amount}.",
+                description = f"Твоя ежедневная награда составила <:cash:903999146569138216>{humanize.intcomma(amount)}.",
                 color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -222,13 +222,13 @@ async def daily(ctx):
 @bot.command()
 async def weekly(ctx):
     if collection.find_one({'_id': ctx.author.id})['cdweekly'] == 0:
-        amount = humanize.intcomma(random.randint(5000,20000))
+        amount = random.randint(5000,20000)
         umoney = collection.find_one({"_id": ctx.author.id})["money"]
         time = int(datetime.datetime.utcnow().timestamp())
         collection.update_one({"_id": ctx.author.id}, {"$set": {"cdweekly": time}})
         collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
         embed = discord.Embed(
-            description = f"Твоя еженедельная награда составила <:cash:903999146569138216>{amount}.",
+            description = f"Твоя еженедельная награда составила <:cash:903999146569138216>{humanize.intcomma(amount)}.",
             color = 0x00ff00
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -237,13 +237,13 @@ async def weekly(ctx):
         time = collection.find_one({"_id": ctx.author.id})["cdweekly"]
         cdtime = int(datetime.datetime.utcnow().timestamp()) - 604800
         if time < cdtime:
-            amount = humanize.intcomma(random.randint(5000,20000))
+            amount = random.randint(5000,20000)
             umoney = collection.find_one({"_id": ctx.author.id})["money"]
             time = int(datetime.datetime.utcnow().timestamp())
             collection.update_one({"_id": ctx.author.id}, {"$set": {"cdweekly": time}})
             collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
             embed = discord.Embed(
-                description = f"Твоя еженедельная награда составила <:cash:903999146569138216>{amount}.",
+                description = f"Твоя еженедельная награда составила <:cash:903999146569138216>{humanize.intcomma(amount)}.",
                 color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
