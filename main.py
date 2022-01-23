@@ -196,7 +196,7 @@ async def daily(ctx):
         time = collection.find_one({"_id": ctx.author.id})["cddaily"]
         cdtime = int(datetime.datetime.utcnow().timestamp()) - 86400
         if time < cdtime:
-            amount = random.randint(2000,5000)
+            amount = humanize.intcomma(random.randint(2000,5000))
             umoney = collection.find_one({"_id": ctx.author.id})["money"]
             time = int(datetime.datetime.utcnow().timestamp())
             collection.update_one({"_id": ctx.author.id}, {"$set": {"cddaily": time}})
