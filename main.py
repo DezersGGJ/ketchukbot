@@ -576,7 +576,7 @@ async def roulette(ctx, color, amount: int):
                 else:
                     if color == num[rand]:
                         if num[rand] == "red":
-                            collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount // 2}})
+                            collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
                             embed = discord.Embed(
                                 description = f"Вы поставили на {color} и выйграли.",
                                 color = 0x00ff00
@@ -584,7 +584,7 @@ async def roulette(ctx, color, amount: int):
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                             return await ctx.send(embed = embed)
                         elif num[rand] == "black":
-                            collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount // 2}})
+                            collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
                             embed = discord.Embed(
                                 description = f"Вы поставили на {color} и выйграли.",
                                 color = 0x00ff00
