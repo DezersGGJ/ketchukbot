@@ -181,7 +181,7 @@ async def on_message(message):
 @bot.command()
 async def daily(ctx):
     if collection.find_one({'_id': ctx.author.id})['cddaily'] == 0:
-        amount = random.randint(2000,5000)
+        amount = humanize.intcomma(random.randint(2000,5000))
         umoney = collection.find_one({"_id": ctx.author.id})["money"]
         time = int(datetime.datetime.utcnow().timestamp())
         collection.update_one({"_id": ctx.author.id}, {"$set": {"cddaily": time}})
@@ -222,7 +222,7 @@ async def daily(ctx):
 @bot.command()
 async def weekly(ctx):
     if collection.find_one({'_id': ctx.author.id})['cdweekly'] == 0:
-        amount = random.randint(5000,20000)
+        amount = humanize.intcomma(random.randint(5000,20000))
         umoney = collection.find_one({"_id": ctx.author.id})["money"]
         time = int(datetime.datetime.utcnow().timestamp())
         collection.update_one({"_id": ctx.author.id}, {"$set": {"cdweekly": time}})
@@ -237,7 +237,7 @@ async def weekly(ctx):
         time = collection.find_one({"_id": ctx.author.id})["cdweekly"]
         cdtime = int(datetime.datetime.utcnow().timestamp()) - 604800
         if time < cdtime:
-            amount = random.randint(5000,20000)
+            amount = humanize.intcomma(random.randint(5000,20000))
             umoney = collection.find_one({"_id": ctx.author.id})["money"]
             time = int(datetime.datetime.utcnow().timestamp())
             collection.update_one({"_id": ctx.author.id}, {"$set": {"cdweekly": time}})
@@ -386,7 +386,7 @@ async def balance(ctx, member: discord.Member = None):
     if member is None:
         total = collection.find_one({'_id': ctx.author.id})['money'] + collection.find_one({'_id': ctx.author.id})['bank']
         embed = discord.Embed(
-            description = f"Баланс:\n<:cash:903999146569138216>{collection.find_one({'_id': ctx.author.id})['money']}\nБанк:\n<:cash:903999146569138216>{collection.find_one({'_id': ctx.author.id})['bank']}\nОбщий баланс:\n<:cash:903999146569138216>{total}",
+            description = f"Баланс:\n<:cash:903999146569138216>{humanize.intcomma(collection.find_one({'_id': ctx.author.id})['money'])}\nБанк:\n<:cash:903999146569138216>{humanize.intcomma(collection.find_one({'_id': ctx.author.id})['bank'])}\nОбщий баланс:\n<:cash:903999146569138216>{humanize.intcomma(total)}",
             color = 0x00ff00
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -394,7 +394,7 @@ async def balance(ctx, member: discord.Member = None):
     else:
         total = collection.find_one({'_id': member.id})['money'] + collection.find_one({'_id': member.id})['bank']
         embed = discord.Embed(
-            description = f"Баланс:\n<:cash:903999146569138216>{collection.find_one({'_id': member.id})['money']}\nБанк:\n<:cash:903999146569138216>{collection.find_one({'_id': member.id})['bank']}\nОбщий баланс:\n<:cash:903999146569138216>{total}",
+            description = f"Баланс:\n<:cash:903999146569138216>{humanize.intcomma(collection.find_one({'_id': member.id})['money'])}\nБанк:\n<:cash:903999146569138216>{humanize.intcomma(collection.find_one({'_id': member.id})['bank'])}\nОбщий баланс:\n<:cash:903999146569138216>{humanize.intcomma(total)}",
             color = 0x00ff00
         )
         embed.set_author(name=member, icon_url=member.avatar_url)
@@ -457,7 +457,7 @@ async def add_money(ctx, amount: int, member: discord.Member = None):
             umoney = collection.find_one({"_id": ctx.author.id})["money"]
             collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
             embed = discord.Embed(
-                description = f"<:check:930367892455850014>Добавлено<:cash:903999146569138216>**{amount}** на баланс {ctx.author.mention}.",
+                description = f"<:check:930367892455850014>Добавлено<:cash:903999146569138216>**{humanize.intcomma(amount)}** на баланс {ctx.author.mention}.",
                 color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -466,7 +466,7 @@ async def add_money(ctx, amount: int, member: discord.Member = None):
             mmoney = collection.find_one({"_id": member.id})["money"]
             collection.update_one({"_id": member.id}, {"$set": {"money": mmoney + amount}})
             embed = discord.Embed(
-                description = f"<:check:930367892455850014>Добавлено<:cash:903999146569138216>**{amount}** на баланс {member.mention}.",
+                description = f"<:check:930367892455850014>Добавлено<:cash:903999146569138216>**{humanize.intcomma(amount)}** на баланс {member.mention}.",
                 color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -481,7 +481,7 @@ async def remove_money(ctx, amount: int, member: discord.Member = None):
             umoney = collection.find_one({"_id": ctx.author.id})["money"]
             collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney - amount}})
             embed = discord.Embed(
-                description = f"<:check:930367892455850014>Забрано<:cash:903999146569138216>**{amount}** с баланса {ctx.author.mention}.",
+                description = f"<:check:930367892455850014>Забрано<:cash:903999146569138216>**{humanize.intcomma(amount)}** с баланса {ctx.author.mention}.",
                 color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -490,7 +490,7 @@ async def remove_money(ctx, amount: int, member: discord.Member = None):
             mmoney = collection.find_one({"_id": member.id})["money"]
             collection.update_one({"_id": member.id}, {"$set": {"money": mmoney - amount}})
             embed = discord.Embed(
-                description = f"<:check:930367892455850014>Забрано<:cash:903999146569138216>**{amount}** с баланса {member.mention}.",
+                description = f"<:check:930367892455850014>Забрано<:cash:903999146569138216>**{humanize.intcomma(amount)}** с баланса {member.mention}.",
                 color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -544,7 +544,7 @@ async def roulette(ctx, color, amount: int):
     rand = random.randint(0,36)
     if color not in colors:
         embed = discord.Embed(
-            description = "<:noe:911292323365781515>Неправильно указан аргумент `<red|black|green>`.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
+            description = "<:noe:911292323365781515>Неправильно указан аргумент `<red|black>`.\n\nИспользование:\n`roulette <red|black> <amount>`",
             color = 0xff2400
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -575,7 +575,7 @@ async def roulette(ctx, color, amount: int):
                     return await ctx.send(embed = embed)
                 else:
                     if color == num[rand]:
-                        if num[rand] == "red":
+                        if num[rand] == red:
                             collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount // 2}})
                             embed = discord.Embed(
                                 description = f"Вы поставили на {color} и выйграли.",
@@ -583,7 +583,7 @@ async def roulette(ctx, color, amount: int):
                             )
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                             return await ctx.send(embed = embed)
-                        elif num[rand] == "black":
+                        elif num[rand] == black:
                             collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount // 2}})
                             embed = discord.Embed(
                                 description = f"Вы поставили на {color} и выйграли.",
@@ -591,7 +591,7 @@ async def roulette(ctx, color, amount: int):
                             )
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                             return await ctx.send(embed = embed)
-                        elif num[rand] == "green":
+                        elif num[rand] == green:
                             collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount * 14}})
                             embed = discord.Embed(
                                 description = f"Вы поставили на {color} и выйграли.",
