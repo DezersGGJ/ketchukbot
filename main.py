@@ -578,7 +578,7 @@ async def roulette(ctx, color, amount: int):
                         if num[rand] == "red":
                             collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
                             embed = discord.Embed(
-                                description = f"Вы поставили на {color} и выйграли.",
+                                description = f"Выпал {num[rand]} и вы выйграли.",
                                 color = 0x00ff00
                             )
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -586,7 +586,7 @@ async def roulette(ctx, color, amount: int):
                         elif num[rand] == "black":
                             collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
                             embed = discord.Embed(
-                                description = f"Вы поставили на {color} и выйграли.",
+                                description = f"Выпал {num[rand]} и вы выйграли.",
                                 color = 0x00ff00
                             )
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -594,7 +594,7 @@ async def roulette(ctx, color, amount: int):
                         elif num[rand] == "green":
                             collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount * 14}})
                             embed = discord.Embed(
-                                description = f"Вы поставили на {color} и выйграли.",
+                                description = f"Выпал {num[rand]} и вы выйграли.",
                                 color = 0x00ff00
                             )
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -602,7 +602,7 @@ async def roulette(ctx, color, amount: int):
                     else:
                         collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
                         embed = discord.Embed(
-                            description = f"Вы поставили на {color} и проиграли.",
+                            description = f"Выпал {num[rand]} и вы проиграли.",
                             color = 0xff2400
                         )
                         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
