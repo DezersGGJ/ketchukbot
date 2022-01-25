@@ -120,60 +120,36 @@ async def on_message_edit(before, after):
 async def on_message(message):
     if message.author.bot == False:
         if message.channel.id == 902855972509327400:
-            umes = collection.find_one({"_id": message.author.id})["mes"]
-            collection.update_one({"_id": message.author.id}, {"$set": {"mes": umes + 1}})
+            collection.update_one({"_id": message.author.id}, {"$inc": {"mes": 1}})
+            collection.update_one({"_id": message.author.id}, {"$inc": {"money": 100}})
             if umes == 149:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
                 guild = bot.get_guild(message.guild.id)
                 role_id = guild.get_role(903385564781350962)
                 await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 15000}})
             elif umes == 299:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
                 guild = bot.get_guild(message.guild.id)
                 role_id = guild.get_role(905008758277681153)
                 await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 30000}})
             elif umes == 499:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
                 guild = bot.get_guild(message.guild.id)
                 role_id = guild.get_role(904708571156066314)
                 await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 50000}})
             elif umes == 999:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
                 guild = bot.get_guild(message.guild.id)
                 role_id = guild.get_role(904712301255467058)
                 await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 100000}})
             elif umes == 1749:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
                 guild = bot.get_guild(message.guild.id)
                 role_id = guild.get_role(904714252089188382)
                 await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 175000}})
             elif umes == 2999:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
                 guild = bot.get_guild(message.guild.id)
                 role_id = guild.get_role(904714499804790786)
                 await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 300000}})
             elif umes == 4999:
-                umes = collection.find_one({"_id": message.author.id})["mes"]
-                umoney = collection.find_one({"_id": message.author.id})["money"]
                 guild = bot.get_guild(message.guild.id)
                 role_id = guild.get_role(904715362715721769)
                 await message.author.add_roles(role_id)
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 500000}})
-            elif umes > 5000:
-                umoney = collection.find_one({"_id": message.author.id})["money"]
-                collection.update_one({"_id": message.author.id}, {"$set": {"money": umoney + 100}})
 
     await bot.process_commands(message)
 
@@ -182,10 +158,9 @@ async def on_message(message):
 async def daily(ctx):
     if collection.find_one({'_id': ctx.author.id})['cddaily'] == 0:
         amount = random.randint(2000,5000)
-        umoney = collection.find_one({"_id": ctx.author.id})["money"]
         time = int(datetime.datetime.utcnow().timestamp())
         collection.update_one({"_id": ctx.author.id}, {"$set": {"cddaily": time}})
-        collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
+        collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
         embed = discord.Embed(
             description = f"Твоя ежедневная награда составила <:cash:903999146569138216>{humanize.intcomma(amount)}.",
             color = 0x00ff00
@@ -197,10 +172,9 @@ async def daily(ctx):
         cdtime = int(datetime.datetime.utcnow().timestamp()) - 86400
         if time < cdtime:
             amount = random.randint(2000,5000)
-            umoney = collection.find_one({"_id": ctx.author.id})["money"]
             time = int(datetime.datetime.utcnow().timestamp())
             collection.update_one({"_id": ctx.author.id}, {"$set": {"cddaily": time}})
-            collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
+            collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
             embed = discord.Embed(
                 description = f"Твоя ежедневная награда составила <:cash:903999146569138216>{humanize.intcomma(amount)}.",
                 color = 0x00ff00
@@ -223,10 +197,9 @@ async def daily(ctx):
 async def weekly(ctx):
     if collection.find_one({'_id': ctx.author.id})['cdweekly'] == 0:
         amount = random.randint(5000,20000)
-        umoney = collection.find_one({"_id": ctx.author.id})["money"]
         time = int(datetime.datetime.utcnow().timestamp())
         collection.update_one({"_id": ctx.author.id}, {"$set": {"cdweekly": time}})
-        collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
+        collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
         embed = discord.Embed(
             description = f"Твоя еженедельная награда составила <:cash:903999146569138216>{humanize.intcomma(amount)}.",
             color = 0x00ff00
@@ -238,10 +211,9 @@ async def weekly(ctx):
         cdtime = int(datetime.datetime.utcnow().timestamp()) - 604800
         if time < cdtime:
             amount = random.randint(5000,20000)
-            umoney = collection.find_one({"_id": ctx.author.id})["money"]
             time = int(datetime.datetime.utcnow().timestamp())
             collection.update_one({"_id": ctx.author.id}, {"$set": {"cdweekly": time}})
-            collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
+            collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
             embed = discord.Embed(
                 description = f"Твоя еженедельная награда составила <:cash:903999146569138216>{humanize.intcomma(amount)}.",
                 color = 0x00ff00
@@ -320,7 +292,6 @@ async def messages(ctx, member: discord.Member = None):
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
-
     else:
         mmes = collection.find_one({"_id": member.id})["mes"]
         if mmes < 149:
@@ -406,8 +377,7 @@ async def balance(ctx, member: discord.Member = None):
 async def add_messages(ctx, amount: int, member: discord.Member = None):
     if amount > 0:
         if member is None:
-            umes = collection.find_one({"_id": ctx.author.id})["mes"]
-            collection.update_one({"_id": ctx.author.id}, {"$set": {"mes": umes + amount}})
+            collection.update_one({"_id": ctx.author.id}, {"$inc": {"mes": amount}})
             embed = discord.Embed(
                 description = f"<:check:930367892455850014>Добавлено **{amount}** сообщений {ctx.author.mention}.",
                 color = 0x00ff00
@@ -415,8 +385,7 @@ async def add_messages(ctx, amount: int, member: discord.Member = None):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
         else:
-            mmes = collection.find_one({"_id": member.id})["mes"]
-            collection.update_one({"_id": member.id}, {"$set": {"mes": mmes + amount}})
+            collection.update_one({"_id": member.id}, {"$inc": {"mes": amount}})
             embed = discord.Embed(
                 description = f"<:check:930367892455850014>Добавлено **{amount}** сообщений {member.mention}",
                 color = 0x00ff00
@@ -430,8 +399,7 @@ async def add_messages(ctx, amount: int, member: discord.Member = None):
 async def remove_messages(ctx, amount: int, member: discord.Member = None):
     if amount > 0:
         if member is None:
-            umes = collection.find_one({"_id": ctx.author.id})["mes"]
-            collection.update_one({"_id": ctx.author.id}, {"$set": {"mes": umes - amount}})
+            collection.update_one({"_id": ctx.author.id}, {"$inc": {"mes": -amount}})
             embed = discord.Embed(
                 description = f"<:check:930367892455850014>Забрано **{amount}** сообщений у {ctx.author.mention}.",
                 color = 0x00ff00
@@ -439,8 +407,7 @@ async def remove_messages(ctx, amount: int, member: discord.Member = None):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
         else:
-            mmes = collection.find_one({"_id": member.id})["mes"]
-            collection.update_one({"_id": member.id}, {"$set": {"mes": mmes - amount}})
+            collection.update_one({"_id": member.id}, {"$set": {"mes": -amount}})
             embed = discord.Embed(
                 description = f"<:check:930367892455850014>Забрано **{amount}** сообщений у {member.mention}.",
                 color = 0x00ff00
@@ -454,8 +421,7 @@ async def remove_messages(ctx, amount: int, member: discord.Member = None):
 async def add_money(ctx, amount: int, member: discord.Member = None):
     if amount > 0:
         if member is None:
-            umoney = collection.find_one({"_id": ctx.author.id})["money"]
-            collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
+            collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
             embed = discord.Embed(
                 description = f"<:check:930367892455850014>Добавлено<:cash:903999146569138216>**{humanize.intcomma(amount)}** на баланс {ctx.author.mention}.",
                 color = 0x00ff00
@@ -463,8 +429,7 @@ async def add_money(ctx, amount: int, member: discord.Member = None):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
         else:
-            mmoney = collection.find_one({"_id": member.id})["money"]
-            collection.update_one({"_id": member.id}, {"$set": {"money": mmoney + amount}})
+            collection.update_one({"_id": member.id}, {"$inc": {"money": amount}})
             embed = discord.Embed(
                 description = f"<:check:930367892455850014>Добавлено<:cash:903999146569138216>**{humanize.intcomma(amount)}** на баланс {member.mention}.",
                 color = 0x00ff00
@@ -478,8 +443,7 @@ async def add_money(ctx, amount: int, member: discord.Member = None):
 async def remove_money(ctx, amount: int, member: discord.Member = None):
     if amount > 0:
         if member is None:
-            umoney = collection.find_one({"_id": ctx.author.id})["money"]
-            collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney - amount}})
+            collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
             embed = discord.Embed(
                 description = f"<:check:930367892455850014>Забрано<:cash:903999146569138216>**{humanize.intcomma(amount)}** с баланса {ctx.author.mention}.",
                 color = 0x00ff00
@@ -487,8 +451,7 @@ async def remove_money(ctx, amount: int, member: discord.Member = None):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
         else:
-            mmoney = collection.find_one({"_id": member.id})["money"]
-            collection.update_one({"_id": member.id}, {"$set": {"money": mmoney - amount}})
+            collection.update_one({"_id": member.id}, {"$inc": {"money": -amount}})
             embed = discord.Embed(
                 description = f"<:check:930367892455850014>Забрано<:cash:903999146569138216>**{humanize.intcomma(amount)}** с баланса {member.mention}.",
                 color = 0x00ff00
@@ -578,7 +541,7 @@ async def roulette(ctx, color, amount: int):
                         if num[rand] == "red":
                             collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
                             embed = discord.Embed(
-                                description = f"Выпал {num[rand]} и вы выйграли.",
+                                description = f"Выпал красный и вы выйграли.",
                                 color = 0x00ff00
                             )
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -586,7 +549,7 @@ async def roulette(ctx, color, amount: int):
                         elif num[rand] == "black":
                             collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
                             embed = discord.Embed(
-                                description = f"Выпал {num[rand]} и вы выйграли.",
+                                description = f"Выпал чёрный и вы выйграли.",
                                 color = 0x00ff00
                             )
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -594,19 +557,34 @@ async def roulette(ctx, color, amount: int):
                         elif num[rand] == "green":
                             collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount * 14}})
                             embed = discord.Embed(
-                                description = f"Выпал {num[rand]} и вы выйграли.",
+                                description = f"Выпал зелёный и вы выйграли.",
                                 color = 0x00ff00
                             )
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                             return await ctx.send(embed = embed)
                     else:
                         collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
-                        embed = discord.Embed(
-                            description = f"Выпал {num[rand]} и вы проиграли.",
-                            color = 0xff2400
-                        )
-                        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                        return await ctx.send(embed = embed)
+                        if num[rand] == "red":
+                            embed = discord.Embed(
+                                description = f"Выпал красный и вы проиграли.",
+                                color = 0xff2400
+                            )
+                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                            return await ctx.send(embed=embed)
+                        elif num[rand] == "black":
+                            embed = discord.Embed(
+                                description = f"Выпал чёрный и вы проиграли.",
+                                color = 0xff2400
+                            )
+                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                            return await ctx.send(embed = embed)
+                        elif num[rand] == "green":
+                            embed = discord.Embed(
+                                description = f"Выпал зелёный и вы проиграли.",
+                                color = 0xff2400
+                            )
+                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                            return await ctx.send(embed = embed)
 
 
 #basic command
