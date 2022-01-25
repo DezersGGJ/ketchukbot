@@ -833,6 +833,27 @@ async def test(ctx):
             await ctx.respond(content = "Вы отказались")
 
 
+@bot.command(aliases = ["server", "server-info"])
+async def server_info(ctx):
+    name = str(ctx.guild.name)
+    description = str(ctx.guild.description)
+    owner = str(ctx.guild.owner)
+    guild_id = str(ctx.guild.id)
+    region = str(ctx.guild.region)
+    memberCount = str(ctx.guild.member_count)
+    icon = str(ctx.guild.icon_url)
+    embed = discord.Embed(
+        title = f"Информация о сервере {name}",
+        color = 0x00ff00
+    )
+    embed.set_thumbnail(url = icon)
+    embed.add_field(name="Участники", value=f"{memberCount}", inline=False)
+    embed.add_field(name="Владелец:", value=f"{owner}", inline=False)
+    embed.add_field(name="Айди сервера:", value=f"{guild_id}", inline=False)
+    embed.add_field(name="Регион:", value=f"{region}", inline=False)
+
+
+
 @bot.command()
 async def help(ctx):
     embed1 = discord.Embed(title="Страница 1", description='test 1')
