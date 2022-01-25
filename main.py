@@ -123,31 +123,31 @@ async def on_message(message):
             data = collection.find_one({"_id": message.author.id})
             collection.update_one({"_id": message.author.id}, {"$inc": {"mes": 1}})
             collection.update_one({"_id": message.author.id}, {"$inc": {"money": 100}})
-            if data[mes] == 149:
+            if data["mes"] == 149:
                 guild = bot.get_guild(message.guild.id)
                 role_id = guild.get_role(903385564781350962)
                 await message.author.add_roles(role_id)
-            elif data[mes] == 299:
+            elif data["mes"] == 299:
                 guild = bot.get_guild(message.guild.id)
                 role_id = guild.get_role(905008758277681153)
                 await message.author.add_roles(role_id)
-            elif data[mes] == 499:
+            elif data["mes"] == 499:
                 guild = bot.get_guild(message.guild.id)
                 role_id = guild.get_role(904708571156066314)
                 await message.author.add_roles(role_id)
-            elif data[mes] == 999:
+            elif data["mes"] == 999:
                 guild = bot.get_guild(message.guild.id)
                 role_id = guild.get_role(904712301255467058)
                 await message.author.add_roles(role_id)
-            elif data[mes] == 1749:
+            elif data["mes"] == 1749:
                 guild = bot.get_guild(message.guild.id)
                 role_id = guild.get_role(904714252089188382)
                 await message.author.add_roles(role_id)
-            elif data[mes] == 2999:
+            elif data["mes"] == 2999:
                 guild = bot.get_guild(message.guild.id)
                 role_id = guild.get_role(904714499804790786)
                 await message.author.add_roles(role_id)
-            elif data[mes] == 4999:
+            elif data["mes"] == 4999:
                 guild = bot.get_guild(message.guild.id)
                 role_id = guild.get_role(904715362715721769)
                 await message.author.add_roles(role_id)
