@@ -180,8 +180,8 @@ class Economic(commands.Cog):
                                 return await ctx.send(embed = embed)
 
 
-    @commands.command(aliases = ["bal"])
-    async def balance(self, ctx, member: discord.Member = None):
+    @commands.command(aliases = ["balance"])
+    async def bal(self, ctx, member: discord.Member = None):
         if member is None:
             total = self.collection.find_one({'_id': ctx.author.id})['money'] + self.collection.find_one({'_id': ctx.author.id})['bank']
             embed = discord.Embed(
