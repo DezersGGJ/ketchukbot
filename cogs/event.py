@@ -3,7 +3,7 @@ from discord.ext import commands
 from pymongo import MongoClient
 
 
-class Economic(commands.Cog):
+class Event(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -47,6 +47,37 @@ class Economic(commands.Cog):
                     role_id = guild.get_role(904715362715721769)
                     await message.author.add_roles(role_id)
 
+    @commands.Cog.listener()
+    async def on_message_edit(self, before, after):
+        if before.author.bot == False:
+          embed = discord.Embed(
+              title = "Сообщение было отредоктировано",
+              description = f"**Старое содержимое:**\n{before.content}\n**Новое содиржимое:**\n{after.content}\n**Автор:**\n{before.author.mention}\n**Канал:**\n{before.channel.mention}",
+              color = 0x42aaff
+          )
+          await bot.get_channel(903710414783791114).send(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_member_remove(self, member):
+        if member.bot == False:
+          embed = discord.Embed(
+              description = f"Участник **{member.name}** вышел с сервера.",
+              color = 0x42aaff
+          )
+          icon = str(member.guild.icon_url)
+          embed.set_thumbnail(url = icon)
+          await bot.get_channel(903710414783791114).send(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_message_delete(self, message):
+        if message.author.bot == False:
+          embed = discord.Embed(
+              title = "Сообщение было удалено",
+              description = f"**Удалённое сообщение:**\n{message.content}\n**Автор:**\n{message.author.mention}\n**Канал:**\n{message.channel.mention}",
+              color = 0x42aaff
+          )
+          await bot.get_channel(903710414783791114).send(embed=embed)
+
 
 def setup(bot):
-    bot.add_cog(Economic(bot))
+    bot.add_cog(Event(bot))
