@@ -272,28 +272,8 @@ async def messages(ctx, member: discord.Member = None):
             )
             embed.set_author(name=member, icon_url=member.avatar_url)
             await ctx.send(embed = embed)
-
-
-@bot.command(aliases = ["bal"])
-async def balance(ctx, member: discord.Member = None):
-    if member is None:
-        total = collection.find_one({'_id': ctx.author.id})['money'] + collection.find_one({'_id': ctx.author.id})['bank']
-        embed = discord.Embed(
-            description = f"Баланс:\n<:cash:903999146569138216>{humanize.intcomma(collection.find_one({'_id': ctx.author.id})['money'])}\nБанк:\n<:cash:903999146569138216>{humanize.intcomma(collection.find_one({'_id': ctx.author.id})['bank'])}\nОбщий баланс:\n<:cash:903999146569138216>{humanize.intcomma(total)}",
-            color = 0x00ff00
-        )
-        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-        await ctx.send(embed = embed)
-    else:
-        total = collection.find_one({'_id': member.id})['money'] + collection.find_one({'_id': member.id})['bank']
-        embed = discord.Embed(
-            description = f"Баланс:\n<:cash:903999146569138216>{humanize.intcomma(collection.find_one({'_id': member.id})['money'])}\nБанк:\n<:cash:903999146569138216>{humanize.intcomma(collection.find_one({'_id': member.id})['bank'])}\nОбщий баланс:\n<:cash:903999146569138216>{humanize.intcomma(total)}",
-            color = 0x00ff00
-        )
-        embed.set_author(name=member, icon_url=member.avatar_url)
-        await ctx.send(embed = embed)
-
-
+            
+            
 @bot.command(aliases = ["add-messages"])
 @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
 async def add_messages(ctx, amount: int, member: discord.Member = None):
