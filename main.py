@@ -542,8 +542,6 @@ async def roulette(ctx, color, amount: int):
     data = collection.find_one({"_id": ctx.author.id})
     minbet, maxbet = 1000, 10000
     rand = random.randint(0,36)
-    try:
-        amounts = int(amount)
         if color not in colors:
             embed = discord.Embed(
                 description = "<:noe:911292323365781515>Неправильно указан аргумент `<red|black|green>`.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
@@ -609,13 +607,6 @@ async def roulette(ctx, color, amount: int):
                             )
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                             return await ctx.send(embed = embed)
-    except:
-        embed = discord.Embed(
-            description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
-            color = 0xff2400
-        )
-        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-        return await ctx.send(embed = embed)
 
 
 #basic command
