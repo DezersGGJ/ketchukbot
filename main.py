@@ -665,18 +665,21 @@ async def removevar(ctx):
 @bot.command()
 @commands.is_owner()
 async def load(ctx, extension):
+    await ctx.send("Коги загружены")
     bot.load_extension(f"cogs.{extension}")
 
 
 @bot.command()
 @commands.is_owner()
 async def unload(ctx, extension):
+    await ctx.send("Коги выключены")
     bot.unload_extension(f"cogs.{extension}")
 
 
 @bot.command()
 @commands.is_owner()
 async def reload(ctx, extension):
+    await ctx.send("Коги перезагржены")
     bot.unload_extension(f"cogs.{extension}")
     bot.load_extension(f"cogs.{extension}")
 
