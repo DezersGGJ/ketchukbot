@@ -49,6 +49,5 @@ class Economic(commands.Cog):
 
 		await commands.process_commands(message)
 
-
 def setup(bot):
 	bot.add_cog(Economic(bot))
