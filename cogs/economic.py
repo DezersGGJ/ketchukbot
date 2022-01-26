@@ -191,7 +191,7 @@ class Economic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
         else:
-            total = collection.find_one({'_id': member.id})['money'] + collection.find_one({'_id': member.id})['bank']
+            total = self.collection.find_one({'_id': member.id})['money'] + self.collection.find_one({'_id': member.id})['bank']
             embed = discord.Embed(
                 description = f"Баланс:\n<:cash:903999146569138216>{humanize.intcomma(self.collection.find_one({'_id': member.id})['money'])}\nБанк:\n<:cash:903999146569138216>{humanize.intcomma(self.collection.find_one({'_id': member.id})['bank'])}\nОбщий баланс:\n<:cash:903999146569138216>{humanize.intcomma(total)}",
                 color = 0x00ff00
