@@ -8,11 +8,11 @@ class Economic(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		self.cluster = MongoClient("mongodb+srv://DezersGG:Weerweer333@cluster0.b9xjp.mongodb.net/ecodb?retryWrites=true&w=majority")
-		self.collection = cluster.ecodb.colldb
-		self.collserver = cluster.ecodb.collserver
+		self.collection = self.cluster.ecodb.colldb
+		self.collserver = self.cluster.ecodb.collserver
 
 	@commands.Cog.listener()
-	async def on_message(message):
+	async def on_message(self, message):
 		if message.author.bot == False:
 			if message.channel.id == 902855972509327400:
 				data = collection.find_one({"_id": message.author.id})
