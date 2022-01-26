@@ -52,6 +52,44 @@ class Economic(commands.Cog):
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed = embed)
 
+    @commands.command()
+    async def weekly(self, ctx):
+        if self.collection.find_one({'_id': ctx.author.id})['cdweekly'] == 0:
+            amount = random.randint(5000,20000)
+            time = int(datetime.datetime.utcnow().timestamp())
+            self.collection.update_one({"_id": ctx.author.id}, {"$set": {"cdweekly": time}})
+            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
+            embed = discord.Embed(
+                description = f"Твоя еженедельная награда составила <:cash:903999146569138216>{humanize.intcomma(amount)}.",
+                color = 0x00ff00
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
+        else:
+            time = self.collection.find_one({"_id": ctx.author.id})["cdweekly"]
+            cdtime = int(datetime.datetime.utcnow().timestamp()) - 604800
+            if time < cdtime:
+                amount = random.randint(5000,20000)
+                time = int(datetime.datetime.utcnow().timestamp())
+                self.collection.update_one({"_id": ctx.author.id}, {"$set": {"cdweekly": time}})
+                self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
+                embed = discord.Embed(
+                    description = f"Твоя еженедельная награда составила <:cash:903999146569138216>{humanize.intcomma(amount)}.",
+                    color = 0x00ff00
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed = embed)
+            else:
+                cdtime = int(datetime.datetime.utcnow().timestamp()) - 604800
+                time = self.collection.find_one({"_id": ctx.author.id})["cdweekly"] - cdtime
+                cooldown = str(datetime.timedelta(seconds=time))
+                embed = discord.Embed(
+                    description = f"<:timecooldown:911306427723841566>Вы сможете получить еженедельную награду через {cooldown}",
+                    color = 0xFF2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed = embed)
+
 
 def setup(bot):
     bot.add_cog(Economic(bot))
