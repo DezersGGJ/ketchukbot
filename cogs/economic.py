@@ -15,9 +15,9 @@ class Economic(commands.Cog):
 	async def on_message(self, message):
 		if message.author.bot == False:
 			if message.channel.id == 902855972509327400:
-				data = self.collection.find_one({"_id": message.author.id})
-				self.collection.update_one({"_id": message.author.id}, {"$inc": {"mes": 1}})
-				self.collection.update_one({"_id": message.author.id}, {"$inc": {"money": 100}})
+				data = collection.find_one({"_id": message.author.id})
+				collection.update_one({"_id": message.author.id}, {"$inc": {"mes": 1}})
+				collection.update_one({"_id": message.author.id}, {"$inc": {"money": 100}})
 				if data["mes"] == 149:
 					guild = bot.get_guild(message.guild.id)
 					role_id = guild.get_role(903385564781350962)
@@ -47,7 +47,7 @@ class Economic(commands.Cog):
 					role_id = guild.get_role(904715362715721769)
 					await message.author.add_roles(role_id)
 
-		await bot.process_commands(message)
+		await commands.process_commands(message)
 
 
 def setup(bot):
