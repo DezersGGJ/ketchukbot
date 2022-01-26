@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from pymongo import MongoClient
 
-
 class Economic(commands.Cog):
 
 	def __init__(self, bot):
