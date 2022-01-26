@@ -82,39 +82,6 @@ async def on_member_join(member):
     if collection.count_documents({"_id": member.id}) == 0:
         collection.insert_one(user)
 
-@bot.event
-async def on_message_delete(message):
-    if message.author.bot == False:
-      embed = discord.Embed(
-          title = "Сообщение было удалено",
-          description = f"**Удалённое сообщение:**\n{message.content}\n**Автор:**\n{message.author.mention}\n**Канал:**\n{message.channel.mention}",
-          color = 0x42aaff
-      )
-      await bot.get_channel(903710414783791114).send(embed=embed)
-
-
-@bot.event
-async def on_member_remove(member):
-    if member.bot == False:
-      embed = discord.Embed(
-          description = f"Участник **{member.name}** вышел с сервера.",
-          color = 0x42aaff
-      )
-      icon = str(member.guild.icon_url)
-      embed.set_thumbnail(url = icon)
-      await bot.get_channel(903710414783791114).send(embed=embed)
-
-
-@bot.event
-async def on_message_edit(before, after):
-    if before.author.bot == False:
-      embed = discord.Embed(
-          title = "Сообщение было отредоктировано",
-          description = f"**Старое содержимое:**\n{before.content}\n**Новое содиржимое:**\n{after.content}\n**Автор:**\n{before.author.mention}\n**Канал:**\n{before.channel.mention}",
-          color = 0x42aaff
-      )
-      await bot.get_channel(903710414783791114).send(embed=embed)
-
 #economy
 @bot.command()
 async def daily(ctx):
