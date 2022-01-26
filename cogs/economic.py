@@ -15,7 +15,7 @@ class Economic(commands.Cog):
     async def on_message(self, message):
         if message.author.bot == False:
             if message.channel.id == 902855972509327400:
-                self.data = collection.find_one({"_id": message.author.id})
+                data = self.collection.find_one({"_id": message.author.id})
                 self.collection.update_one({"_id": message.author.id}, {"$inc": {"mes": 1}})
                 self.collection.update_one({"_id": message.author.id}, {"$inc": {"money": 100}})
                 if data["mes"] == 149:
