@@ -47,8 +47,6 @@ class Economic(commands.Cog):
                     role_id = guild.get_role(904715362715721769)
                     await message.author.add_roles(role_id)
 
-        await commands.process_commands(message)
-
 
 def setup(bot):
     bot.add_cog(Economic(bot))
