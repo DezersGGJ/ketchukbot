@@ -51,6 +51,8 @@ class Economic(commands.Cog):
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed = embed)
+                
+                
     @commands.command()
     async def roulette(self, ctx, color, amount: int):
         num = {
