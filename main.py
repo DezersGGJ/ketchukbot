@@ -498,7 +498,7 @@ async def remove_money(ctx, amount: int, member: discord.Member = None):
 
 
 @bot.command()
-async def roulette(ctx, color, amount):
+async def roulette(ctx, color, amount: int):
     num = {
         0: "green",
         1: "red",
