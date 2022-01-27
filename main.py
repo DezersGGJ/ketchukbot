@@ -679,9 +679,6 @@ async def unload(ctx, extension):
 @bot.command()
 @commands.is_owner()
 async def reload(ctx, extension):
-    embed = discord.Embed(
-        description = 
-    )
     await message.add_reaction('<:yes:903316080456523787>')
     bot.unload_extension(f"cogs.{extension}")
     bot.load_extension(f"cogs.{extension}")
