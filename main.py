@@ -665,21 +665,21 @@ async def removevar(ctx):
 @bot.command()
 @commands.is_owner()
 async def load(ctx, extension):
-    await message.add_reaction('<:yes:903316080456523787>')
+    await ctx.add_reaction('<:yes:903316080456523787>')
     bot.load_extension(f"cogs.{extension}")
 
 
 @bot.command()
 @commands.is_owner()
 async def unload(ctx, extension):
-    await message.add_reaction('<:yes:903316080456523787>')
+    await ctx.add_reaction('<:yes:903316080456523787>')
     bot.unload_extension(f"cogs.{extension}")
 
 
 @bot.command()
 @commands.is_owner()
 async def reload(ctx, extension):
-    await message.add_reaction('<:yes:903316080456523787>')
+    await ctx.add_reaction('<:yes:903316080456523787>')
     bot.unload_extension(f"cogs.{extension}")
     bot.load_extension(f"cogs.{extension}")
 
