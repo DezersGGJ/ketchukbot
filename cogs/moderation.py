@@ -26,7 +26,7 @@ class Moderation(commands.Cog):
     @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 933769903910060153)
     async def delnote(self, ctx, note: int):
         if self.collection.count_documents({"notes.note": note}) == 0:
-            await ctx.send("Даного случая не найдено.")
+            await ctx.send("Данной заметки не найдено.")
         else:
             self.collection.update_one(
                 {
