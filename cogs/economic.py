@@ -221,6 +221,35 @@ class Economic(commands.Cog):
             embed.set_author(name=member, icon_url=member.avatar_url)
             await ctx.send(embed = embed)
 
+    @commands.command()
+    async def pay(self, ctx, member: discord.Member, amount: int):
+        data_author = self.collection.find_one({"_id": ctx.author.id})
+        data_member = self.collection.find_one({"_id": member.id})
+        if amount <= 0:
+            embed = discord.Embed(
+                description = "Введите число больше 0.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            return await ctx.send(embed = embed)
+        else:
+            if data_author["money"] < amount:
+                embed = discord.Embed(
+                    description = f"<:noe:911292323365781515>У вас недостаточно средств.",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                return await ctx.send(embed = embed)
+            else:
+                self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
+                self.collection.update_one({"_id": member.id}, {"$inc": {"money": amount}})
+                embed = discord.Embed(
+                    description = f"{ctx.author} перевёл {member} <:cash:903999146569138216>{humanize.intcomma(amount)}"
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                return await ctx.send(embed = embed)
+
+
 
 def setup(bot):
     bot.add_cog(Economic(bot))
