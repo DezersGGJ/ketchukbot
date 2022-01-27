@@ -15,6 +15,7 @@ class Economic(commands.Cog):
         self.collserver = self.cluster.ecodb.collserver
 
     @commands.command()
+    @commands.cooldown(1, 30, commands.BucketType.user)
     async def work(self, ctx):
         if self.collection.find_one({"_id": ctx.author.id})["cdwork"] > 0:
             amount = random.randint(300,600)
