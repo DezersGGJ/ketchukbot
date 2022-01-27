@@ -28,7 +28,7 @@ class Economic(commands.Cog):
 
     @commands.command()
     async def work(self, ctx):
-        if self.collection.find_one({"_id": ctx.member.id})["cdwork"] > 0:
+        if self.collection.find_one({"_id": ctx.author.id})["cdwork"] > 0:
             amount = random.randint(300,600)
             self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
             embed = discord.Embed(
