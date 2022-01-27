@@ -55,7 +55,7 @@ async def on_ready():
                 collserver.insert_one(server)
 
 @tasks.loop(minutes=1440)
-async def check_work(self):
+async def check_work():
     for guild in bot.guilds:
         for member in guild.members:
             collection.update_one({"_id": member.id}, {"$set": {"cdwork": 100}})
