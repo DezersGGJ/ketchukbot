@@ -51,75 +51,75 @@ class Moderation(commands.Cog):
 
     @commands.command()
     async def notes(self, ctx, member: discord.Member = None):
-    if member is None:
-        if self.collection.find_one({"_id": ctx.author.id})["note"] == 0:
-            embed = discord.Embed(
-                title = f"Заметки участника {ctx.author.name}:",
-                description = "Заметки отсутствуют.",
-                color = 0x42aaff
-            )
-            await ctx.send(embed = embed)
+        if member is None:
+            if self.collection.find_one({"_id": ctx.author.id})["note"] == 0:
+                embed = discord.Embed(
+                    title = f"Заметки участника {ctx.author.name}:",
+                    description = "Заметки отсутствуют.",
+                    color = 0x42aaff
+                )
+                await ctx.send(embed = embed)
+            else:
+                embed = discord.Embed(title = f"Заметки участника {ctx.author.name}:", color = 0x42aaff)
+                user = self.collection.find_one({"_id": ctx.author.id})
+                for value in user["notes"]:
+                    embed.add_field(name = f"`Заметка #{value['note']}` <t:{value['time']}:f> {bot.get_user(value['author_id'])}", value = f"**Заметка:** {value['reason_note']}", inline = False)
+
+                await ctx.send(embed = embed)
         else:
-            embed = discord.Embed(title = f"Заметки участника {ctx.author.name}:", color = 0x42aaff)
-            user = self.collection.find_one({"_id": ctx.author.id})
-            for value in user["notes"]:
-                embed.add_field(name = f"`Заметка #{value['note']}` <t:{value['time']}:f> {bot.get_user(value['author_id'])}", value = f"**Заметка:** {value['reason_note']}", inline = False)
+            if self.collection.find_one({"_id": member.id})["note"] == 0:
+                embed = discord.Embed(
+                    title = f"Заметки участника {member.name}:",
+                    description = "Заметки отсутствуют.",
+                    color = 0x42aaff
+                )
+                await ctx.send(embed = embed)
+            else:
+                embed = discord.Embed(title = f"Заметки участника {member.name}:", color = 0x42aaff)
+                user = self.collection.find_one({"_id": member.id})
+                for value in user["notes"]:
+                    embed.add_field(name = f"`Заметка #{value['note']}` <t:{value['time']}:f> {bot.get_user(value['author_id'])}", value = f"**Заметка:** {value['reason_note']}", inline = False)
 
-            await ctx.send(embed = embed)
-    else:
-        if self.collection.find_one({"_id": member.id})["note"] == 0:
-            embed = discord.Embed(
-                title = f"Заметки участника {member.name}:",
-                description = "Заметки отсутствуют.",
-                color = 0x42aaff
-            )
-            await ctx.send(embed = embed)
-        else:
-            embed = discord.Embed(title = f"Заметки участника {member.name}:", color = 0x42aaff)
-            user = self.collection.find_one({"_id": member.id})
-            for value in user["notes"]:
-                embed.add_field(name = f"`Заметка #{value['note']}` <t:{value['time']}:f> {bot.get_user(value['author_id'])}", value = f"**Заметка:** {value['reason_note']}", inline = False)
+                await ctx.send(embed = embed)
 
-            await ctx.send(embed = embed)
-
-    @commands.command()
-    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 933769903910060153)
-    async def note(self, ctx, member: discord.Member, *, reason_note = "Нету"):
-        self.collserver.update_one(
-            {
-                "_id": ctx.guild.id
-            },
-            {
-                "$inc": {
-                    "note": 1
-                }
-            }
-        )
-        timenote = int(datetime.datetime.utcnow().timestamp())
-        self.collection.update_one(
-            {
-                "_id": member.id
-            },
-            {
-                "$push": {
-                    "notes": {
-                        "author_id": ctx.author.id,
-                        "reason_note": reason_note,
-                        "time": timenote,
-                        "note": self.collserver.find_one({"_id": ctx.guild.id})["note"]
-                    }
+        @commands.command()
+        @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 933769903910060153)
+        async def note(self, ctx, member: discord.Member, *, reason_note = "Нету"):
+            self.collserver.update_one(
+                {
+                    "_id": ctx.guild.id
                 },
-                "$inc": {
-                    "note": 1
+                {
+                    "$inc": {
+                        "note": 1
+                    }
                 }
-            }
-        )
-        embed = discord.Embed(
-            description = f"Пользователю {member} была выдана заметка.",
-            color = 0x42aaff
-        )
-        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-        await ctx.send(embed = embed)
+            )
+            timenote = int(datetime.datetime.utcnow().timestamp())
+            self.collection.update_one(
+                {
+                    "_id": member.id
+                },
+                {
+                    "$push": {
+                        "notes": {
+                            "author_id": ctx.author.id,
+                            "reason_note": reason_note,
+                            "time": timenote,
+                            "note": self.collserver.find_one({"_id": ctx.guild.id})["note"]
+                        }
+                    },
+                    "$inc": {
+                        "note": 1
+                    }
+                }
+            )
+            embed = discord.Embed(
+                description = f"Пользователю {member} была выдана заметка.",
+                color = 0x42aaff
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
 
     @commands.command(aliases = ["remove-warn"])
     @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153)
