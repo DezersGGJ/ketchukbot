@@ -96,7 +96,7 @@ class Economic(commands.Cog):
         }
         colors = ["red", "black", "green"]
         data = self.collection.find_one({"_id": ctx.author.id})
-        minbet, maxbet = 1000, 1000000
+        minbet, maxbet = 1000, 10000
         rand = random.randint(0,36)
         if color not in colors:
             embed = discord.Embed(
