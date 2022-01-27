@@ -14,18 +14,6 @@ class Economic(commands.Cog):
         self.collection = self.cluster.ecodb.colldb
         self.collserver = self.cluster.ecodb.collserver
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        self.check_work.start()
-
-    @tasks.loop(minutes=1440)
-    async def check_work(self):
-        for guild in self.bot.guilds:
-            for member in self.guild.members:
-                self.collection.update_one({"_id": member.id}, {"$set": {"cdwork": 100}})
-                if self.collection.find_one({"_id": member.id})["cdwork"] == 100:
-                    pass
-
     @commands.command()
     async def work(self, ctx):
         if self.collection.find_one({"_id": ctx.author.id})["cdwork"] > 0:
