@@ -19,6 +19,7 @@ class Economic(commands.Cog):
         if self.collection.find_one({"_id": ctx.author.id})["cdwork"] > 0:
             amount = random.randint(300,600)
             self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
+            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"cdwork": -10}})
             embed = discord.Embed(
                 description = f"Твоя зарплата составила <:cash:903999146569138216>{humanize.intcomma(amount)}.",
                 color = 0x00ff00
