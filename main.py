@@ -18,12 +18,12 @@ bot.remove_command('help')
 cluster = MongoClient("mongodb+srv://DezersGG:Weerweer333@cluster0.b9xjp.mongodb.net/ecodb?retryWrites=true&w=majority")
 collection = cluster.ecodb.colldb
 collserver = cluster.ecodb.collserver
+colluser = cluster.ecodb.colldatabase
 #umoney = collection.find_one({"_id": ctx.author.id})["money"]
 #collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
 #event
 @bot.event
 async def on_ready():
-    check_work.start()
     print("Bot connected to the server")
     DiscordComponents(bot)
     await bot.change_presence(status = discord.Status.online, activity = discord.Game('Бот в разработке.'))
@@ -48,19 +48,18 @@ async def on_ready():
                 "case": 0,
                 "note": 0
             }
+            userv = {
+                "_id": member.id,
+                "workcd": 0,
+                "victorina": []
+            }
 
             if collection.count_documents({"_id": member.id}) == 0:
                 collection.insert_one(user)
             if collserver.count_documents({"_id": guild.id}) == 0:
                 collserver.insert_one(server)
-
-@tasks.loop(minutes=1440)
-async def check_work():
-    for guild in bot.guilds:
-        for member in guild.members:
-            collection.update_one({"_id": member.id}, {"$set": {"cdwork": 100}})
-            if collection.find_one({"_id": member.id})["cdwork"] == 100:
-                pass
+            if colluser.count_documents({"_id": member.id}) == 0:
+                colluser.insert_one(userv)
 
 @bot.event
 async def on_member_join(member):
@@ -87,9 +86,16 @@ async def on_member_join(member):
         "note": 0,
         "mute": []
     }
+    userv = {
+        "_id": member.id,
+        "workcd": 0,
+        "victorina": []
+    }
 
     if collection.count_documents({"_id": member.id}) == 0:
         collection.insert_one(user)
+    if colluser.count_documents({"_id": member.id}) == 0:
+        colluser.insert_one(userv)
 
 @bot.event
 async def on_message_delete(message):
