@@ -251,8 +251,8 @@ class Economic(commands.Cog):
                 return await ctx.send(embed = embed)
 
     @commands.command()
-    async def lb(self,ctx):
-        leder = self.collection.find()["money"].sort("money": -1).limit(10)
+    async def lb(self, ctx):
+        leder = self.collection.find()["money"].sort("money", -1).limit(10)
         await ctx.send(leder)
 
 
