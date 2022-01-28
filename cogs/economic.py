@@ -250,11 +250,6 @@ class Economic(commands.Cog):
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 return await ctx.send(embed = embed)
 
-    @commands.command()
-    async def lb(self, ctx):
-        leder = self.collection.find()["money"].sort("money", -1).limit(10)
-        await ctx.send(leder)
-
 
 
 def setup(bot):
