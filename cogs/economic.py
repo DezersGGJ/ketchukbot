@@ -13,29 +13,7 @@ class Economic(commands.Cog):
         self.cluster = MongoClient("mongodb+srv://DezersGG:Weerweer333@cluster0.b9xjp.mongodb.net/ecodb?retryWrites=true&w=majority")
         self.collection = self.cluster.ecodb.colldb
         self.collserver = self.cluster.ecodb.collserver
-
-    @commands.command()
-    @commands.cooldown(1, 30, commands.BucketType.user)
-    async def work(self, ctx):
-        if self.collection.find_one({"_id": ctx.author.id})["cdwork"] > 0:
-            amount = random.randint(300,600)
-            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
-            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"cdwork": -10}})
-            embed = discord.Embed(
-                description = f"Твоя зарплата составила <:cash:903999146569138216>{humanize.intcomma(amount)}.",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-        else:
-            embed = discord.Embed(
-                    description = f"<:timecooldown:911306427723841566>Вы слишком устали.",
-                    color = 0xFF2400
-                )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-
-
+        
     @commands.command()
     async def daily(self, ctx):
         if self.collection.find_one({'_id': ctx.author.id})['cddaily'] == 0:
