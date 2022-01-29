@@ -280,7 +280,7 @@ class Economic(commands.Cog):
                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"bank": data["money"]}})
                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -data["money"]}})
                 embed = discord.Embed(
-                    description = f"Вы пополнили банковский счёт на <:cash:903999146569138216>{data['money']}.",
+                    description = f"Вы пополнили банковский счёт на <:cash:903999146569138216>{humanize.intcomma(data['money'])}.",
                     color = 0x00ff00
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -305,7 +305,7 @@ class Economic(commands.Cog):
                     self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"bank": amount}})
                     self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
                     embed = discord.Embed(
-                        description = f"Вы пополнили банковский счёт на <:cash:903999146569138216>{amount}.",
+                        description = f"Вы пополнили банковский счёт на <:cash:903999146569138216>{humanize.intcomma(amount)}.",
                         color = 0x00ff00
                     )
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -326,7 +326,7 @@ class Economic(commands.Cog):
                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": data["bank"]}})
                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"bank": -data["bank"]}})
                 embed = discord.Embed(
-                    description = f"Вы сняли с банковского счёта <:cash:903999146569138216>{data['bank']}.",
+                    description = f"Вы сняли с банковского счёта <:cash:903999146569138216>{humanize.intcomma(data['bank'])}.",
                     color = 0x00ff00
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -351,7 +351,7 @@ class Economic(commands.Cog):
                     self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
                     self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"bank": -amount}})
                     embed = discord.Embed(
-                        description = f"Вы сеяли с банковского счёта <:cash:903999146569138216>{amount}.",
+                        description = f"Вы сеяли с банковского счёта <:cash:903999146569138216>{humanize.intcomma(amount)}.",
                         color = 0x00ff00
                     )
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
