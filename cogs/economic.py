@@ -133,7 +133,7 @@ class Economic(commands.Cog):
         }
         colors = ["red", "black", "green"]
         data = self.collection.find_one({"_id": ctx.author.id})
-        minbet, maxbet = 1000, 1000000
+        minbet, maxbet = 1000, 10000
         rand = random.randint(0,36)
         if color not in colors:
             embed = discord.Embed(
@@ -378,7 +378,7 @@ class Economic(commands.Cog):
     async def withdraw_error(self, ctx, error):
         if isinstance(error, commands.errors.CommandInvokeError):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`withdraw <amount>`",
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`withdraw <amount or all>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -388,7 +388,7 @@ class Economic(commands.Cog):
     async def deposit_error(self, ctx, error):
         if isinstance(error, commands.errors.CommandInvokeError):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`deposit <amount>`",
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`deposit <amount or all>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
