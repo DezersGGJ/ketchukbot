@@ -374,6 +374,26 @@ class Economic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             return await ctx.send(embed = embed)
 
+    @withdraw.error
+    async def withdraw_error(self, ctx, error):
+        if isinstance(error, commands.errors.CommandInvokeError):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`withdraw <amount>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            return await ctx.send(embed = embed)
+
+    @deposit.error
+    async def deposit_error(self, ctx, error):
+        if isinstance(error, commands.errors.CommandInvokeError):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`deposit <amount>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            return await ctx.send(embed = embed)
+
 
 def setup(bot):
     bot.add_cog(Economic(bot))
