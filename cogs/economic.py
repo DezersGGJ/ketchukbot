@@ -266,7 +266,7 @@ class Economic(commands.Cog):
                 return await ctx.send(embed = embed)
 
     @commands.command(aliases = ["dep"])
-    async def dep(self, ctx, amount: Union[int, str]):
+    async def deposit(self, ctx, amount: Union[int, str]):
         data = self.collection.find_one({"_id": ctx.author.id})
         if amount == "all":
             if data["money"] <= 0:
@@ -278,6 +278,7 @@ class Economic(commands.Cog):
                 return await ctx.send(embed = embed)
             else:
                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"bank": data["money"]}})
+                self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -data["money"]}})
                 embed = discord.Embed(
                     description = f"Вы пополнили банковский счёт на <:cash:903999146569138216>{data['money']}.",
                     color = 0x00ff00
@@ -302,6 +303,7 @@ class Economic(commands.Cog):
                     return await ctx.send(embed = embed)
                 else:
                     self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"bank": amount}})
+                    self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
                     embed = discord.Embed(
                         description = f"Вы пополнили банковский счёт на <:cash:903999146569138216>{amount}.",
                         color = 0x00ff00
