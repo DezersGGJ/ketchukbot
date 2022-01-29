@@ -266,7 +266,7 @@ class Economic(commands.Cog):
                 return await ctx.send(embed = embed)
 
     @commands.command(aliases = ["dep"])
-    async def deposit(self, ctx, amount: Union[str, int]):
+    async def dep(self, ctx, amount: Union[int, str]):
         data = self.collection.find_one({"_id": ctx.author.id})
         if amount == "all":
             if data["money"] <= 0:
