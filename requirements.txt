@@ -7,3 +7,4 @@ requests==2.26.0
 discord-components==2.1.2
 asyncio==3.4.3
 humanize==3.13.1
+typing==3.10.0.0
