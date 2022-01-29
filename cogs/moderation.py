@@ -162,7 +162,7 @@ class Moderation(commands.Cog):
                 embed = discord.Embed(title = f"Предупреждения участника {ctx.author.name}:", color = 0x42aaff)
                 user = self.collection.find_one({"_id": ctx.author.id})
                 for value in user["reasons"]:
-                    embed.add_field(name = f"`Случай #{value['case']}` <t:{value['time']}:f> {bot.get_user(value['author_id'])}", value = f"**Причина:** {value['reason']}", inline = False)
+                    embed.add_field(name = f"`Случай #{value['case']}` <t:{value['time']}:f> {self.bot.get_user(value['author_id'])}", value = f"**Причина:** {value['reason']}", inline = False)
 
                 await ctx.send(embed = embed)
         else:
@@ -177,7 +177,7 @@ class Moderation(commands.Cog):
                 embed = discord.Embed(title = f"Предупреждения участника {member.name}:", color = 0x42aaff)
                 user = self.collection.find_one({"_id": member.id})
                 for value in user["reasons"]:
-                    embed.add_field(name = f"`Случай #{value['case']}` <t:{value['time']}:f> {bot.get_user(value['author_id'])}", value = f"**Причина:** {value['reason']}", inline = False)
+                    embed.add_field(name = f"`Случай #{value['case']}` <t:{value['time']}:f> {self.bot.get_user(value['author_id'])}", value = f"**Причина:** {value['reason']}", inline = False)
 
                 await ctx.send(embed = embed)
 
