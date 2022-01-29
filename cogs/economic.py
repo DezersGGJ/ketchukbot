@@ -15,7 +15,7 @@ class Economic(commands.Cog):
         self.collserver = self.cluster.ecodb.collserver
         
     @roulette.error
-    async def roulette_error(ctx, error):
+    async def roulette_error(self, ctx, error):
         if isinstance(error, commands.errors.MissingRequiredArgument):
             embed = discord.Embed(
                 description = "<:noe:911292323365781515>Неправильно указан аргумент `<red|black|green>`.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
