@@ -446,6 +446,23 @@ async def ping(ctx):
     )
     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
     await ctx.send(embed = embed)
+    
+@roulette.error
+async def roulette_error(ctx, error):
+    if isinstance(error, commands.errors.MissingRequiredArgument):
+        embed = discord.Embed(
+            description = "<:noe:911292323365781515>Неправильно указан аргумент `<red|black|green>`.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
+            color = 0xff2400
+        )
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        return await ctx.send(embed = embed)
+    elif isinstance(error, commands.errors.BadArgument):
+        embed = discord.Embed(
+            description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
+            color = 0xff2400
+        )
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        return await ctx.send(embed = embed)
 
 
 @bot.command()
