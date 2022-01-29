@@ -361,7 +361,7 @@ class Economic(commands.Cog):
     async def roulette_error(self, ctx, error):
         if isinstance(error, commands.errors.MissingRequiredArgument):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<red|black|green>`.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
