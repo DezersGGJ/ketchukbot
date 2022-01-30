@@ -392,6 +392,7 @@ async def servericon(ctx):
         color = 0x00ff00
     )
     embed.set_image(url = ctx.guild.icon_url)
+    await ctx.send(embed = embed)
 
 
 @bot.command()
