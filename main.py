@@ -82,7 +82,7 @@ async def on_member_join(member):
         collection.insert_one(user)
 
 @tasks.loop(seconds = 10)
-async def work_endurance():
+async def work_check():
     for guild in bot.guilds:
         for member in guild.members:
             if collection.find_one({'_id': member.id})['cdwork'] == 0:
@@ -92,7 +92,7 @@ async def work_endurance():
                 time = collection.find_one({"_id": member.id})['cdwork']
                 cdtime = int(datetime.datetime.utcnow().timestamp()) - 600
                 if time < cdtime:
-                    if collection.find_one({'_id': member.id})['endurance'] < 100:
+                    if 100 > collection.find_one({'_id': member.id})['endurance']:
                         time = int(datetime.datetime.utcnow().timestamp())
                         collection.update_one({'_id': member.id}, {'$set': {'cdwork': time}})
                         collection.update_one({'_id': member.id}, {'$inc': {'endurance': 1}})
