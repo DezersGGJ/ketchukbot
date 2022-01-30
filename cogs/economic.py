@@ -374,7 +374,7 @@ class Economic(commands.Cog):
             self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"endurance": -10}})
             embed = discord.Embed(
                 description = f"Твоя зарплата составила <:cash:903999146569138216>{humanize.intcomma(amount)}.",
-                color = 0xff2400
+                color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
