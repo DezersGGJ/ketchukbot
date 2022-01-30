@@ -372,12 +372,14 @@ async def ping(ctx):
 async def avatar(ctx, member: discord.Member = None):
     if member is None:
         embed = discord.Embed(
-            title = f"Аватар {ctx.author.name}"
+            title = f"Аватар {ctx.author.name}",
+            color = 0x00ff00
         )
         embed.set_image(url = ctx.author.avatar_url)
     else:
         embed = discord.Embed(
-            title = f"Аватар {member.name}"
+            title = f"Аватар {member.name}",
+            color = 0x00ff00
         )
         embed.set_image(url = member.avatar_url)
 
