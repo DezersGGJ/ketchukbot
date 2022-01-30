@@ -18,7 +18,6 @@ bot.remove_command('help')
 cluster = MongoClient("mongodb+srv://DezersGG:Weerweer333@cluster0.b9xjp.mongodb.net/ecodb?retryWrites=true&w=majority")
 collection = cluster.ecodb.colldb
 collserver = cluster.ecodb.collserver
-colluser = cluster.ecodb.colldatabase
 #umoney = collection.find_one({"_id": ctx.author.id})["money"]
 #collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
 #event
@@ -86,18 +85,17 @@ async def on_member_join(member):
 async def work_endurance():
     for guild in bot.guilds:
         for member in guild.members:
-            data = collection.find_one({"_id": member.id})
-            if data["cdwork"] == 0:
+            if collection.find_one({'_id': member.id})['cdwork'] == 0:
                 time = int(datetime.datetime.utcnow().timestamp())
-                collection.update_one({"_id": member.id}, {"$set": {"cdwork": time}})
+                collection.update_one({'_id': member.id}, {'$set': {'cdwork': time}})
             else:
-                time = collection.find_one({"_id": member.id})["cdwork"]
+                time = collection.find_one({"_id": member.id})['cdwork']
                 cdtime = int(datetime.datetime.utcnow().timestamp()) - 600
                 if time < cdtime:
-                    if collection.find_one({"_id": member.id})["endurance"] < 100:
+                    if collection.find_one({'_id': member.id})['endurance'] < 100:
                         time = int(datetime.datetime.utcnow().timestamp())
-                        collection.update_one({"_id": member.id}, {"$set": {"cdwork": time}})
-                        collection.update_one({"_id": member.id}, {"$inc": {"endurance": 1}})
+                        collection.update_one({'_id': member.id}, {'$set': {'cdwork': time}})
+                        collection.update_one({'_id': member.id}, {'$inc': {'endurance': 1}})
                 else:
                     pass
 
