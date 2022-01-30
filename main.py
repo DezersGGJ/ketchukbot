@@ -92,7 +92,8 @@ async def work_check():
                 time = collection.find_one({"_id": member.id})['cdwork']
                 cdtime = int(datetime.datetime.utcnow().timestamp()) - 600
                 if time < cdtime:
-                    if 100 > collection.find_one({'_id': member.id})['endurance']:
+                    data = collection.find_one({'_id': member.id})
+                    if 100 > data['endurance']:
                         time = int(datetime.datetime.utcnow().timestamp())
                         collection.update_one({'_id': member.id}, {'$set': {'cdwork': time}})
                         collection.update_one({'_id': member.id}, {'$inc': {'endurance': 1}})
