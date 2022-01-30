@@ -42,7 +42,7 @@ async def on_ready():
                 "reasons": [],
                 "notes": [],
                 "note": 0,
-                "mute": []
+                "endurance": 100
             }
             server = {
                 "_id": guild.id,
@@ -77,7 +77,7 @@ async def on_member_join(member):
         "reasons": [],
         "notes": [],
         "note": 0,
-        "mute": []
+        "endurance": 0
     }
     if collection.count_documents({"_id": member.id}) == 0:
         collection.insert_one(user)
