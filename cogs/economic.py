@@ -358,12 +358,13 @@ class Economic(commands.Cog):
                     return await ctx.send(embed = embed)
 
     @commands.command()
+    @commands.cooldown(1, 30, commands.BucketType.user)
     async def work(self, ctx):
         data = self.collection.find_one({"_id": ctx.author.id})
         amount = random.randint(1,5000)
         if data["endurance"] < 10:
             embed = discord.Embed(
-                description = f"<:noe:911292323365781515>У тебя недостаточно выносливости {data["endurance"]}/10.",
+                description = f"<:noe:911292323365781515>У тебя недостаточно выносливости {data['endurance']}/10.",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -423,6 +424,16 @@ class Economic(commands.Cog):
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            return await ctx.send(embed = embed)
+
+    @work.error
+    async def work_erroe(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            retry_after = str(datetime.timedelta(seconds=error.retry_after)).split('.')[0]
+            embed = discord.Embed(
+                description = f"<:noe:911292323365781515>Вы устали. Приходите через {retry_after}",
+                color = 0xff2400
+            )
             return await ctx.send(embed = embed)
 
 
