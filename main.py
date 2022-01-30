@@ -10,7 +10,7 @@ from ButtonPaginator import Paginator
 from discord.ext import commands, tasks
 from pymongo import MongoClient
 from Cybernator import Paginator
-from discord_components import DiscordComponents, Button, ButtonStyle, Select, SelectOption
+from discord_components import DiscordComponents, Button, ButtonStyle, Select, SelectOption, InteractionType
 import humanize
 
 
