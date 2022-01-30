@@ -13,7 +13,7 @@ class Economic(commands.Cog):
         self.cluster = MongoClient("mongodb+srv://DezersGG:Weerweer333@cluster0.b9xjp.mongodb.net/ecodb?retryWrites=true&w=majority")
         self.collection = self.cluster.ecodb.colldb
         self.collserver = self.cluster.ecodb.collserver
-        
+     
     @commands.command()
     async def daily(self, ctx):
         if self.collection.find_one({'_id': ctx.author.id})['cddaily'] == 0:
@@ -357,6 +357,27 @@ class Economic(commands.Cog):
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                     return await ctx.send(embed = embed)
 
+    @commands.command()
+    async def work(self, ctx):
+        data = self.collection.find_one({"_id": ctx.author.id})
+        amount = random.randint(1,5000)
+        if data["endurance"] < 10:
+            embed = discord.Embed(
+                description = f"<:noe:911292323365781515>У тебя недостаточно выносливости {data["endurance"]}/10.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
+        else:
+            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
+            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"endurance": -10}})
+            embed = discord.Embed(
+                description = f"Твоя зарплата составила <:cash:903999146569138216>{humanize.intcomma(amount)}.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
+
     @roulette.error
     async def roulette_error(self, ctx, error):
         if isinstance(error, commands.errors.MissingRequiredArgument):
@@ -389,6 +410,16 @@ class Economic(commands.Cog):
         if isinstance(error, commands.errors.CommandInvokeError):
             embed = discord.Embed(
                 description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`deposit <amount or all>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            return await ctx.send(embed = embed)
+
+    @bal.error
+    async def balance_error(self, ctx, error):
+        if isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
