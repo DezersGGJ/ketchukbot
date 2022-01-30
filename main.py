@@ -81,6 +81,25 @@ async def on_member_join(member):
     if collection.count_documents({"_id": member.id}) == 0:
         collection.insert_one(user)
 
+@tasks.loop(seconds = 10)
+async def work_endurance():
+    for guild in bot.guilds:
+        for member in guild.members:
+            data = collection.find_one({"_id": member.id})
+            if data["cdwork"] == 0:
+                time = int(datetime.datetime.utcnow().timestamp())
+                collection.update_one({"_id": member.id}, {"$set": {"cdwork": time}})
+            else:
+                time = collection.find_one({"_id": ctx.author.id})["cdwork"]
+                cdtime = int(datetime.datetime.utcnow().timestamp()) - 600
+                if time <= cdtime:
+                    if data["endurance"] < 100:
+                        time = int(datetime.datetime.utcnow().timestamp())
+                        collection.update_one({"_id": member.id}, {"$set": {"cdwork": time}})
+                        collection.update_one({"_id": member.id}, {"$inc": {"endurance": 1}})
+                else:
+                    pass
+
 @bot.event
 async def on_message_delete(message):
     if message.author.bot == False:
@@ -774,15 +793,6 @@ async def remove_money(ctx, amount: int, member: discord.Member = None):
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
-
-@bot.command()
-async def button(ctx):
-    embeds = [discord.Embed(title="1 page"), discord.Embed(title="2 page"), discord.Embed(title="3 page"), discord.Embed(title="4 page"), discord.Embed(title="5 page")]
-    e = Paginator(bot=bot,
-                  ctx=ctx,
-                  embeds=embeds,
-                  only=ctx.author)
-    await e.start()
 
 @bot.command()
 async def ping(ctx):
