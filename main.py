@@ -385,6 +385,14 @@ async def avatar(ctx, member: discord.Member = None):
         embed.set_image(url = member.avatar_url)
         await ctx.send(embed = embed)
 
+@bot.command()
+async def servericon(ctx):
+    embed = discord.Embed(
+        title = f"{ctx.guild.name}",
+        color = 0x00ff00
+    )
+    embed.set_image(url = ctx.guild.icon_url)
+
 
 @bot.command()
 async def rand(ctx, amount = 1, *, args):
