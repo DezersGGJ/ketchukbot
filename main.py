@@ -360,15 +360,6 @@ async def remove_money(ctx, amount: int, member: discord.Member = None):
             await ctx.send(embed = embed)
 
 @bot.command()
-async def button(ctx):
-    embeds = [discord.Embed(title="1 page"), discord.Embed(title="2 page"), discord.Embed(title="3 page"), discord.Embed(title="4 page"), discord.Embed(title="5 page")]
-    e = Paginator(bot=bot,
-                  ctx=ctx,
-                  embeds=embeds,
-                  only=ctx.author)
-    await e.start()
-
-@bot.command()
 async def ping(ctx):
     embed = discord.Embed(
         description = f"Ping: {round(bot.latency * 1000)}ms",
@@ -376,6 +367,19 @@ async def ping(ctx):
     )
     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
     await ctx.send(embed = embed)
+
+@bot.command()
+async def avatar(ctx, member: discord.Member = None):
+    if member is None:
+        embed = discord.Embed(
+            title = f"Аватар {ctx.author.name}"
+        )
+        embed.set_image(url = ctx.author.avatar_url)
+    else:
+        embed = discord.Embed(
+            title = f"Аватар {member.name}"
+        )
+        embed.set_image(url = member.avatar_url)
 
 
 @bot.command()
