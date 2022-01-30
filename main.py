@@ -48,18 +48,10 @@ async def on_ready():
                 "case": 0,
                 "note": 0
             }
-            userv = {
-                "_id": member.id,
-                "workcd": 0,
-                "victorina": []
-            }
-
             if collection.count_documents({"_id": member.id}) == 0:
                 collection.insert_one(user)
             if collserver.count_documents({"_id": guild.id}) == 0:
                 collserver.insert_one(server)
-            if colluser.count_documents({"_id": member.id}) == 0:
-                colluser.insert_one(userv)
 
 @bot.event
 async def on_member_join(member):
@@ -86,16 +78,8 @@ async def on_member_join(member):
         "note": 0,
         "mute": []
     }
-    userv = {
-        "_id": member.id,
-        "workcd": 0,
-        "victorina": []
-    }
-
     if collection.count_documents({"_id": member.id}) == 0:
         collection.insert_one(user)
-    if colluser.count_documents({"_id": member.id}) == 0:
-        colluser.insert_one(userv)
 
 @bot.event
 async def on_message_delete(message):
@@ -375,14 +359,6 @@ async def remove_money(ctx, amount: int, member: discord.Member = None):
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
-            
-@bot.command()
-async def mute(ctx, member: discord.Member, time):
-    time_convert = {"s":1, "m":60, "h":3600, "d":86400, "w":604800}
-    tempmute = int(time[0]) * time_convert[time[-1]]
-    await asyncio.sleep(tempmute)
-    await ctx.send(f"{tempmute}")
-
 
 @bot.command()
 async def test(ctx):
@@ -393,7 +369,7 @@ async def test(ctx):
     ),
         components = [
             Button(style = ButtonStyle.green, label = "Accept"),
-            Button(style = ButtonStyle.red, label = "Decline"),
+            Button(style = ButtonStyle.red, label = "Decline", disabled = True),
             Button(style = ButtonStyle.URL, label = "YouTube" , url = "https://www.youtube.com/")
         ]
     )
@@ -404,39 +380,6 @@ async def test(ctx):
             await response.respond(content = "Вы согласились")
         else:
             await ctx.respond(content = "Вы отказались")
-
-
-@bot.command(aliases = ["server", "server-info"])
-async def server_info(ctx):
-    name = str(ctx.guild.name)
-    description = str(ctx.guild.description)
-    owner = str(ctx.guild.owner)
-    guild_id = str(ctx.guild.id)
-    region = str(ctx.guild.region)
-    memberCount = str(ctx.guild.member_count)
-    icon = str(ctx.guild.icon_url)
-    embed = discord.Embed(
-        title = f"Информация о сервере {name}",
-        color = 0x00ff00
-    )
-    embed.set_thumbnail(url = icon)
-    embed.add_field(name="Участники", value=f"{memberCount}", inline=False)
-    embed.add_field(name="Владелец:", value=f"{owner}", inline=False)
-    embed.add_field(name="Айди сервера:", value=f"{guild_id}", inline=False)
-    embed.add_field(name="Регион:", value=f"{region}", inline=False)
-
-
-
-@bot.command()
-async def help(ctx):
-    embed1 = discord.Embed(title="Страница 1", description='test 1')
-    embed2 = discord.Embed(title="Страница 2", description='test 2')
-    embed3 = discord.Embed(title="Страница 3", description='test 3')
-    embeds = [embed1, embed2, embed3]
-    message = await ctx.send(embed=embed1)
-    page = Paginator(bot, message, only=ctx.author, use_more=False, footer=False, embeds=embeds)
-    await page.start()
-
 
 @bot.command()
 async def ping(ctx):
@@ -456,12 +399,6 @@ async def rand(ctx, amount = 1, *, args):
 
 
 #owner command
-@bot.command()
-@commands.is_owner()
-async def removevar(ctx):
-    collection.delete_many({})
-    await ctx.send('Переменые удалены')
-
 @bot.command()
 @commands.is_owner()
 async def load(ctx, extension):
