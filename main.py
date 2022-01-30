@@ -24,6 +24,7 @@ colluser = cluster.ecodb.colldatabase
 #event
 @bot.event
 async def on_ready():
+    work_endurance.start()
     print("Bot connected to the server")
     DiscordComponents(bot)
     await bot.change_presence(status = discord.Status.online, activity = discord.Game('Бот в разработке.'))
