@@ -93,8 +93,8 @@ async def work_endurance():
             else:
                 time = collection.find_one({"_id": member.id})["cdwork"]
                 cdtime = int(datetime.datetime.utcnow().timestamp()) - 600
-                if time <= cdtime:
-                    if data["endurance"] < 100:
+                if time < cdtime:
+                    if collection.find_one({"_id": member.id})["endurance"] < 100:
                         time = int(datetime.datetime.utcnow().timestamp())
                         collection.update_one({"_id": member.id}, {"$set": {"cdwork": time}})
                         collection.update_one({"_id": member.id}, {"$inc": {"endurance": 1}})
