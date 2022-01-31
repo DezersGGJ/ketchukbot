@@ -376,7 +376,7 @@ class Moderation(commands.Cog):
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed=embed)
-            mutes = load_json("mutes.json")
+            mutes = load_json("jsons/mutes.json")
             try:
                 member_mute = mutes[str(member.id)]
                 embed = discord.Embed(
@@ -387,7 +387,7 @@ class Moderation(commands.Cog):
                 await ctx.send(embed=embed)
             except:
                 mutes[str(member.id)] = str(mute_expiration)
-                write_json("mutes.json", mutes)
+                write_json("jsons/mutes.json", mutes)
                 embed = discord.Embed(
                     description = f"Участник **{member.name}** был замьючен.\n**Модератор**\n{ctx.author}\nСрок\n{mute_expiration}\nПричина\n{reason}",
                     color = 0xff2400
@@ -406,8 +406,8 @@ class Moderation(commands.Cog):
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await member.remove_roles(self.mutedrole)
         await ctx.send(embed=embed)
-        mutes = load_json("mutes.json")
-        write_json("mutes.json", mutes)
+        mutes = load_json("jsons/mutes.json")
+        write_json("jsons/mutes.json", mutes)
         mutes.pop(str(member.id))
 
 
