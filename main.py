@@ -54,6 +54,10 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
+    mutes = load_json("mutes.json")
+    if str(member.id) in mutes:
+        role = discord.utils.get(member.guild.roles, id=902942596962328656)
+        await member.add_roles(role)
     if member.bot == False:
       embed = discord.Embed(
           description = f"Участник **{member.name}** присоединился к серверу.",
