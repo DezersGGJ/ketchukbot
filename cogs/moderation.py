@@ -13,6 +13,24 @@ class Moderation(commands.Cog):
         self.cluster = MongoClient("mongodb+srv://DezersGG:Weerweer333@cluster0.b9xjp.mongodb.net/ecodb?retryWrites=true&w=majority")
         self.collection = self.cluster.ecodb.colldb
         self.collserver = self.cluster.ecodb.collserver
+        
+    @tasks.loop()
+    async def check_mutes(self):
+        current = datetime.datetime.now()
+        mutes = load_json("jsons/mutes.json")
+        users, times = list(mutes.keys()), list(mutes.values())
+        for i in range(len(times)):
+            time = times[i]
+            unmute = datetime.datetime.strptime(str(time), "%c")
+            if unmute < current:
+                user_id = users[times.index(time)]
+                try:
+                    member = await self.guild.fetch_member(int(user_id))
+                    await member.remove_roles(self.mutedrole)
+                    mutes.pop(str(member.id))
+                except discord.NotFound:
+                    pass
+                write_json("jsons/mutes.json", mutes)
 
     @commands.command(aliases = ["purge"])
     @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153)
@@ -290,24 +308,6 @@ class Moderation(commands.Cog):
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
-
-    @tasks.loop()
-    async def check_mutes(self):
-        current = datetime.datetime.now()
-        mutes = load_json("mutes.json")
-        users, times = list(mutes.keys()), list(mutes.values())
-        for i in range(len(times)):
-            time = times[i]
-            unmute = datetime.datetime.strftime(str(time), "%c")
-            if unmute < current:
-                user_id = users[times.index(time)]
-                try:
-                    member = await self.guild.fetch_member(int(user_id))
-                    await member.remove_roles(self.mutedrole)
-                    mutes.pop(str(member.id))
-                except discord.NotFound:
-                    pass
-                write_json("mutes.json", mutes)
 
     @commands.command()
     async def mute(self, ctx, member: discord.Member, time: str = None, *, reason="Не указана"):
