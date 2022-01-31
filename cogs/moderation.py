@@ -224,8 +224,8 @@ class Moderation(commands.Cog):
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member: discord.Member, *, reason="Не указана"):
         if member != ctx.author:
-            if ctx.author.bot == False:
-                if member.top_role >= ctx.author.top_role:
+            if member.bot is False:
+                if member.top_role.position >= ctx.author.top_role.position:
                     embed = discord.Embed(
                         description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
                         color = 0xff2400
