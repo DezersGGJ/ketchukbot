@@ -221,13 +221,13 @@ class Moderation(commands.Cog):
         await ctx.send(embed = embed)
 
     @commands.command()
-    @commands.has_permissions(ban_member=True)
+    @commands.has_permissions(ban_members=True)
     async def ban(ctx, member: discord.Member, *, reason="Не указана"):
         if member != ctx.author:
             if ctx.author.bot == False:
                 if member.top_role >= ctx.author.top_role:
                     embed = discord.Embed(
-                        description = "Вы не можете применить эту команду к себе, другому модератору или боту.",
+                        description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
                         color = 0xff2400
                     )
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -242,14 +242,14 @@ class Moderation(commands.Cog):
                     await ctx.send(embed=embed)
             else:
                 embed = discord.Embed(
-                    description = "Вы не можете применить эту команду к себе, другому модератору или боту.",
+                    description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
                     color = 0xff2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed=embed)
         else:
             embed = discord.Embed(
-                description = "Вы не можете применить эту команду к себе, другому модератору или боту.",
+                description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
