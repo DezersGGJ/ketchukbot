@@ -389,8 +389,8 @@ class Moderation(commands.Cog):
                 mutes[str(member.id)] = str(mute_expiration)
                 write_json("jsons/mutes.json", mutes)
                 embed = discord.Embed(
-                    description = f"Участник **{member.name}** был замьючен.\n**Модератор**\n{ctx.author}\nСрок\n{mute_expiration}\nПричина\n{reason}",
-                    color = 0xff2400
+                    description = f"Участник **{member.name}** был замьючен.\n**Модератор:**\n{ctx.author}\n**Срок:**\n{mute_expiration}\n**Причина:**\n{reason}",
+                    color = 0x00ff00
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await member.add_roles(role)
@@ -401,7 +401,7 @@ class Moderation(commands.Cog):
     async def unmute(self, ctx, member: discord.Member):
         embed = discord.Embed(
             description = f"Участник **{member.name}** был размьючен.\n**Модератор**\n{ctx.author}",
-            color = 0xff2400
+            color = 0x00ff00
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await member.remove_roles(self.mutedrole)
