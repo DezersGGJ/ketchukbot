@@ -20,7 +20,7 @@ class Moderation(commands.Cog):
             if amount < 200:
                 number = amount + 1
                 await ctx.channel.purge(limit=number)
-                await ctx.send(f"<:check:930367892455850014>Удалено {amount} сообщений.")
+                await ctx.send(f"<:check:930367892455850014>Удалено {amount} сообщений.", delete_after=5)
 
     @commands.command(aliases = ["remove-note"])
     @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 933769903910060153)
@@ -63,7 +63,7 @@ class Moderation(commands.Cog):
                 embed = discord.Embed(title = f"Заметки участника {ctx.author.name}:", color = 0x42aaff)
                 user = self.collection.find_one({"_id": ctx.author.id})
                 for value in user["notes"]:
-                    embed.add_field(name = f"`Заметка #{value['note']}` <t:{value['time']}:f> {bot.get_user(value['author_id'])}", value = f"**Заметка:** {value['reason_note']}", inline = False)
+                    embed.add_field(name = f"`Заметка #{value['note']}` <t:{value['time']}:f> {self.bot.get_user(value['author_id'])}", value = f"**Заметка:** {value['reason_note']}", inline = False)
 
                 await ctx.send(embed = embed)
         else:
@@ -78,13 +78,13 @@ class Moderation(commands.Cog):
                 embed = discord.Embed(title = f"Заметки участника {member.name}:", color = 0x42aaff)
                 user = self.collection.find_one({"_id": member.id})
                 for value in user["notes"]:
-                    embed.add_field(name = f"`Заметка #{value['note']}` <t:{value['time']}:f> {bot.get_user(value['author_id'])}", value = f"**Заметка:** {value['reason_note']}", inline = False)
+                    embed.add_field(name = f"`Заметка #{value['note']}` <t:{value['time']}:f> {self.bot.get_user(value['author_id'])}", value = f"**Заметка:** {value['reason_note']}", inline = False)
 
                 await ctx.send(embed = embed)
 
         @commands.command()
         @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 933769903910060153)
-        async def note(self, ctx, member: discord.Member, *, reason_note = "Нету"):
+        async def note(self, ctx, member: discord.Member, *, reason_note = "Не указана"):
             self.collserver.update_one(
                 {
                     "_id": ctx.guild.id
@@ -183,7 +183,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153)
-    async def warn(self, ctx, member: discord.Member, *, reason = "Нету"):
+    async def warn(self, ctx, member: discord.Member, *, reason = "Не указана"):
         self.collserver.update_one(
             {
                 "_id": ctx.guild.id
@@ -219,6 +219,65 @@ class Moderation(commands.Cog):
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await ctx.send(embed = embed)
+
+    @commands.command()
+    @commands.has_permissions(ban_member=True)
+    async def ban(ctx, member: discord.Member, *, reason="Не указана"):
+        if member != ctx.author:
+            if ctx.author.bot == False:
+                if member.top_role >= ctx.author.top_role:
+                    embed = discord.Embed(
+                        description = "Вы не можете применить эту команду к себе, другому модератору или боту.",
+                        color = 0xff2400
+                    )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                else:
+                    embed = discord.Embed(
+                        description = f"Участник **{member.name}** был забанен.",
+                        color = 0x00ff00
+                    )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await member.ban(reason=reason)
+                    await ctx.send(embed=embed)
+            else:
+                embed = discord.Embed(
+                    description = "Вы не можете применить эту команду к себе, другому модератору или боту.",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                description = "Вы не можете применить эту команду к себе, другому модератору или боту.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
+    @ban.error
+    async def ban_error(ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`ban <user> <reason>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, MissingPermissions):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
 
 
 def setup(bot):
