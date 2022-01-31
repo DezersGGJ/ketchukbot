@@ -57,7 +57,7 @@ async def on_ready():
 async def on_member_join(member):
     mutes = load_json("mutes.json")
     if str(member.id) in mutes:
-        role = discord.utils.get(member.guild.roles, id=902942596962328656)
+        role = discord.utils.get(member.guild.roles, id=906283550641365005)
         await member.add_roles(role)
     if member.bot == False:
       embed = discord.Embed(
