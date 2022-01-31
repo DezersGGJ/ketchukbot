@@ -271,7 +271,7 @@ class Moderation(commands.Cog):
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
-        elif isinstance(error, MissingPermissions):
+        elif isinstance(error, commands.errors.MissingPermissions):
             embed = discord.Embed(
                 description = "<:noe:911292323365781515>У вас недостаточно прав.",
                 color = 0xff2400
