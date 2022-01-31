@@ -222,7 +222,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
-    async def ban(ctx, member: discord.Member, *, reason="Не указана"):
+    async def ban(self, ctx, member: discord.Member, *, reason="Не указана"):
         if member != ctx.author:
             if ctx.author.bot == False:
                 if member.top_role >= ctx.author.top_role:
@@ -256,7 +256,7 @@ class Moderation(commands.Cog):
             await ctx.send(embed=embed)
 
     @ban.error
-    async def ban_error(ctx, error):
+    async def ban_error(self, ctx, error):
         if isinstance(error, commands.errors.MissingRequiredArgument):
             embed = discord.Embed(
                 description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`ban <user> <reason>`",
