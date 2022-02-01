@@ -261,14 +261,15 @@ class Basic(commands.Cog):
         )
         embed = discord.Embed(
             title = "Викторина",
-            description = f"**Вопрос:** {vopros}"
+            description = f"**Вопрос:** {vopros}",
+            color = 0x00ff00
         )
         await self.bot.get_channel(938066272946622506).send(embed=embed)
 
     @commands.command()
     async def answer(self, ctx, otvet):
         if ctx.channel.id == 938066272946622506:
-            if self.collection.find_one({"_id": ctx.guild.id})["quiz.answer"] == otvet:
+            if self.collection.find_one({"_id": ctx.guild.id}, {"quiz": answer}) == otvet:
                 if self.collserver.find_one({"_id": ctx.guild.id})["skolko"] == 0:
                     self.collserver.find_one({"_id": ctx.guild.id}, {"$inc": {"skolko": 1}})
                     embed = discord.Embed(
@@ -287,7 +288,7 @@ class Basic(commands.Cog):
 
     @commands.command()
     async def delete(self, ctx, otvets):
-        if self.collserver.count_documents({"quiz.answer": otvets}) == 0:
+        if self.collserver.count_documents({"quiz.answer": otvet}) == 0:
             await ctx.send("Даного ответа не найдено.")
         else:
             self.collserver.update_one(
