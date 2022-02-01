@@ -252,9 +252,6 @@ class Basic(commands.Cog):
                 "_id": ctx.guild.id
             },
             {
-                "$set": {
-                    "answerq": otvet
-                },
                 "$push": {
                     "quiz": {
                         "answer": otvet,
