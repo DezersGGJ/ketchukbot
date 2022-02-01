@@ -101,44 +101,44 @@ class Moderation(commands.Cog):
 
                 await ctx.send(embed = embed)
 
-        @commands.command()
-        @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 933769903910060153)
-        async def note(self, ctx, member: discord.Member, *, reason_note = "Не указана"):
-            self.collserver.update_one(
-                {
-                    "_id": ctx.guild.id
-                },
-                {
-                    "$inc": {
-                        "note": 1
-                    }
+    @commands.command()
+    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 933769903910060153)
+    async def note(self, ctx, member: discord.Member, *, reason_note = "Не указана"):
+        self.collserver.update_one(
+            {
+                "_id": ctx.guild.id
+            },
+            {
+                "$inc": {
+                    "note": 1
                 }
-            )
-            timenote = int(datetime.datetime.utcnow().timestamp())
-            self.collection.update_one(
-                {
-                    "_id": member.id
-                },
-                {
-                    "$push": {
-                        "notes": {
-                            "author_id": ctx.author.id,
-                            "reason_note": reason_note,
-                            "time": timenote,
-                            "note": self.collserver.find_one({"_id": ctx.guild.id})["note"]
-                        }
-                    },
-                    "$inc": {
-                        "note": 1
+            }
+        )
+        timenote = int(datetime.datetime.utcnow().timestamp())
+        self.collection.update_one(
+            {
+                "_id": member.id
+            },
+            {
+                "$push": {
+                    "notes": {
+                        "author_id": ctx.author.id,
+                        "reason_note": reason_note,
+                        "time": timenote,
+                        "note": self.collserver.find_one({"_id": ctx.guild.id})["note"]
                     }
+                },
+                "$inc": {
+                    "note": 1
                 }
-            )
-            embed = discord.Embed(
-                description = f"Пользователю {member} была выдана заметка.",
-                color = 0x42aaff
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
+            }
+        )
+        embed = discord.Embed(
+            description = f"Пользователю {member} была выдана заметка.",
+            color = 0x42aaff
+        )
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        await ctx.send(embed = embed)
 
     @commands.command(aliases = ["remove-warn"])
     @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153)
