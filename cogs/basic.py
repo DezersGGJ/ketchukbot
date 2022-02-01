@@ -15,7 +15,7 @@ class Basic(commands.Cog):
         self.collserver = self.cluster.ecodb.collserver
 
     @commands.command()
-    async def avatar(ctx, member: discord.Member=None):
+    async def useravatar(ctx, member: discord.Member=None):
         if member is None:
             embed = discord.Embed(
                 title = f"Аватар {ctx.author.name}",
