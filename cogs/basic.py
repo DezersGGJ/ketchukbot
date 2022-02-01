@@ -270,7 +270,7 @@ class Basic(commands.Cog):
     async def answer(self, ctx, otvet):
         server = self.collection.find_one({"_id": ctx.guild.id})
         for value in server["quiz"]:
-            if ctx.channel.id == 938066272946622506:
+            if ctx.channel.id == 938066308011003904:
                 if otvet is value["answer"]:
                     if self.collserver.find_one({"_id": ctx.guild.id})["skolko"] == 0:
                         self.collserver.find_one({"_id": ctx.guild.id}, {"$inc": {"skolko": 1}})
