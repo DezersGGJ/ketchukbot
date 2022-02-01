@@ -222,6 +222,33 @@ class Basic(commands.Cog):
         page = Paginator(self.bot, message, only=ctx.author, use_more=False, embeds=embeds, footer=False, timeout=120)
         await page.start()
 
+    @commands.command(aliases = ["add-role"])
+    @commands.has_permissions(manage_roles=True)
+    async def addrole(self, ctx, member: discord.Member, role: discord.Role):
+        embed = discord.Embed(
+            description = f"Роль {role.mention} успешно выдана {member.mention}.",
+            color = 0x00ff00
+        )
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=embed)
+
+    @addrole.error
+    async def addrole_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`addrole <user> <role>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
     @remove_messages.error
     async def remove(self, ctx, error):
         if isinstance(error, commands.errors.MissingRequiredArgument):
