@@ -416,8 +416,6 @@ class Moderation(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Bot connected to the server")
-        await bot.change_presence(status = discord.Status.online, activity = discord.Game('#help'))
         self.guild = await self.bot.fetch_guild(902831072247709757)
         self.mutedrole = discord.utils.get(self.guild.roles, id=906283550641365005)
         self.check_mutes.start()
