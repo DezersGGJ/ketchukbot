@@ -15,7 +15,7 @@ class Basic(commands.Cog):
         self.collserver = self.cluster.ecodb.collserver
 
     @commands.command()
-    async def avatar(ctx, member: discord.Member=None):
+    async def avatar(self, ctx, member: discord.Member=None):
         if member is None:
             embed = discord.Embed(
                 title = f"Аватар {ctx.author.name}",
@@ -32,7 +32,7 @@ class Basic(commands.Cog):
             await ctx.send(embed = embed)
 
     @commands.command()
-    async def servericon(ctx):
+    async def servericon(self, ctx):
         embed = discord.Embed(
             title = f"{ctx.guild.name}",
             color = 0x00ff00
@@ -41,7 +41,7 @@ class Basic(commands.Cog):
         await ctx.send(embed = embed)
 
     @commands.command(aliases = ["mes"])
-    async def messages(ctx, member: discord.Member = None):
+    async def messages(self, ctx, member: discord.Member = None):
         if member is None:
             umes = self.collection.find_one({"_id": ctx.author.id})["mes"]
             if umes < 149:
@@ -161,7 +161,7 @@ class Basic(commands.Cog):
 
     @commands.command(aliases = ["add-messages"])
     @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
-    async def add_messages(ctx, amount: int, member: discord.Member = None):
+    async def add_messages(self, ctx, amount: int, member: discord.Member = None):
         if amount > 0:
             if member is None:
                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"mes": amount}})
@@ -183,7 +183,7 @@ class Basic(commands.Cog):
 
     @commands.command(aliases = ["remove-messages"])
     @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
-    async def remove_messages(ctx, amount: int, member: discord.Member = None):
+    async def remove_messages(self, ctx, amount: int, member: discord.Member = None):
         if amount > 0:
             if member is None:
                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"mes": -amount}})
@@ -203,7 +203,7 @@ class Basic(commands.Cog):
                 await ctx.send(embed = embed)
 
     @commands.command()
-    async def ping(ctx):
+    async def ping(self, ctx):
         embed = discord.Embed(
             description = f"Ping: {round(self.bot.latency * 1000)}ms",
             color = 0x00ff00
