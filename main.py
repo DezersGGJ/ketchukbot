@@ -296,15 +296,15 @@ class Basic(commands.Cog):
     @commands.command()
     async def answer(self, ctx, otvet):
         if ctx.channel.id == 938066308011003904:
-                if otvet == self.collserver.find_one({"_id": ctx.guild.id})["answerq"]
-                    if collserver.find_one({"_id": ctx.guild.id})["skolko"] == 0:
-                        collserver.find_one({"_id": ctx.guild.id}, {"$inc": {"skolko": 1}})
+                if otvet == self.collserver.find_one({"_id": ctx.guild.id})["answerq"]:
+                    if self.collserver.find_one({"_id": ctx.guild.id})["skolko"] == 0:
+                        self.collserver.find_one({"_id": ctx.guild.id}, {"$inc": {"skolko": 1}})
                         embed = discord.Embed(
                             description = f"{ctx.author.mention} ответил на вопрос верно.",
                             color = 0x00ff00
                         )
                         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                        await bot.get_channel(938066272946622506).send(embed=embed)
+                        await self.bot.get_channel(938066272946622506).send(embed=embed)
                     else:
                         embed = discord.Embed(
                             description = "<:noe:911292323365781515>Ответ уже введён.`",
