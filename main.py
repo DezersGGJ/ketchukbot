@@ -52,10 +52,10 @@ async def on_ready():
                 collection.insert_one(user)
             if collserver.count_documents({"_id": guild.id}) == 0:
                 collserver.insert_one(server)
-                
+
 @bot.event
 async def on_member_join(member):
-    mutes = load_json("mutes.json")
+    mutes = load_json("jsons/mutes.json")
     if str(member.id) in mutes:
         role = discord.utils.get(member.guild.roles, id=902942596962328656)
         await member.add_roles(role)
