@@ -268,23 +268,25 @@ class Basic(commands.Cog):
 
     @commands.command()
     async def answer(self, ctx, otvet):
-        if ctx.channel.id == 938066272946622506:
-            if self.collection.find_one({"_id": ctx.guild.id}, {"quiz": answer}) == otvet:
-                if self.collserver.find_one({"_id": ctx.guild.id})["skolko"] == 0:
-                    self.collserver.find_one({"_id": ctx.guild.id}, {"$inc": {"skolko": 1}})
-                    embed = discord.Embed(
-                        description = f"{ctx.author.mention} ответил на вопрос верно.",
-                        color = 0x00ff00
-                    )
-                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                    await self.bot.get_channel(938066272946622506).send(embed=embed)
-                else:
-                    embed = discord.Embed(
-                        description = "<:noe:911292323365781515>Ответ уже введён.`",
-                        color = 0xff2400
-                    )
-                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                    await ctx.send(embed=embed)
+        server = self.collection.find_one({"_id": ctx.guild.id})
+        for value in server["quiz"]:
+            if ctx.channel.id == 938066272946622506:
+                if otvet is value["answer"]:
+                    if self.collserver.find_one({"_id": ctx.guild.id})["skolko"] == 0:
+                        self.collserver.find_one({"_id": ctx.guild.id}, {"$inc": {"skolko": 1}})
+                        embed = discord.Embed(
+                            description = f"{ctx.author.mention} ответил на вопрос верно.",
+                            color = 0x00ff00
+                        )
+                        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                        await self.bot.get_channel(938066272946622506).send(embed=embed)
+                    else:
+                        embed = discord.Embed(
+                            description = "<:noe:911292323365781515>Ответ уже введён.`",
+                            color = 0xff2400
+                        )
+                        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                        await ctx.send(embed=embed)
 
     @commands.command()
     async def delete(self, ctx, otvets):
