@@ -234,6 +234,7 @@ class Basic(commands.Cog):
         await member.add_roles(role)
 
     @commands.command(aliases = ["remove-role"])
+    @commands.has_permissions(manage_roles=True)
     async def removerole(self, ctx, member: discord.Member, role: discord.Role):
         embed = discord.Embed(
             description = f"Роль {role.mention} успешно забрана у {member.mention}.",
@@ -242,6 +243,73 @@ class Basic(commands.Cog):
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
         await member.remove_roles(role)
+
+    @commands.command()
+    async def create(self, ctx, otvet, *, vopros):
+        self.collserver.update_one(
+            {
+                "_id": ctx.guild.id
+            },
+            {
+                "$push": {
+                    "quiz": {
+                        "answer": otvet,
+                        "question": vopros
+                    }
+                }
+            }
+        )
+        embed = discord.Embed(
+            title = "Викторина",
+            description = f"**Вопрос:** {vopros}"
+        )
+        await self.bot.get_channel(938066272946622506).send(embed=embed)
+
+    @commands.command()
+    async def answer(self, ctx, otvet):
+        if ctx.channel.id == 938066272946622506:
+            server = self.collection.find_one({"_id": ctx.guild.id})
+            for value in server["quiz"]:
+                if value["answer"] == self.collserver.find_one({"_id": ctx.guild.id}):
+                    if self.collserver.find_one({"_id": ctx.guild.id})["skolko"] == 0:
+                        self.collserver.find_one({"_id": ctx.guild.id}, {"$inc": {"skolko": 1}})
+                        embed = discord.Embed(
+                            description = f"{ctx.author.mention} ответил на вопрос верно.",
+                            color = 0x00ff00
+                        )
+                        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                        await self.bot.get_channel(938066272946622506).send(embed=embed)
+                    else:
+                        embed = discord.Embed(
+                            description = "<:noe:911292323365781515>Ответ уже введён.`",
+                            color = 0xff2400
+                        )
+                        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def delete(self, ctx, otvets):
+        if self.collserver.count_documents({"quiz.answer": otvet}) == 0:
+            await ctx.send("Даного ответа не найдено.")
+        else:
+            self.collserver.update_one(
+                {
+                    "quiz.answer": otvets
+                },
+                {
+                    "$pull": {
+                        "quiz": {
+                            "answer": otvets
+                        }
+                    }
+                }
+            )
+            embed = discord.Embed(
+                description = f"<:check:930367892455850014>Ответ `{otvets}` был удалён.",
+                color = 0x42aaff
+            )
+            await ctx.send(embed = embed)
+
 
     @addrole.error
     async def addrole_error(self, ctx, error):
