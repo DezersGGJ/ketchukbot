@@ -310,7 +310,7 @@ class Moderation(commands.Cog):
             await ctx.send(embed=embed)
 
     @commands.command()
-    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153)
+    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153, 903384737761083402)
     async def mute(self, ctx, member: discord.Member, time: str = None, *, reason="Не указана"):
         if member.bot is True:
             embed = discord.Embed(
@@ -389,8 +389,9 @@ class Moderation(commands.Cog):
             except:
                 mutes[str(member.id)] = str(mute_expiration)
                 write_json("jsons/mutes.json", mutes)
+                timemute = datetime.datetime.now() + datetime.timedelta(seconds=int(seconds))
                 embed = discord.Embed(
-                    description = f"Участник **{member.name}** был замьючен.\n**Модератор:**\n{ctx.author}\n**Срок:**\n{mute_expiration}\n**Причина:**\n{reason}",
+                    description = f"Участник **{member.name}** был замьючен.\n**Модератор:**\n{ctx.author}\n**Срок:**\n{timemute}\n**Причина:**\n{reason}",
                     color = 0x00ff00
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -399,7 +400,7 @@ class Moderation(commands.Cog):
                 await ctx.send(embed=embed)
 
     @commands.command()
-    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153)
+    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153, 903384737761083402)
     async def unmute(self, ctx, member: discord.Member):
         embed = discord.Embed(
             description = f"Участник **{member.name}** был размьючен.\n**Модератор**\n{ctx.author}",
