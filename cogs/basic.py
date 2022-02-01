@@ -278,6 +278,9 @@ class Basic(commands.Cog):
                     "quiz.answer": otvets
                 },
                 {
+                    "$set": {
+                        "skolko": 0
+                    },
                     "$pull": {
                         "quiz": {
                             "answer": otvets
@@ -285,7 +288,6 @@ class Basic(commands.Cog):
                     }
                 }
             )
-            self.collserver.update_one({"_id": ctx.guild.id}, {"$set": {"answerq": 0}})
             embed = discord.Embed(
                 description = f"<:check:930367892455850014>Ответ `{otvets}` был удалён.",
                 color = 0x42aaff
