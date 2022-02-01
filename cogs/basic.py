@@ -261,7 +261,7 @@ class Basic(commands.Cog):
             await ctx.send(embed=embed)
 
     @removerole.error
-    async def addrole_error(self, ctx, error):
+    async def removerole_error(self, ctx, error):
         if isinstance(error, commands.errors.MissingRequiredArgument):
             embed = discord.Embed(
                 description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`removerole <user> <role>`",
