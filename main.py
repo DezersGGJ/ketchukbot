@@ -162,7 +162,7 @@ async def rand(ctx, amount = 1, *, args):
 @bot.command()
 async def answer(ctx, otvet):
     if ctx.channel.id == 938066308011003904:
-        user = self.collserver.find_one({"_id": ctx.guild.id})
+        user = collserver.find_one({"_id": ctx.guild.id})
         for value in user["quiz"]:
             if otvet == value['answer']:
                 if collserver.find_one({"_id": ctx.guild.id})["skolko"] == 0:
@@ -172,7 +172,7 @@ async def answer(ctx, otvet):
                         color = 0x00ff00
                     )
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                    await self.bot.get_channel(938066272946622506).send(embed=embed)
+                    await bot.get_channel(938066272946622506).send(embed=embed)
                 else:
                     embed = discord.Embed(
                         description = "<:noe:911292323365781515>Ответ уже введён.`",
