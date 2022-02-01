@@ -219,7 +219,7 @@ class Basic(commands.Cog):
         embed3 = discord.Embed(title="⚙️Навигация по командам:", description='<:cash:903999146569138216>Экономика:\n▫️#bal - Посмотреть баланс пользователя.\n▫️#daily - Ежедневная награда.\n▫️#weekly - Еженедельная награда.\n▫️#dep - Положить деньги на банковский счёт.\n▫️#with - Снять деньги с банковского счёта.\n▫️#pay - Перевести деньги другому пользователю.\n▫️#roulette - Рулетка.\n▫️#add-money - Выдать деньги полльзователю.\n▫️#remove-money - Забрать деньги у пользователя.\n▫️#add-messages - Выдать сообщения пользователю.\n▫️#remove-messages - Забрать сообщения у пользователя.\n```')
         embeds = [embed1, embed2, embed3]
         message = await ctx.send(embed=embed1)
-        page = Paginator(bot, message, only=ctx.author, use_more=False, embeds=embeds, footer=False, timeout=120)
+        page = Paginator(self.bot, message, only=ctx.author, use_more=False, embeds=embeds, footer=False, timeout=120)
         await page.start()
 
     @remove_messages.error
