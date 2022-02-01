@@ -287,7 +287,7 @@ class Basic(commands.Cog):
 
     @commands.command()
     async def delete(self, ctx, otvets):
-        if self.collserver.count_documents({"quiz.answer": otvet}) == 0:
+        if self.collserver.count_documents({"quiz.answer": otvets}) == 0:
             await ctx.send("Даного ответа не найдено.")
         else:
             self.collserver.update_one(
