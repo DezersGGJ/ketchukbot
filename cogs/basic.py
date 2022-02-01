@@ -236,7 +236,7 @@ class Basic(commands.Cog):
     @commands.command(aliases = ["remove-role"])
     async def removerole(self, ctx, member: discord.Member, role: discord.Role):
         embed = discord.Embed(
-            description = f"Роль {role.mention} успешно забрана {member.mention}.",
+            description = f"Роль {role.mention} успешно забрана у {member.mention}.",
             color = 0x00ff00
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
