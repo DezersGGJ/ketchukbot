@@ -2,238 +2,429 @@ import discord
 import random
 import datetime
 import humanize
-from Cybernator import Paginator
 from discord.ext import commands, tasks
 from pymongo import MongoClient
+from func import *
 
-
-class Basic(commands.Cog):
+class Moderation(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
         self.cluster = MongoClient("mongodb+srv://DezersGG:Weerweer333@cluster0.b9xjp.mongodb.net/ecodb?retryWrites=true&w=majority")
         self.collection = self.cluster.ecodb.colldb
         self.collserver = self.cluster.ecodb.collserver
+        
+    @tasks.loop()
+    async def check_mutes(self):
+        current = datetime.datetime.now()
+        mutes = load_json("jsons/mutes.json")
+        users, times = list(mutes.keys()), list(mutes.values())
+        for i in range(len(times)):
+            time = times[i]
+            unmute = datetime.datetime.strptime(str(time), "%c")
+            if unmute < current:
+                user_id = users[times.index(time)]
+                try:
+                    member = await self.guild.fetch_member(int(user_id))
+                    await member.remove_roles(self.mutedrole)
+                    mutes.pop(str(member.id))
+                except discord.NotFound:
+                    pass
+                write_json("jsons/mutes.json", mutes)
 
-    @commands.command()
-    async def avatar(self, ctx, member: discord.Member=None):
-        if member is None:
-            embed = discord.Embed(
-                title = f"Аватар {ctx.author.name}",
-                color = 0x00ff00
-            )
-            embed.set_image(url = ctx.author.avatar_url)
-            await ctx.send(embed = embed)
+    @commands.command(aliases = ["purge"])
+    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153)
+    async def clear(self, ctx, amount: int):
+        if amount > 0:
+            if amount < 200:
+                number = amount + 1
+                await ctx.channel.purge(limit=number)
+                await ctx.send(f"<:check:930367892455850014>Удалено {amount} сообщений.", delete_after=5)
+
+    @commands.command(aliases = ["remove-note"])
+    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 933769903910060153)
+    async def delnote(self, ctx, note: int):
+        if self.collection.count_documents({"notes.note": note}) == 0:
+            await ctx.send("Данной заметки не найдено.")
         else:
-            embed = discord.Embed(
-                title = f"Аватар {member.name}",
-                color = 0x00ff00
+            self.collection.update_one(
+                {
+                    "notes.note": note
+                },
+                {
+                    "$inc": {
+                        "note": -1
+                    },
+                    "$pull": {
+                        "notes": {
+                            "note": note
+                        }
+                    }
+                }
             )
-            embed.set_image(url = member.avatar_url)
+            embed = discord.Embed(
+                description = f"<:check:930367892455850014>Заметка `#{note}` была удалена.",
+                color = 0x42aaff
+            )
             await ctx.send(embed = embed)
 
     @commands.command()
-    async def servericon(self, ctx):
-        embed = discord.Embed(
-            title = f"{ctx.guild.name}",
-            color = 0x00ff00
+    async def notes(self, ctx, member: discord.Member = None):
+        if member is None:
+            if self.collection.find_one({"_id": ctx.author.id})["note"] == 0:
+                embed = discord.Embed(
+                    title = f"Заметки участника {ctx.author.name}:",
+                    description = "Заметки отсутствуют.",
+                    color = 0x42aaff
+                )
+                await ctx.send(embed = embed)
+            else:
+                embed = discord.Embed(title = f"Заметки участника {ctx.author.name}:", color = 0x42aaff)
+                user = self.collection.find_one({"_id": ctx.author.id})
+                for value in user["notes"]:
+                    embed.add_field(name = f"`Заметка #{value['note']}` <t:{value['time']}:f> {self.bot.get_user(value['author_id'])}", value = f"**Заметка:** {value['reason_note']}", inline = False)
+
+                await ctx.send(embed = embed)
+        else:
+            if self.collection.find_one({"_id": member.id})["note"] == 0:
+                embed = discord.Embed(
+                    title = f"Заметки участника {member.name}:",
+                    description = "Заметки отсутствуют.",
+                    color = 0x42aaff
+                )
+                await ctx.send(embed = embed)
+            else:
+                embed = discord.Embed(title = f"Заметки участника {member.name}:", color = 0x42aaff)
+                user = self.collection.find_one({"_id": member.id})
+                for value in user["notes"]:
+                    embed.add_field(name = f"`Заметка #{value['note']}` <t:{value['time']}:f> {self.bot.get_user(value['author_id'])}", value = f"**Заметка:** {value['reason_note']}", inline = False)
+
+                await ctx.send(embed = embed)
+
+        @commands.command()
+        @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 933769903910060153)
+        async def note(self, ctx, member: discord.Member, *, reason_note = "Не указана"):
+            self.collserver.update_one(
+                {
+                    "_id": ctx.guild.id
+                },
+                {
+                    "$inc": {
+                        "note": 1
+                    }
+                }
+            )
+            timenote = int(datetime.datetime.utcnow().timestamp())
+            self.collection.update_one(
+                {
+                    "_id": member.id
+                },
+                {
+                    "$push": {
+                        "notes": {
+                            "author_id": ctx.author.id,
+                            "reason_note": reason_note,
+                            "time": timenote,
+                            "note": self.collserver.find_one({"_id": ctx.guild.id})["note"]
+                        }
+                    },
+                    "$inc": {
+                        "note": 1
+                    }
+                }
+            )
+            embed = discord.Embed(
+                description = f"Пользователю {member} была выдана заметка.",
+                color = 0x42aaff
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
+
+    @commands.command(aliases = ["remove-warn"])
+    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153)
+    async def delwarn(self, ctx, case: int):
+        if self.collection.count_documents({"reasons.case": case}) == 0:
+            await ctx.send("Даного случая не найдено.")
+        else:
+            self.collection.update_one(
+                {
+                    "reasons.case": case
+                },
+                {
+                    "$inc": {
+                        "warns": -1
+                    },
+                    "$pull": {
+                        "reasons": {
+                            "case": case
+                        }
+                    }
+                }
+            )
+            embed = discord.Embed(
+                description = f"<:check:930367892455850014>Предупреждение `#{case}` было снято.",
+                color = 0x42aaff
+            )
+            await ctx.send(embed = embed)
+
+    @commands.command(aliases = ["warnings"])
+    async def infractions(self, ctx, member: discord.Member = None):
+        if member is None:
+            if self.collection.find_one({"_id": ctx.author.id})["warns"] == 0:
+                embed = discord.Embed(
+                    title = f"Предупреждения участника {ctx.author.name}:",
+                    description = "Предупреждения отсутствуют.",
+                    color = 0x42aaff
+                )
+                await ctx.send(embed = embed)
+            else:
+                embed = discord.Embed(title = f"Предупреждения участника {ctx.author.name}:", color = 0x42aaff)
+                user = self.collection.find_one({"_id": ctx.author.id})
+                for value in user["reasons"]:
+                    embed.add_field(name = f"`Случай #{value['case']}` <t:{value['time']}:f> {self.bot.get_user(value['author_id'])}", value = f"**Причина:** {value['reason']}", inline = False)
+
+                await ctx.send(embed = embed)
+        else:
+            if self.collection.find_one({"_id": member.id})["warns"] == 0:
+                embed = discord.Embed(
+                    title = f"Предупреждения участника {member.name}:",
+                    description = "Предупреждения отсутствуют.",
+                    color = 0x42aaff
+                )
+                await ctx.send(embed = embed)
+            else:
+                embed = discord.Embed(title = f"Предупреждения участника {member.name}:", color = 0x42aaff)
+                user = self.collection.find_one({"_id": member.id})
+                for value in user["reasons"]:
+                    embed.add_field(name = f"`Случай #{value['case']}` <t:{value['time']}:f> {self.bot.get_user(value['author_id'])}", value = f"**Причина:** {value['reason']}", inline = False)
+
+                await ctx.send(embed = embed)
+
+    @commands.command()
+    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153)
+    async def warn(self, ctx, member: discord.Member, *, reason = "Не указана"):
+        self.collserver.update_one(
+            {
+                "_id": ctx.guild.id
+            },
+            {
+                "$inc": {
+                    "case": 1
+                }
+            }
         )
-        embed.set_image(url = ctx.guild.icon_url)
-        await ctx.send(embed = embed)
-
-    @commands.command(aliases = ["mes"])
-    async def messages(self, ctx, member: discord.Member = None):
-        if member is None:
-            umes = self.collection.find_one({"_id": ctx.author.id})["mes"]
-            if umes < 149:
-                embed = discord.Embed(
-                    description = f"{ctx.author} имеет `{self.collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{150 - umes}` нужно для получения <@&903385564781350962>",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed = embed)
-            elif umes < 299:
-                embed = discord.Embed(
-                    description = f"{ctx.author} имеет `{self.collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{300 - umes}` нужно для получения <@&905008758277681153>",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed = embed)
-            elif umes < 499:
-                embed = discord.Embed(
-                    description = f"{ctx.author} имеет `{self.collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{500 - umes}` нужно для получения <@&904708571156066314>",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed = embed)
-            elif umes < 999:
-                embed = discord.Embed(
-                    description = f"{ctx.author} имеет `{self.collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{1000 - umes}` нужно для получения <@&904712301255467058>",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed = embed)
-            elif umes < 1749:
-                embed = discord.Embed(
-                    description = f"{ctx.author} имеет `{self.collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{1750 - umes}` нужно для получения <@&904714252089188382>",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed = embed)
-            elif umes < 2999:
-                embed = discord.Embed(
-                    description = f"{ctx.author} имеет `{self.collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{3000 - umes}` нужно для получения <@&904714499804790786>",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed = embed)
-            elif umes < 4999:
-                embed = discord.Embed(
-                    description = f"{ctx.author} имеет `{self.collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{5000 - umes}` нужно для получения <@&904715362715721769>",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed = embed)
-            elif umes > 4999:
-                embed = discord.Embed(
-                    description = f"{ctx.author} имеет `{self.collection.find_one({'_id': ctx.author.id})['mes']}` сообщений.",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed = embed)
-        else:
-            mmes = self.collection.find_one({"_id": member.id})["mes"]
-            if mmes < 149:
-                embed = discord.Embed(
-                    description = f"{member} имеет `{self.collection.find_one({'_id': member.id})['mes']}` сообщений. `{150 - mmes}` нужно для получения <@&903385564781350962>",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=member, icon_url=member.avatar_url)
-                await ctx.send(embed = embed)
-            elif mmes < 299:
-                embed = discord.Embed(
-                    description = f"{member} имеет `{self.collection.find_one({'_id': member.id})['mes']}` сообщений. `{300 - mmes}` нужно для получения <@&905008758277681153>",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=member, icon_url=member.avatar_url)
-                await ctx.send(embed = embed)
-            elif mmes < 499:
-                embed = discord.Embed(
-                    description = f"{member} имеет `{self.collection.find_one({'_id': member.id})['mes']}` сообщений. `{500 - mmes}` нужно для получения <@&904708571156066314>",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=member, icon_url=member.avatar_url)
-                await ctx.send(embed = embed)
-            elif mmes < 999:
-                embed = discord.Embed(
-                    description = f"{member} имеет `{self.collection.find_one({'_id': member.id})['mes']}` сообщений. `{1000 - mmes}` нужно для получения <@&904712301255467058>",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=member, icon_url=member.avatar_url)
-                await ctx.send(embed = embed)
-            elif mmes < 1749:
-                embed = discord.Embed(
-                    description = f"{member} имеет `{self.collection.find_one({'_id': member.id})['mes']}` сообщений. `{1750 - mmes}` нужно для получения <@&904714252089188382>",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=member, icon_url=member.avatar_url)
-                await ctx.send(embed = embed)
-            elif mmes < 2999:
-                embed = discord.Embed(
-                    description = f"{member} имеет `{self.collection.find_one({'_id': member.id})['mes']}` сообщений. `{3000 - mmes}` нужно для получения <@&904714499804790786>",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=member, icon_url=member.avatar_url)
-                await ctx.send(embed = embed)
-            elif mmes < 4999:
-                embed = discord.Embed(
-                    description = f"{member} имеет `{self.collection.find_one({'_id': member.id})['mes']}` сообщений. `{5000 - mmes}` нужно для получения <@&904715362715721769>",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=member, icon_url=member.avatar_url)
-                await ctx.send(embed = embed)
-            elif mmes > 4999:
-                embed = discord.Embed(
-                    description = f"{member} имеет `{self.collection.find_one({'_id': member.id})['mes']}` сообщений.",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=member, icon_url=member.avatar_url)
-                await ctx.send(embed = embed)
-
-    @commands.command(aliases = ["add-messages"])
-    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
-    async def add_messages(self, ctx, amount: int, member: discord.Member = None):
-        if amount > 0:
-            if member is None:
-                self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"mes": amount}})
-                embed = discord.Embed(
-                    description = f"<:check:930367892455850014>Добавлено **{amount}** сообщений {ctx.author.mention}.",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed = embed)
-            else:
-                self.collection.update_one({"_id": member.id}, {"$inc": {"mes": amount}})
-                embed = discord.Embed(
-                    description = f"<:check:930367892455850014>Добавлено **{amount}** сообщений {member.mention}",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed = embed)
-
-
-    @commands.command(aliases = ["remove-messages"])
-    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
-    async def remove_messages(self, ctx, amount: int, member: discord.Member = None):
-        if amount > 0:
-            if member is None:
-                self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"mes": -amount}})
-                embed = discord.Embed(
-                    description = f"<:check:930367892455850014>Забрано **{amount}** сообщений у {ctx.author.mention}.",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed = embed)
-            else:
-                self.collection.update_one({"_id": member.id}, {"$set": {"mes": -amount}})
-                embed = discord.Embed(
-                    description = f"<:check:930367892455850014>Забрано **{amount}** сообщений у {member.mention}.",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed = embed)
-
-    @commands.command()
-    async def ping(self, ctx):
+        timewarn = int(datetime.datetime.utcnow().timestamp())
+        self.collection.update_one(
+            {
+                "_id": member.id
+            },
+            {
+                "$inc": {
+                    "warns": 1
+                },
+                "$push": {
+                    "reasons": {
+                        "author_id": ctx.author.id,
+                        "reason": reason,
+                        "time": timewarn,
+                        "case": self.collserver.find_one({"_id": ctx.guild.id})["case"]
+                    }
+                }
+            }
+        )
         embed = discord.Embed(
-            description = f"Ping: {round(self.bot.latency * 1000)}ms",
-            color = 0x00ff00
+            description = f"Пользователю {member} было выдано предупреждение.\nПричина: {reason}",
+            color = 0x42aaff
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await ctx.send(embed = embed)
 
     @commands.command()
-    async def help(self, ctx):
-        embed1 = discord.Embed(title="⚙️Навигация по командам:", description='💎Основные:\n```\n▫️#avatar - Аватар пользователя.\n▫️#servericon - Аватар сервера.\n▫️#messages - Просмотр сообщений пользователя.\n▫️#ping - Пинг бота.\n```')
-        embed2 = discord.Embed(title="⚙️Навигация по командам:", description='📜Модерация:\n```\n▫️#clear - Очистить сообщения.\n▫️#delnote - Удалить заметку.\n▫️#note - Выдать заметку.\n▫️#delwarn - Удалить предупреждение.\n▫️#warn - Выдать предупреждение.\n▫️#ban - Забанить пользователя.\n▫️#kick - Кикнуть пользователя\n▫️#mute - Замьютить пользователя.\n▫️#unmute - Размьютить пользователя.\n```')
-        embed3 = discord.Embed(title="⚙️Навигация по командам:", description='<:cash:903999146569138216>Экономика:\n▫️#bal - Посмотреть баланс пользователя.\n▫️#daily - Ежедневная награда.\n▫️#weekly - Еженедельная награда.\n▫️#dep - Положить деньги на банковский счёт.\n▫️#with - Снять деньги с банковского счёта.\n▫️#pay - Перевести деньги другому пользователю.\n▫️#roulette - Рулетка.\n▫️#add-money - Выдать деньги полльзователю.\n▫️#remove-money - Забрать деньги у пользователя.\n▫️#add-messages - Выдать сообщения пользователю.\n▫️#remove-messages - Забрать сообщения у пользователя.\n```')
-        embeds = [embed1, embed2, embed3]
-        message = await ctx.send(embed=embed1)
-        page = Paginator(bot, message, only=ctx.author, use_more=False, embeds=embeds, footer=False, timeout=120)
-        await page.start()
-
-    @remove_messages.error
-    async def remove(self, ctx, error):
-        if isinstance(error, commands.errors.MissingRequiredArgument):
+    @commands.has_permissions(ban_members=True)
+    async def ban(self, ctx, member: discord.Member, *, reason="Не указана"):
+        if member != ctx.author:
+            if member.bot is False:
+                if member.top_role.position >= ctx.author.top_role.position:
+                    embed = discord.Embed(
+                        description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
+                        color = 0xff2400
+                    )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                else:
+                    embed = discord.Embed(
+                        description = f"Участник **{member.name}** был забанен.",
+                        color = 0x00ff00
+                    )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await member.ban(reason=reason)
+                    await ctx.send(embed=embed)
+            else:
+                embed = discord.Embed(
+                    description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+        else:
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`remove-messages <amount> <user>`",
+                description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.BadArgument):
+
+    @commands.command()
+    @commands.has_permissions(kick_members=True)
+    async def kick(self, ctx, member: discord.Member, *, reason="Не указана"):
+        if member != ctx.author:
+            if member.bot is False:
+                if member.top_role.position >= ctx.author.top_role.position:
+                    embed = discord.Embed(
+                        description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
+                        color = 0xff2400
+                    )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                else:
+                    embed = discord.Embed(
+                        description = f"Участник **{member.name}** был выгнан.",
+                        color = 0x00ff00
+                    )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await member.kick(reason=reason)
+                    await ctx.send(embed=embed)
+            else:
+                embed = discord.Embed(
+                    description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+        else:
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`remove-messages <amount> <user>`",
+                description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153, 903384737761083402)
+    async def mute(self, ctx, member: discord.Member, time: str = None, *, reason="Не указана"):
+        if member.bot is True:
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        if member == ctx.author:
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        if len(reason) > 150:
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Причина не может быть больше 150 символов.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        if member and member.top_role.position >= ctx.author.top_role.position:
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        if time is None:
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Вы не указали длительность.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        else:
+            try:
+                seconds = int(time[:-1])
+                duration = time[-1]
+                if duration == "s":
+                    pass
+                if duration == "m":
+                    seconds *= 60
+                if duration == "h":
+                    seconds *= 3600
+                if duration == "d":
+                    seconds *= 86400
+                if duration == "w":
+                    seconds *= 604800
+            except:
+                embed = discord.Embed(
+                    description = "<:noe:911292323365781515>Указана неправильная длительность.",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+            mute_expiration = (datetime.datetime.now() + datetime.timedelta(seconds=int(seconds))).strftime("%c")
+            role = self.mutedrole
+            if not role:
+                embed = discord.Embed(
+                    description = "<:noe:911292323365781515>Роль мута не найдена.",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+            mutes = load_json("jsons/mutes.json")
+            try:
+                member_mute = mutes[str(member.id)]
+                embed = discord.Embed(
+                    description = "<:noe:911292323365781515>Пользователь уже в муте.",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+            except:
+                mutes[str(member.id)] = str(mute_expiration)
+                write_json("jsons/mutes.json", mutes)
+                timemute = datetime.timedelta(seconds=int(seconds))
+                embed = discord.Embed(
+                    description = f"Участник **{member.name}** был замьючен.\n**Модератор:**\n{ctx.author}\n**Срок:**\n{timemute}\n**Причина:**\n{reason}",
+                    color = 0x00ff00
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await member.add_roles(role)
+                await member.move_to(channel=None)
+                await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153, 903384737761083402)
+    async def unmute(self, ctx, member: discord.Member):
+        embed = discord.Embed(
+            description = f"Участник **{member.name}** был размьючен.\n**Модератор**\n{ctx.author}",
+            color = 0x00ff00
+        )
+        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        await member.remove_roles(self.mutedrole)
+        await ctx.send(embed=embed)
+        mutes = load_json("jsons/mutes.json")
+        write_json("jsons/mutes.json", mutes)
+        mutes.pop(str(member.id))
+
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        self.guild = await self.bot.fetch_guild(902831072247709757)
+        self.mutedrole = discord.utils.get(self.guild.roles, id=906283550641365005)
+        self.check_mutes.start()
+
+    @ban.error
+    async def ban_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`ban <user> <reason>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -245,19 +436,19 @@ class Basic(commands.Cog):
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
-
-    @add_messages.error
-    async def add(self, ctx, error):
-        if isinstance(error, commands.errors.MissingRequiredArgument):
+        elif isinstance(error, commands.errors.MissingPermissions):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`add-messages <amount> <user>`",
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.BadArgument):
+
+    @kick.error
+    async def kick_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`add-messages <amount> <user>`",
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`kick <user> <reason>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -269,6 +460,14 @@ class Basic(commands.Cog):
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MissingPermissions):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
 
 def setup(bot):
-    bot.add_cog(Basic(bot))
+    bot.add_cog(Moderation(bot))
