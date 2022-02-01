@@ -26,7 +26,7 @@ collserver = cluster.ecodb.collserver
 async def on_ready():
     print("Bot connected to the server")
     DiscordComponents(bot)
-    await bot.change_presence(status = discord.Status.online, activity = discord.Game('Бот в разработке.'))
+    await bot.change_presence(status = discord.Status.online, activity = discord.Game('#help'))
     for guild in bot.guilds:
         for member in guild.members:
             user = {
@@ -57,7 +57,7 @@ async def on_ready():
 async def on_member_join(member):
     mutes = load_json("mutes.json")
     if str(member.id) in mutes:
-        role = discord.utils.get(member.guild.roles, id=906283550641365005)
+        role = discord.utils.get(member.guild.roles, id=902942596962328656)
         await member.add_roles(role)
     if member.bot == False:
       embed = discord.Embed(
@@ -67,7 +67,6 @@ async def on_member_join(member):
       icon = str(member.guild.icon_url)
       embed.set_thumbnail(url = icon)
       await bot.get_channel(903710414783791114).send(embed=embed)
-
     user = {
         "_id": member.id,
         "money": 0,
@@ -80,7 +79,7 @@ async def on_member_join(member):
         "reasons": [],
         "notes": [],
         "note": 0,
-        "endurance": 0
+        "endurance": 100
     }
     if collection.count_documents({"_id": member.id}) == 0:
         collection.insert_one(user)
@@ -95,7 +94,6 @@ async def on_message_delete(message):
       )
       await bot.get_channel(903710414783791114).send(embed=embed)
 
-
 @bot.event
 async def on_member_remove(member):
     if member.bot == False:
@@ -107,7 +105,6 @@ async def on_member_remove(member):
       embed.set_thumbnail(url = icon)
       await bot.get_channel(903710414783791114).send(embed=embed)
 
-
 @bot.event
 async def on_message_edit(before, after):
     if before.author.bot == False:
@@ -117,7 +114,6 @@ async def on_message_edit(before, after):
           color = 0x42aaff
       )
       await bot.get_channel(903710414783791114).send(embed=embed)
-
 
 @bot.event
 async def on_message(message):
@@ -156,249 +152,6 @@ async def on_message(message):
                 await message.author.add_roles(role_id)
 
     await bot.process_commands(message)
-
-@bot.command(aliases = ["mes"])
-async def messages(ctx, member: discord.Member = None):
-    if member is None:
-        umes = collection.find_one({"_id": ctx.author.id})["mes"]
-        if umes < 149:
-            embed = discord.Embed(
-                description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{150 - umes}` нужно для получения <@&903385564781350962>",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-        elif umes < 299:
-            embed = discord.Embed(
-                description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{300 - umes}` нужно для получения <@&905008758277681153>",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-        elif umes < 499:
-            embed = discord.Embed(
-                description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{500 - umes}` нужно для получения <@&904708571156066314>",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-        elif umes < 999:
-            embed = discord.Embed(
-                description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{1000 - umes}` нужно для получения <@&904712301255467058>",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-        elif umes < 1749:
-            embed = discord.Embed(
-                description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{1750 - umes}` нужно для получения <@&904714252089188382>",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-        elif umes < 2999:
-            embed = discord.Embed(
-                description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{3000 - umes}` нужно для получения <@&904714499804790786>",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-        elif umes < 4999:
-            embed = discord.Embed(
-                description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений. `{5000 - umes}` нужно для получения <@&904715362715721769>",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-        elif umes > 4999:
-            embed = discord.Embed(
-                description = f"{ctx.author} имеет `{collection.find_one({'_id': ctx.author.id})['mes']}` сообщений.",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-    else:
-        mmes = collection.find_one({"_id": member.id})["mes"]
-        if mmes < 149:
-            embed = discord.Embed(
-                description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений. `{150 - mmes}` нужно для получения <@&903385564781350962>",
-                color = 0x00ff00
-            )
-            embed.set_author(name=member, icon_url=member.avatar_url)
-            await ctx.send(embed = embed)
-        elif mmes < 299:
-            embed = discord.Embed(
-                description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений. `{300 - mmes}` нужно для получения <@&905008758277681153>",
-                color = 0x00ff00
-            )
-            embed.set_author(name=member, icon_url=member.avatar_url)
-            await ctx.send(embed = embed)
-        elif mmes < 499:
-            embed = discord.Embed(
-                description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений. `{500 - mmes}` нужно для получения <@&904708571156066314>",
-                color = 0x00ff00
-            )
-            embed.set_author(name=member, icon_url=member.avatar_url)
-            await ctx.send(embed = embed)
-        elif mmes < 999:
-            embed = discord.Embed(
-                description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений. `{1000 - mmes}` нужно для получения <@&904712301255467058>",
-                color = 0x00ff00
-            )
-            embed.set_author(name=member, icon_url=member.avatar_url)
-            await ctx.send(embed = embed)
-        elif mmes < 1749:
-            embed = discord.Embed(
-                description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений. `{1750 - mmes}` нужно для получения <@&904714252089188382>",
-                color = 0x00ff00
-            )
-            embed.set_author(name=member, icon_url=member.avatar_url)
-            await ctx.send(embed = embed)
-        elif mmes < 2999:
-            embed = discord.Embed(
-                description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений. `{3000 - mmes}` нужно для получения <@&904714499804790786>",
-                color = 0x00ff00
-            )
-            embed.set_author(name=member, icon_url=member.avatar_url)
-            await ctx.send(embed = embed)
-        elif mmes < 4999:
-            embed = discord.Embed(
-                description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений. `{5000 - mmes}` нужно для получения <@&904715362715721769>",
-                color = 0x00ff00
-            )
-            embed.set_author(name=member, icon_url=member.avatar_url)
-            await ctx.send(embed = embed)
-        elif mmes > 4999:
-            embed = discord.Embed(
-                description = f"{member} имеет `{collection.find_one({'_id': member.id})['mes']}` сообщений.",
-                color = 0x00ff00
-            )
-            embed.set_author(name=member, icon_url=member.avatar_url)
-            await ctx.send(embed = embed)
-            
-            
-@bot.command(aliases = ["add-messages"])
-@commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
-async def add_messages(ctx, amount: int, member: discord.Member = None):
-    if amount > 0:
-        if member is None:
-            collection.update_one({"_id": ctx.author.id}, {"$inc": {"mes": amount}})
-            embed = discord.Embed(
-                description = f"<:check:930367892455850014>Добавлено **{amount}** сообщений {ctx.author.mention}.",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-        else:
-            collection.update_one({"_id": member.id}, {"$inc": {"mes": amount}})
-            embed = discord.Embed(
-                description = f"<:check:930367892455850014>Добавлено **{amount}** сообщений {member.mention}",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-
-
-@bot.command(aliases = ["remove-messages"])
-@commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
-async def remove_messages(ctx, amount: int, member: discord.Member = None):
-    if amount > 0:
-        if member is None:
-            collection.update_one({"_id": ctx.author.id}, {"$inc": {"mes": -amount}})
-            embed = discord.Embed(
-                description = f"<:check:930367892455850014>Забрано **{amount}** сообщений у {ctx.author.mention}.",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-        else:
-            collection.update_one({"_id": member.id}, {"$set": {"mes": -amount}})
-            embed = discord.Embed(
-                description = f"<:check:930367892455850014>Забрано **{amount}** сообщений у {member.mention}.",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-
-
-@bot.command(aliases = ["add-money"])
-@commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
-async def add_money(ctx, amount: int, member: discord.Member = None):
-    if amount > 0:
-        if member is None:
-            collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
-            embed = discord.Embed(
-                description = f"<:check:930367892455850014>Добавлено<:cash:903999146569138216>**{humanize.intcomma(amount)}** на баланс {ctx.author.mention}.",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-        else:
-            collection.update_one({"_id": member.id}, {"$inc": {"money": amount}})
-            embed = discord.Embed(
-                description = f"<:check:930367892455850014>Добавлено<:cash:903999146569138216>**{humanize.intcomma(amount)}** на баланс {member.mention}.",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-
-
-@bot.command(aliases = ["remove-money"])
-@commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
-async def remove_money(ctx, amount: int, member: discord.Member = None):
-    if amount > 0:
-        if member is None:
-            collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
-            embed = discord.Embed(
-                description = f"<:check:930367892455850014>Забрано<:cash:903999146569138216>**{humanize.intcomma(amount)}** с баланса {ctx.author.mention}.",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-        else:
-            collection.update_one({"_id": member.id}, {"$inc": {"money": -amount}})
-            embed = discord.Embed(
-                description = f"<:check:930367892455850014>Забрано<:cash:903999146569138216>**{humanize.intcomma(amount)}** с баланса {member.mention}.",
-                color = 0x00ff00
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-
-@bot.command()
-async def ping(ctx):
-    embed = discord.Embed(
-        description = f"Ping: {round(bot.latency * 1000)}ms",
-        color = 0x00ff00
-    )
-    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-    await ctx.send(embed = embed)
-
-@bot.command()
-async def avatar(ctx, member: discord.Member = None):
-    if member is None:
-        embed = discord.Embed(
-            title = f"Аватар {ctx.author.name}",
-            color = 0x00ff00
-        )
-        embed.set_image(url = ctx.author.avatar_url)
-        await ctx.send(embed = embed)
-    else:
-        embed = discord.Embed(
-            title = f"Аватар {member.name}",
-            color = 0x00ff00
-        )
-        embed.set_image(url = member.avatar_url)
-        await ctx.send(embed = embed)
-
-@bot.command()
-async def servericon(ctx):
-    embed = discord.Embed(
-        title = f"{ctx.guild.name}",
-        color = 0x00ff00
-    )
-    embed.set_image(url = ctx.guild.icon_url)
-    await ctx.send(embed = embed)
-
 
 @bot.command()
 async def rand(ctx, amount = 1, *, args):
