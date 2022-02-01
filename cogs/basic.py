@@ -231,6 +231,7 @@ class Basic(commands.Cog):
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
+        await member.add_roles(role)
 
     @addrole.error
     async def addrole_error(self, ctx, error):
