@@ -495,16 +495,6 @@ class Economic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
 
-    @work.error
-    async def work_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            retry_after = str(datetime.timedelta(seconds=error.retry_after)).split('.')[0]
-            embed = discord.Embed(
-                description = f"<:noe:911292323365781515>Вы устали. Приходите через {retry_after}",
-                color = 0xff2400
-            )
-            await ctx.send(embed = embed)
-
 
 def setup(bot):
     bot.add_cog(Economic(bot))
