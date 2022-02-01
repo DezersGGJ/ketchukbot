@@ -269,23 +269,23 @@ class Basic(commands.Cog):
 
     @commands.command()
     async def answer(self, ctx, otvet):
-            if ctx.channel.id == 938066308011003904:
-                if otvet == self.collserver.find_one({"_id": ctx.guild.id}, {"quiz": answer}):
-                    if self.collserver.find_one({"_id": ctx.guild.id})["skolko"] == 0:
-                        self.collserver.find_one({"_id": ctx.guild.id}, {"$inc": {"skolko": 1}})
-                        embed = discord.Embed(
-                            description = f"{ctx.author.mention} ответил на вопрос верно.",
-                            color = 0x00ff00
-                        )
-                        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                        await self.bot.get_channel(938066272946622506).send(embed=embed)
-                    else:
-                        embed = discord.Embed(
-                            description = "<:noe:911292323365781515>Ответ уже введён.`",
-                            color = 0xff2400
-                        )
-                        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                        await ctx.send(embed=embed)
+        if ctx.channel.id == 938066308011003904:
+            if otvet == self.collserver.find_one({"_id": ctx.guild.id})["quiz.answer"]:
+                if self.collserver.find_one({"_id": ctx.guild.id})["skolko"] == 0:
+                    self.collserver.find_one({"_id": ctx.guild.id}, {"$inc": {"skolko": 1}})
+                    embed = discord.Embed(
+                        description = f"{ctx.author.mention} ответил на вопрос верно.",
+                        color = 0x00ff00
+                    )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await self.bot.get_channel(938066272946622506).send(embed=embed)
+                else:
+                    embed = discord.Embed(
+                        description = "<:noe:911292323365781515>Ответ уже введён.`",
+                        color = 0xff2400
+                    )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
 
     @commands.command()
     @commands.has_guild_permissions(administrator=True)
