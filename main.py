@@ -23,37 +23,6 @@ collserver = cluster.ecodb.collserver
 #collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
 #event
 @bot.event
-async def on_ready():
-    print("Bot connected to the server")
-    DiscordComponents(bot)
-    await bot.change_presence(status = discord.Status.online, activity = discord.Game('#help'))
-    for guild in bot.guilds:
-        for member in guild.members:
-            user = {
-                "_id": member.id,
-                "money": 0,
-                "mes": 0,
-                "bank": 0,
-                "cddaily": 0,
-                "cdweekly": 0,
-                "cdwork": 0,
-                "warns": 0,
-                "reasons": [],
-                "notes": [],
-                "note": 0,
-                "endurance": 100
-            }
-            server = {
-                "_id": guild.id,
-                "case": 0,
-                "note": 0
-            }
-            if collection.count_documents({"_id": member.id}) == 0:
-                collection.insert_one(user)
-            if collserver.count_documents({"_id": guild.id}) == 0:
-                collserver.insert_one(server)
-
-@bot.event
 async def on_member_join(member):
     mutes = load_json("mutes.json")
     if str(member.id) in mutes:
