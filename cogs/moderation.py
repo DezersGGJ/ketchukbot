@@ -389,7 +389,7 @@ class Moderation(commands.Cog):
             except:
                 mutes[str(member.id)] = str(mute_expiration)
                 write_json("jsons/mutes.json", mutes)
-                timemute = datetime.datetime.now() + datetime.timedelta(seconds=int(seconds))
+                timemute = datetime.timedelta(seconds=int(seconds))
                 embed = discord.Embed(
                     description = f"Участник **{member.name}** был замьючен.\n**Модератор:**\n{ctx.author}\n**Срок:**\n{timemute}\n**Причина:**\n{reason}",
                     color = 0x00ff00
