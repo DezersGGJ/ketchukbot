@@ -160,11 +160,11 @@ async def rand(ctx, amount = 1, *, args):
     await ctx.send(", ".join(rand))
 
 @bot.command()
-async def answer(self, ctx, otvet):
+async def answer(ctx, otvets):
     if ctx.channel.id == 938066308011003904:
         user = collserver.find_one({"_id": ctx.guild.id})
         for value in user["quiz"]:
-            if otvet == value['answer']:
+            if otvets == value['answer']:
                 if collserver.find_one({"_id": ctx.guild.id})["skolko"] == 0:
                     collserver.find_one({"_id": ctx.guild.id}, {"$inc": {"skolko": 1}})
                     embed = discord.Embed(
