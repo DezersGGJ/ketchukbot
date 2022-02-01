@@ -175,7 +175,7 @@ async def answer(ctx, otvet):
                     await bot.get_channel(938066272946622506).send(embed=embed)
                 else:
                     embed = discord.Embed(
-                        description = "<:noe:911292323365781515>Ответ уже введён.`",
+                        description = "<:noe:911292323365781515>Ответ уже введён.",
                         color = 0xff2400
                     )
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
