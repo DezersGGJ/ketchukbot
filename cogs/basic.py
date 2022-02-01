@@ -270,7 +270,7 @@ class Basic(commands.Cog):
         if ctx.channel.id == 938066272946622506:
             server = self.collection.find_one({"_id": ctx.guild.id})
             for value in server["quiz"]:
-                if value["answer"] == self.collserver.find_one({"_id": ctx.guild.id}):
+                if value["answer"] == otvet:
                     if self.collserver.find_one({"_id": ctx.guild.id})["skolko"] == 0:
                         self.collserver.find_one({"_id": ctx.guild.id}, {"$inc": {"skolko": 1}})
                         embed = discord.Embed(
