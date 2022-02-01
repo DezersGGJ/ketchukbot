@@ -321,7 +321,7 @@ class Economic(commands.Cog):
                     color = 0xff2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                return await ctx.send(embed = embed)
+                await ctx.send(embed = embed)
             else:
                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": data["bank"]}})
                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"bank": -data["bank"]}})
@@ -330,7 +330,7 @@ class Economic(commands.Cog):
                     color = 0x00ff00
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                return await ctx.send(embed = embed)
+                await ctx.send(embed = embed)
         else:
             if data["bank"] < amount:
                 embed = discord.Embed(
@@ -338,7 +338,7 @@ class Economic(commands.Cog):
                     color = 0xff2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                return await ctx.send(embed = embed)
+                await ctx.send(embed = embed)
             else:
                 if amount <= 0:
                     embed = discord.Embed(
@@ -355,29 +355,7 @@ class Economic(commands.Cog):
                         color = 0x00ff00
                     )
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                    return await ctx.send(embed = embed)
-
-    @commands.command()
-    @commands.cooldown(1, 30, commands.BucketType.user)
-    async def work(self, ctx):
-        data = self.collection.find_one({"_id": ctx.author.id})
-        amount = random.randint(1,5000)
-        if data["endurance"] < 10:
-            embed = discord.Embed(
-                description = f"<:noe:911292323365781515>У тебя недостаточно выносливости {data['endurance']}/10.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-        else:
-            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
-            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"endurance": -10}})
-            embed = discord.Embed(
-                description = f"Твоя зарплата составила <:cash:903999146569138216>{humanize.intcomma(amount)}.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
+                    await ctx.send(embed = embed)
 
     @commands.command(aliases = ["add-money"])
     @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
