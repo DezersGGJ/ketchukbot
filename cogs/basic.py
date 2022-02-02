@@ -315,7 +315,7 @@ class Basic(commands.Cog):
     async def remove_role_error(self, ctx, error):
         if isinstance(error, commands.errors.MissingRequiredArgument):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`remove-role <user> <role>`",
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#remove-role <user> <role>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
