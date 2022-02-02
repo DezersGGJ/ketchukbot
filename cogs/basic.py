@@ -255,7 +255,8 @@ class Basic(commands.Cog):
                 "$push": {
                     "quiz": {
                         "answer": otvet,
-                        "question": vopros
+                        "question": vopros,
+                        "activation": 0
                     }
                 }
             }
@@ -278,9 +279,6 @@ class Basic(commands.Cog):
                     "quiz.answer": otvets
                 },
                 {
-                    "$set": {
-                        "skolko": 0
-                    },
                     "$pull": {
                         "quiz": {
                             "answer": otvets
