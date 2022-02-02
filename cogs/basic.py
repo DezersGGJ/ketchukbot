@@ -328,7 +328,7 @@ class Basic(commands.Cog):
         await ctx.send(embed=embed)
         await member.remove_roles(role)
 
-    @remove_role.error
+    @removerole.error
     async def remove_role_error(self, ctx, error):
         if isinstance(error, commands.errors.MissingRequiredArgument):
             embed = discord.Embed(
