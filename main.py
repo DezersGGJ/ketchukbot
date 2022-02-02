@@ -165,7 +165,7 @@ async def answer(ctx, otvet):
         user = collserver.find_one({"_id": ctx.guild.id})
         for value in user["quiz"]:
             if otvet == value['answer']:
-                if value['activation'] == 0:
+                if collserver.find_one({"_id": ctx.guild.id})["skolko"] == 0:
                     embed = discord.Embed(
                         description = f"{ctx.author.mention} ответил на вопрос верно.",
                         color = 0x00ff00
