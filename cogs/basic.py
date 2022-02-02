@@ -389,7 +389,6 @@ class Basic(commands.Cog):
                 },
                 "$set": {
                     "skolko": 0
-                    }
                 }
             }
         )
