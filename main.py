@@ -172,7 +172,7 @@ async def answer(ctx, otvet):
                     )
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                     await self.bot.get_channel(938066272946622506).send(embed=embed)
-                    self.collserver.update_one({"_id": ctx.guild.id}, {"$set": {"quiz.$.activation": 1}})
+                    collserver.update_one({"_id": ctx.guild.id}, {"$set": {"quiz.$.activation": 1}})
                 else:
                     embed = discord.Embed(
                         description = "<:noe:911292323365781515>Ответ уже введён.`",
