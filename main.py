@@ -164,8 +164,9 @@ async def answer(ctx, otvet):
     if ctx.channel.id == 938066308011003904:
         user = collserver.find_one({"_id": ctx.guild.id})
         for value in user["quiz"]:
-            if otvet == value['answer']:
+            if otvet.lower() == value['answer']:
                 if collserver.find_one({"_id": ctx.guild.id})["skolko"] == 0:
+                    collserver.update_one({"_id": ctx.guild.id}, {"$set": {"skolko": 1}})
                     embed = discord.Embed(
                         description = f"{ctx.author.mention} ответил на вопрос.\n**Ответ:** {otvet}.",
                         color = 0x00ff00
