@@ -171,7 +171,7 @@ async def answer(ctx, otvet):
                         color = 0x00ff00
                     )
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                    await self.bot.get_channel(938066272946622506).send(embed=embed)
+                    await bot.get_channel(938066272946622506).send(embed=embed)
                     collserver.update_one({"_id": ctx.guild.id}, {"$set": {"quiz.$.activation": 1}})
                 else:
                     embed = discord.Embed(
