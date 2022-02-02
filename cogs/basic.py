@@ -32,6 +32,16 @@ class Basic(commands.Cog):
             embed.set_image(url = member.avatar_url)
             await ctx.send(embed = embed)
 
+    @avatar.error
+    async def avatar_error(self, ctx, error):
+        if isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
     @commands.command()
     async def servericon(self, ctx):
         embed = discord.Embed(
@@ -160,9 +170,19 @@ class Basic(commands.Cog):
                 embed.set_author(name=member, icon_url=member.avatar_url)
                 await ctx.send(embed = embed)
 
+    @messages.error
+    async def messages_error(self, ctx, error):
+        if isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
     @commands.command(aliases = ["add-messages"])
     @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
-    async def add_messages(self, ctx, amount: int, member: discord.Member = None):
+    async def add_messages(self, ctx, member: discord.Member = None, amount: int):
         if amount > 0:
             if member is None:
                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"mes": amount}})
@@ -181,6 +201,29 @@ class Basic(commands.Cog):
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed = embed)
 
+    @add_messages.error
+    async def add_messages_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#add-messages <amount> <user>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.BadArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`#add-messages <amount> <user>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
 
     @commands.command(aliases = ["remove-messages"])
     @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
@@ -203,6 +246,30 @@ class Basic(commands.Cog):
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed = embed)
 
+    @remove_messages.error
+    async def remove_messages_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#remove-messages <amount> <user>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.BadArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`#remove-messages <amount> <user>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
     @commands.command()
     async def ping(self, ctx):
         embed = discord.Embed(
@@ -223,7 +290,7 @@ class Basic(commands.Cog):
         await page.start()
 
     @commands.command(aliases = ["add-role"])
-    @commands.has_permissions(manage_roles=True)
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214)
     async def addrole(self, ctx, member: discord.Member, role: discord.Role):
         embed = discord.Embed(
             description = f"Роль {role.mention} успешно выдана {member.mention}.",
@@ -233,8 +300,25 @@ class Basic(commands.Cog):
         await ctx.send(embed=embed)
         await member.add_roles(role)
 
+    @addrole.error
+    async def add_role_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`add-role <user> <role>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
     @commands.command(aliases = ["remove-role"])
-    @commands.has_permissions(manage_roles=True)
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214)
     async def removerole(self, ctx, member: discord.Member, role: discord.Role):
         embed = discord.Embed(
             description = f"Роль {role.mention} успешно забрана у {member.mention}.",
@@ -244,8 +328,25 @@ class Basic(commands.Cog):
         await ctx.send(embed=embed)
         await member.remove_roles(role)
 
+    @remove_role.error
+    async def remove_role_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`remove-role <user> <role>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
     @commands.command()
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214)
     async def create(self, ctx, otvet, *, vopros):
         self.collserver.update_one(
             {
@@ -271,7 +372,7 @@ class Basic(commands.Cog):
         await self.bot.get_channel(938066272946622506).send(embed=embed)
 
     @commands.command()
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214)
     async def delete(self, ctx, otvets):
         if self.collserver.count_documents({"quiz.answer": otvets}) == 0:
             await ctx.send("Даного ответа не найдено.")
@@ -293,88 +394,6 @@ class Basic(commands.Cog):
                 color = 0x42aaff
             )
             await ctx.send(embed = embed)
-
-    @addrole.error
-    async def addrole_error(self, ctx, error):
-        if isinstance(error, commands.errors.MissingRequiredArgument):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`addrole <user> <role>`",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.MemberNotFound):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Пользователь не найден.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-
-    @removerole.error
-    async def removerole_error(self, ctx, error):
-        if isinstance(error, commands.errors.MissingRequiredArgument):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`removerole <user> <role>`",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.MemberNotFound):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Пользователь не найден.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-
-    @remove_messages.error
-    async def remove(self, ctx, error):
-        if isinstance(error, commands.errors.MissingRequiredArgument):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`remove-messages <amount> <user>`",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.BadArgument):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`remove-messages <amount> <user>`",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.MemberNotFound):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Пользователь не найден.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-
-    @add_messages.error
-    async def add(self, ctx, error):
-        if isinstance(error, commands.errors.MissingRequiredArgument):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`add-messages <amount> <user>`",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.BadArgument):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`add-messages <amount> <user>`",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.MemberNotFound):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Пользователь не найден.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(Basic(bot))
