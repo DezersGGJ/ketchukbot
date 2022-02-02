@@ -141,7 +141,7 @@ class Economic(commands.Cog):
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            return await ctx.send(embed = embed)
+            await ctx.send(embed = embed)
         else:
             if amount < minbet:
                 embed = discord.Embed(
@@ -149,7 +149,7 @@ class Economic(commands.Cog):
                     color = 0xff2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                return await ctx.send(embed = embed)
+                await ctx.send(embed = embed)
             else:
                 if amount > maxbet:
                     embed = discord.Embed(
@@ -157,7 +157,7 @@ class Economic(commands.Cog):
                         color = 0xff2400
                     )
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                    return await ctx.send(embed = embed)
+                    await ctx.send(embed = embed)
                 else:
                     if amount > data["money"]:
                         embed = discord.Embed(
@@ -165,7 +165,7 @@ class Economic(commands.Cog):
                             color = 0xff2400
                         )
                         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                        return await ctx.send(embed = embed)
+                        await ctx.send(embed = embed)
                     else:
                         if color == num[rand]:
                             if num[rand] == "red":
@@ -175,7 +175,7 @@ class Economic(commands.Cog):
                                     color = 0x00ff00
                                 )
                                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                                return await ctx.send(embed = embed)
+                                await ctx.send(embed = embed)
                             elif num[rand] == "black":
                                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
                                 embed = discord.Embed(
@@ -183,7 +183,7 @@ class Economic(commands.Cog):
                                     color = 0x00ff00
                                 )
                                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                                return await ctx.send(embed = embed)
+                                await ctx.send(embed = embed)
                             elif num[rand] == "green":
                                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount * 14}})
                                 embed = discord.Embed(
@@ -191,7 +191,7 @@ class Economic(commands.Cog):
                                     color = 0x00ff00
                                 )
                                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                                return await ctx.send(embed = embed)
+                                await ctx.send(embed = embed)
                         else:
                             self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
                             if num[rand] == "red":
@@ -200,21 +200,38 @@ class Economic(commands.Cog):
                                     color = 0xff2400
                                 )
                                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                                return await ctx.send(embed=embed)
+                                await ctx.send(embed=embed)
                             elif num[rand] == "black":
                                 embed = discord.Embed(
                                     description = f"Выпал чёрный и вы проиграли.",
                                     color = 0xff2400
                                 )
                                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                                return await ctx.send(embed = embed)
+                                await ctx.send(embed = embed)
                             elif num[rand] == "green":
                                 embed = discord.Embed(
                                     description = f"Выпал зелёный и вы проиграли.",
                                     color = 0xff2400
                                 )
                                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                                return await ctx.send(embed = embed)
+                                await ctx.send(embed = embed)
+
+    @roulette.error
+    async def roulette_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
+        elif isinstance(error, commands.errors.BadArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
 
 
     @commands.command(aliases = ["balance"])
@@ -236,6 +253,16 @@ class Economic(commands.Cog):
             embed.set_author(name=member, icon_url=member.avatar_url)
             await ctx.send(embed = embed)
 
+    @bal.error
+    async def balance_error(self, ctx, error):
+        if isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
+
     @commands.command()
     async def pay(self, ctx, member: discord.Member, amount: int):
         data_author = self.collection.find_one({"_id": ctx.author.id})
@@ -246,7 +273,7 @@ class Economic(commands.Cog):
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            return await ctx.send(embed = embed)
+            await ctx.send(embed = embed)
         else:
             if data_author["money"] < amount:
                 embed = discord.Embed(
@@ -254,7 +281,7 @@ class Economic(commands.Cog):
                     color = 0xff2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                return await ctx.send(embed = embed)
+                await ctx.send(embed = embed)
             else:
                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
                 self.collection.update_one({"_id": member.id}, {"$inc": {"money": amount}})
@@ -263,7 +290,7 @@ class Economic(commands.Cog):
                     color = 0x00ff00
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                return await ctx.send(embed = embed)
+                await ctx.send(embed = embed)
 
     @commands.command(aliases = ["dep"])
     async def deposit(self, ctx, amount: Union[int, str]):
@@ -275,7 +302,7 @@ class Economic(commands.Cog):
                     color = 0xff2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                return await ctx.send(embed = embed)
+                await ctx.send(embed = embed)
             else:
                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"bank": data["money"]}})
                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -data["money"]}})
@@ -284,7 +311,7 @@ class Economic(commands.Cog):
                     color = 0x00ff00
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                return await ctx.send(embed = embed)
+                await ctx.send(embed = embed)
         else:
             if data["money"] < amount:
                 embed = discord.Embed(
@@ -292,7 +319,7 @@ class Economic(commands.Cog):
                     color = 0xff2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                return await ctx.send(embed = embed)
+                await ctx.send(embed = embed)
             else:
                 if amount <= 0:
                     embed = discord.Embed(
@@ -300,7 +327,7 @@ class Economic(commands.Cog):
                         color = 0xff2400
                     )
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                    return await ctx.send(embed = embed)
+                    await ctx.send(embed = embed)
                 else:
                     self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"bank": amount}})
                     self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
@@ -309,7 +336,17 @@ class Economic(commands.Cog):
                         color = 0x00ff00
                     )
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                    return await ctx.send(embed = embed)
+                    await ctx.send(embed = embed)
+
+    @deposit.error
+    async def deposit_error(self, ctx, error):
+        if isinstance(error, commands.errors.CommandInvokeError):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`deposit <amount or all>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
 
     @commands.command(aliases = ["with"])
     async def withdraw(self, ctx, amount: Union[int, str]):
@@ -346,7 +383,7 @@ class Economic(commands.Cog):
                         color = 0xff2400
                     )
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                    return await ctx.send(embed = embed)
+                    await ctx.send(embed = embed)
                 else:
                     self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
                     self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"bank": -amount}})
@@ -357,8 +394,18 @@ class Economic(commands.Cog):
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                     await ctx.send(embed = embed)
 
+    @withdraw.error
+    async def withdraw_error(self, ctx, error):
+        if isinstance(error, commands.errors.CommandInvokeError):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`withdraw <amount or all>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
+
     @commands.command(aliases = ["add-money"])
-    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214)
     async def add_money(self, ctx, amount: int, member: discord.Member = None):
         if amount > 0:
             if member is None:
@@ -378,9 +425,39 @@ class Economic(commands.Cog):
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed = embed)
 
+    @add_money.error
+    async def addm(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`add-money <amount> <user>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.BadArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`add-money <amount> <user>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MissingAnyRole):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
 
     @commands.command(aliases = ["remove-money"])
-    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214)
     async def remove_money(self, ctx, amount: int, member: discord.Member = None):
         if amount > 0:
             if member is None:
@@ -423,77 +500,13 @@ class Economic(commands.Cog):
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
-
-    @add_money.error
-    async def addm(self, ctx, error):
-        if isinstance(error, commands.errors.MissingRequiredArgument):
+        elif isinstance(error, commands.errors.MissingAnyRole):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`add-money <amount> <user>`",
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.BadArgument):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`add-money <amount> <user>`",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.MemberNotFound):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Пользователь не найден.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-
-    @roulette.error
-    async def roulette_error(self, ctx, error):
-        if isinstance(error, commands.errors.MissingRequiredArgument):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            return await ctx.send(embed = embed)
-        elif isinstance(error, commands.errors.BadArgument):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-
-    @withdraw.error
-    async def withdraw_error(self, ctx, error):
-        if isinstance(error, commands.errors.CommandInvokeError):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`withdraw <amount or all>`",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-
-    @deposit.error
-    async def deposit_error(self, ctx, error):
-        if isinstance(error, commands.errors.CommandInvokeError):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`deposit <amount or all>`",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-
-    @bal.error
-    async def balance_error(self, ctx, error):
-        if isinstance(error, commands.errors.MemberNotFound):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Пользователь не найден.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
 
 
 def setup(bot):
