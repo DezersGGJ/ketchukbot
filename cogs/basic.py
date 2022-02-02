@@ -385,10 +385,11 @@ class Basic(commands.Cog):
                     "quiz": {
                         "answer": otvet,
                         "question":vopros
+                    }
                 },
                 "$set": {
-                   "skolko": 0
-                   }
+                    "skolko": 0
+                    }
                 }
             }
         )
