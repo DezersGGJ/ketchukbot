@@ -386,9 +386,9 @@ class Basic(commands.Cog):
                         "answer": otvet,
                         "question": vopros
                     },
-                 "$set": {
-                    "skolko": 0
-                 }
+                "$set": {
+                   "skolko": 0
+                   }
                 }
             }
         )
