@@ -182,7 +182,7 @@ class Basic(commands.Cog):
 
     @commands.command(aliases = ["add-messages"])
     @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
-    async def add_messages(self, ctx, member: discord.Member = None, amount: int):
+    async def add_messages(self, ctx, amount: int, member: discord.Member = None):
         if amount > 0:
             if member is None:
                 self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"mes": amount}})
