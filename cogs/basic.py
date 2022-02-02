@@ -255,9 +255,11 @@ class Basic(commands.Cog):
                 "$push": {
                     "quiz": {
                         "answer": otvet,
-                        "question": vopros,
-                        "activation": 0
-                    }
+                        "question": vopros
+                    },
+                 "$set": {
+                    "skolko": 0
+                 }
                 }
             }
         )
