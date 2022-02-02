@@ -384,8 +384,8 @@ class Basic(commands.Cog):
                 "$push": {
                     "quiz": {
                         "answer": otvet,
-                        "question": vopros
-                    },
+                        "question":vopros
+                },
                 "$set": {
                    "skolko": 0
                    }
