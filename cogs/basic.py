@@ -224,6 +224,13 @@ class Basic(commands.Cog):
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MissingAnyRole):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
 
     @commands.command(aliases = ["remove-messages"])
     @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
@@ -269,6 +276,13 @@ class Basic(commands.Cog):
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MissingAnyRole):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
 
     @commands.command()
     async def ping(self, ctx):
@@ -300,6 +314,30 @@ class Basic(commands.Cog):
         await ctx.send(embed=embed)
         await member.add_roles(role)
 
+        @addrole.error
+        async def add_role_error(self, ctx, error):
+            if isinstance(error, commands.errors.MissingRequiredArgument):
+                embed = discord.Embed(
+                    description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`add-role <user> <role>`",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+            elif isinstance(error, commands.errors.MemberNotFound):
+                embed = discord.Embed(
+                    description = "<:noe:911292323365781515>Пользователь не найден.",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+            elif isinstance(error, commands.errors.MissingAnyRole):
+                embed = discord.Embed(
+                    description = "<:noe:911292323365781515>У вас недостаточно прав.",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+
     @commands.command(aliases = ["remove-role"])
     @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214)
     async def removerole(self, ctx, member: discord.Member, role: discord.Role):
@@ -323,6 +361,13 @@ class Basic(commands.Cog):
         elif isinstance(error, commands.errors.MemberNotFound):
             embed = discord.Embed(
                 description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MissingAnyRole):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
