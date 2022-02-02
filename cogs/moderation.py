@@ -33,7 +33,7 @@ class Moderation(commands.Cog):
                 write_json("jsons/mutes.json", mutes)
 
     @commands.command(aliases = ["purge"])
-    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153)
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461)
     async def clear(self, ctx, amount: int):
         if amount > 0:
             if amount < 200:
@@ -41,8 +41,32 @@ class Moderation(commands.Cog):
                 await ctx.channel.purge(limit=number)
                 await ctx.send(f"<:check:930367892455850014>Удалено {amount} сообщений.", delete_after=5)
 
+    @clear.error
+    async def clear_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#clear <amount>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.BadArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`#clear <amount>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MissingAnyRole):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
     @commands.command(aliases = ["remove-note"])
-    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 933769903910060153)
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214, 903384312303472660, 903646061804023808)
     async def delnote(self, ctx, note: int):
         if self.collection.count_documents({"notes.note": note}) == 0:
             await ctx.send("Данной заметки не найдено.")
@@ -67,6 +91,30 @@ class Moderation(commands.Cog):
                 color = 0x42aaff
             )
             await ctx.send(embed = embed)
+
+    @delnote.error
+    async def delnote_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#delnote <note>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.BadArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<note>`.\n\nИспользование:\n`#delnote <note>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MissingAnyRole):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
 
     @commands.command()
     async def notes(self, ctx, member: discord.Member = None):
@@ -101,8 +149,25 @@ class Moderation(commands.Cog):
 
                 await ctx.send(embed = embed)
 
+    @notes.error
+    async def notes_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#notes <user>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
     @commands.command()
-    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 933769903910060153)
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214, 903384312303472660, 903646061804023808)
     async def note(self, ctx, member: discord.Member, *, reason_note = "Не указана"):
         self.collserver.update_one(
             {
@@ -140,8 +205,32 @@ class Moderation(commands.Cog):
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await ctx.send(embed = embed)
 
+    @note.error
+    async def note_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#note <user> <reason>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MissingAnyRole):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
     @commands.command(aliases = ["remove-warn"])
-    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153)
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461)
     async def delwarn(self, ctx, case: int):
         if self.collection.count_documents({"reasons.case": case}) == 0:
             await ctx.send("Даного случая не найдено.")
@@ -166,6 +255,30 @@ class Moderation(commands.Cog):
                 color = 0x42aaff
             )
             await ctx.send(embed = embed)
+
+    @delwarn.error
+    async def delwarn_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#delwarn <case>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.BadArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<note>`.\n\nИспользование:\n`#delwarn <case>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MissingAnyRole):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
 
     @commands.command(aliases = ["warnings"])
     async def infractions(self, ctx, member: discord.Member = None):
@@ -200,8 +313,25 @@ class Moderation(commands.Cog):
 
                 await ctx.send(embed = embed)
 
+    @infractions.error
+    async def infractions_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#infractions <user>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
     @commands.command()
-    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153)
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461)
     async def warn(self, ctx, member: discord.Member, *, reason = "Не указана"):
         self.collserver.update_one(
             {
@@ -239,8 +369,32 @@ class Moderation(commands.Cog):
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         await ctx.send(embed = embed)
 
+    @warn.error
+    async def warn_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#warn <user> <reason>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MissingAnyRole):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
     @commands.command()
-    @commands.has_permissions(ban_members=True)
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214, 903384312303472660, 903646061804023808)
     async def ban(self, ctx, member: discord.Member, *, reason="Не указана"):
         if member != ctx.author:
             if member.bot is False:
@@ -274,8 +428,32 @@ class Moderation(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
 
+    @ban.error
+    async def ban_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#ban <user> <reason>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MissingAnyRole):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
     @commands.command()
-    @commands.has_permissions(kick_members=True)
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214, 903384312303472660, 903646061804023808)
     async def kick(self, ctx, member: discord.Member, *, reason="Не указана"):
         if member != ctx.author:
             if member.bot is False:
@@ -309,8 +487,32 @@ class Moderation(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
 
+    @kick.error
+    async def kick_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#kick <user> <reason>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MissingAnyRole):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
     @commands.command()
-    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153, 903384737761083402)
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461)
     async def mute(self, ctx, member: discord.Member, time: str = None, *, reason="Не указана"):
         if member.bot is True:
             embed = discord.Embed(
@@ -391,7 +593,7 @@ class Moderation(commands.Cog):
                 write_json("jsons/mutes.json", mutes)
                 timemute = datetime.timedelta(seconds=int(seconds))
                 embed = discord.Embed(
-                    description = f"Участник **{member.name}** был замьючен.\n**Модератор:**\n{ctx.author}\n**Срок:**\n{timemute}\n**Причина:**\n{reason}",
+                    description = f"Участник **{member.name}** был замьючен.\n**Модератор:**\n{ctx.author}\n**Срок:**\n{time}\n**Причина:**\n{reason}",
                     color = 0x00ff00
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -399,8 +601,32 @@ class Moderation(commands.Cog):
                 await member.move_to(channel=None)
                 await ctx.send(embed=embed)
 
+    @mute.error
+    async def mute_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#mute <user> <time> <reason>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MissingAnyRole):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
     @commands.command()
-    @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461, 933769903910060153, 903384737761083402)
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461)
     async def unmute(self, ctx, member: discord.Member):
         embed = discord.Embed(
             description = f"Участник **{member.name}** был размьючен.\n**Модератор**\n{ctx.author}",
@@ -413,60 +639,35 @@ class Moderation(commands.Cog):
         write_json("jsons/mutes.json", mutes)
         mutes.pop(str(member.id))
 
+    @unmute.error
+    async def unmute_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#unmute <user>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MissingAnyRole):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>У вас недостаточно прав.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_ready(self):
         self.guild = await self.bot.fetch_guild(902831072247709757)
         self.mutedrole = discord.utils.get(self.guild.roles, id=906283550641365005)
         self.check_mutes.start()
-
-    @ban.error
-    async def ban_error(self, ctx, error):
-        if isinstance(error, commands.errors.MissingRequiredArgument):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`ban <user> <reason>`",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.MemberNotFound):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Пользователь не найден.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.MissingPermissions):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>У вас недостаточно прав.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-
-    @kick.error
-    async def kick_error(self, ctx, error):
-        if isinstance(error, commands.errors.MissingRequiredArgument):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`kick <user> <reason>`",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.MemberNotFound):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Пользователь не найден.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.MissingPermissions):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>У вас недостаточно прав.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
 
 
 def setup(bot):
