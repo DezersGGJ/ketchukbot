@@ -220,14 +220,14 @@ class Economic(commands.Cog):
     async def roulette_error(self, ctx, error):
         if isinstance(error, commands.errors.MissingRequiredArgument):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#roulette <red|black|green> <amount>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
         elif isinstance(error, commands.errors.BadArgument):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`roulette <red|black|green> <amount>`",
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`#roulette <red|black|green> <amount>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -342,7 +342,14 @@ class Economic(commands.Cog):
     async def deposit_error(self, ctx, error):
         if isinstance(error, commands.errors.CommandInvokeError):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`deposit <amount or all>`",
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`#deposit <amount or all>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
+        elif isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#deposit <amount or all>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -398,7 +405,14 @@ class Economic(commands.Cog):
     async def withdraw_error(self, ctx, error):
         if isinstance(error, commands.errors.CommandInvokeError):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`withdraw <amount or all>`",
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`#withdraw <amount or all>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
+        elif isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#withdraw <amount or all>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -429,14 +443,14 @@ class Economic(commands.Cog):
     async def addm(self, ctx, error):
         if isinstance(error, commands.errors.MissingRequiredArgument):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`add-money <amount> <user>`",
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#add-money <amount> <user>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
         elif isinstance(error, commands.errors.BadArgument):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`add-money <amount> <user>`",
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`#add-money <amount> <user>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -481,14 +495,14 @@ class Economic(commands.Cog):
     async def removem(self, ctx, error):
         if isinstance(error, commands.errors.MissingRequiredArgument):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`remove-money <amount> <user>`",
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#remove-money <amount> <user>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
         elif isinstance(error, commands.errors.BadArgument):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`remove-money <amount> <user>`",
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`#remove-money <amount> <user>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
