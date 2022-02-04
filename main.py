@@ -165,21 +165,24 @@ async def answer(ctx, otvet):
         user = collserver.find_one({"_id": ctx.guild.id})
         for value in user["quiz"]:
             if otvet.lower() == value['answer']:
-                if collserver.find_one({"_id": ctx.guild.id})["skolko"] == 0:
-                    collserver.update_one({"_id": ctx.guild.id}, {"$set": {"skolko": 1}})
-                    embed = discord.Embed(
-                        description = f"{ctx.author.mention} ответил на вопрос.\n**Ответ:** {otvet}.",
-                        color = 0x00ff00
-                    )
-                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                    await bot.get_channel(938066272946622506).send(embed=embed)
-                else:
-                    embed = discord.Embed(
-                        description = "<:noe:911292323365781515>Ответ уже введён.`",
-                        color = 0xff2400
-                    )
-                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                    await ctx.send(embed=embed)
+                self.collserver.update_one(
+                    {
+                        "quiz.answer": otvet
+                    },
+                    {
+                        "$pull": {
+                            "quiz": {
+                                "answer": otvet
+                            }
+                        }
+                    }
+                )
+                embed = discord.Embed(
+                    description = f"{ctx.author.mention} ответил на вопрос.\n**Ответ:** {otvet}.",
+                    color = 0x00ff00
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await bot.get_channel(938066272946622506).send(embed=embed)
 
 #owner command
 @bot.command()
