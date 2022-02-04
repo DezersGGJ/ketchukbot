@@ -165,14 +165,14 @@ async def answer(ctx, otvet):
         user = collserver.find_one({"_id": ctx.guild.id})
         for value in user["quiz"]:
             if otvet.lower() == value['answer']:
-                self.collserver.update_one(
+                collserver.update_one(
                     {
-                        "quiz.answer": otvet
+                        "quiz.answer": otvet.lower()
                     },
                     {
                         "$pull": {
                             "quiz": {
-                                "answer": otvet
+                                "answer": otvet.lower()
                             }
                         }
                     }
