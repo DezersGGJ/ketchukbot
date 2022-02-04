@@ -383,12 +383,9 @@ class Basic(commands.Cog):
             {
                 "$push": {
                     "quiz": {
-                        "answer": otvet,
+                        "answer": otvet.lower(),
                         "question":vopros
                     }
-                },
-                "$set": {
-                    "skolko": 0
                 }
             }
         )
