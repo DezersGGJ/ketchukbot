@@ -461,8 +461,8 @@ class Basic(commands.Cog):
                 embed.add_field(name="» Статус:", value="<:dnd:939411332254535731>Не беспокоить", inline=False)
             elif stats == discord.Status.idle:
                 embed.add_field(name="» Статус:", value="<:idle:939411332850147368>Не активен", inline=False)
-            embed.add_field(name="» Присоединился к серверу:", value=member.joined_at.strftime(date_format), inline=False)
-            embed.add_field(name="» Аккаунт создан:", value=member.created_at.strftime(date_format), inline=False)
+            embed.add_field(name="» Присоединился к серверу:", value=member.joined_at(), inline=False)
+            embed.add_field(name="» Аккаунт создан:", value=member.created_at(), inline=False)
             icon = str(ctx.guild.icon_url)
             embed.set_thumbnail(url = icon)
             await ctx.send(embed = embed)
