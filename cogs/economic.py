@@ -522,6 +522,87 @@ class Economic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
 
+    @commands.command(aliases=["cf"])
+    async def coinflip(self, ctx, coin = "heads", amount: int):
+        coins = ["heads", "tails"]
+        choice = random.choice(coins)
+        data = self.collection.find_one({"_id": ctx.author.id})
+        minbet, maxbet = 1000, 10000
+        if coin not in coins:
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<heads|tails>`.\n\nИспользование:\n`#coinflip <heads|tails> <amount>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
+        else:
+            if amount < minbet:
+                embed = discord.Embed(
+                    description = f"<:noe:911292323365781515>Минимальная ставка <:cash:903999146569138216>{humanize.intcomma(minbet)}.",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed = embed)
+            else:
+                if amount > maxbet:
+                    embed = discord.Embed(
+                        description = f"<:noe:911292323365781515>Максимальная ставка <:cash:903999146569138216>{humanize.intcomma(maxbet)}.",
+                        color = 0xff2400
+                    )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed = embed)
+                    if coin == choice:
+                        if choice == "heads":
+                            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
+                            embed = discord.Embed(
+                                description = f"Выпал орёл и вы выйграли.",
+                                color = 0x00ff00
+                            )
+                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                            await ctx.send(embed = embed)
+                        elif choice == "tails":
+                            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
+                            embed = discord.Embed(
+                                description = f"Выпала решка и вы выйграли.",
+                                color = 0x00ff00
+                            )
+                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                            await ctx.send(embed = embed)
+                    else:
+                        if choice == "heads":
+                            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
+                            embed = discord.Embed(
+                                description = f"Выпал орёл и вы проиграли.",
+                                color = 0x00ff00
+                            )
+                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                            await ctx.send(embed = embed)
+                        elif choice == "tails":
+                            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
+                            embed = discord.Embed(
+                                description = f"Выпала решка и вы проиграли.",
+                                color = 0x00ff00
+                            )
+                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                            await ctx.send(embed = embed)
+
+    @coinflip.error
+    async def coinflip_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+                embed = discord.Embed(
+                    description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#coinflip <heads|tails> <amount>`",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed = embed)
+        elif isinstance(error, commands.errors.BadArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`#coinflip <heads|tails> <amount>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
+
 
 def setup(bot):
     bot.add_cog(Economic(bot))
