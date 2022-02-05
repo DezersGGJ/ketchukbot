@@ -574,7 +574,7 @@ class Economic(commands.Cog):
                             self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
                             embed = discord.Embed(
                                 description = f"Выпал орёл и вы проиграли.",
-                                color = 0x00ff00
+                                color = 0xff2400
                             )
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                             await ctx.send(embed = embed)
@@ -582,7 +582,7 @@ class Economic(commands.Cog):
                             self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
                             embed = discord.Embed(
                                 description = f"Выпала решка и вы проиграли.",
-                                color = 0x00ff00
+                                color = 0xff2400
                             )
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                             await ctx.send(embed = embed)
