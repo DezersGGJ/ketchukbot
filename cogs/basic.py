@@ -445,7 +445,8 @@ class Basic(commands.Cog):
             embed.set_thumbnail(url = icon)
             await ctx.send(embed = embed)
         else:
-            date_format = "%a, %#d %B %Y, %I:%M %p UTC"
+            join = int(member.joined_at)
+            reg = int(member.created_at)
             embed = discord.Embed(
                 title = "Информация о пользователе:",
                 color = 0x00ff00
@@ -461,8 +462,8 @@ class Basic(commands.Cog):
                 embed.add_field(name="» Статус:", value="<:dnd:939411332254535731>Не беспокоить", inline=False)
             elif stats == discord.Status.idle:
                 embed.add_field(name="» Статус:", value="<:idle:939411332850147368>Не активен", inline=False)
-            embed.add_field(name="» Присоединился к серверу:", value=<t:member.joined_at.datetime.datetime():f>, inline=False)
-            embed.add_field(name="» Аккаунт создан:", value=<t:member.created_at.datetime.datetime():f>, inline=False)
+            embed.add_field(name="» Присоединился к серверу:", value=<t:join:f>, inline=False)
+            embed.add_field(name="» Аккаунт создан:", value=<t:reg:f>, inline=False)
             icon = str(ctx.guild.icon_url)
             embed.set_thumbnail(url = icon)
             await ctx.send(embed = embed)
