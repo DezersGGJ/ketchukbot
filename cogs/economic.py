@@ -586,23 +586,6 @@ class Economic(commands.Cog):
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                             await ctx.send(embed = embed)
 
-    @coinflip.error
-    async def coinflip_error(self, ctx, error):
-        if isinstance(error, commands.errors.MissingRequiredArgument):
-                embed = discord.Embed(
-                    description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#coinflip <amount> <heads|tails>`",
-                    color = 0xff2400
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed = embed)
-        elif isinstance(error, commands.errors.BadArgument):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`#coinflip <amount> <heads|tails>`",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-
 
 def setup(bot):
     bot.add_cog(Economic(bot))
