@@ -523,14 +523,14 @@ class Economic(commands.Cog):
             await ctx.send(embed=embed)
 
     @commands.command(aliases=["cf"])
-    async def coinflip(self, ctx, coin = "heads", amount: int):
+    async def coinflip(self, ctx, amount: int, coin = "heads"):
         coins = ["heads", "tails"]
         choice = random.choice(coins)
         data = self.collection.find_one({"_id": ctx.author.id})
         minbet, maxbet = 1000, 10000
         if coin not in coins:
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<heads|tails>`.\n\nИспользование:\n`#coinflip <heads|tails> <amount>`",
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<heads|tails>`.\n\nИспользование:\n`#coinflip <amount> <heads|tails>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -590,14 +590,14 @@ class Economic(commands.Cog):
     async def coinflip_error(self, ctx, error):
         if isinstance(error, commands.errors.MissingRequiredArgument):
                 embed = discord.Embed(
-                    description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#coinflip <heads|tails> <amount>`",
+                    description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#coinflip <amount> <heads|tails>`",
                     color = 0xff2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed = embed)
         elif isinstance(error, commands.errors.BadArgument):
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`#coinflip <heads|tails> <amount>`",
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`#coinflip <amount> <heads|tails>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
