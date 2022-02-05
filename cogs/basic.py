@@ -441,7 +441,7 @@ class Basic(commands.Cog):
                 embed.add_field(name="» Статус:", value="<:idle:939411332850147368>Не активен", inline=False)
             embed.add_field(name="» Присоединился к серверу:", value=ctx.author.joined_at.strftime(date_format), inline=False)
             embed.add_field(name="» Аккаунт создан:", value=ctx.author.created_at.strftime(date_format), inline=False)
-            icon = str(member.guild.icon_url)
+            icon = str(ctx.guild.icon_url)
             embed.set_thumbnail(url = icon)
             await ctx.send(embed = embed)
         else:
@@ -463,7 +463,7 @@ class Basic(commands.Cog):
                 embed.add_field(name="» Статус:", value="<:idle:939411332850147368>Не активен", inline=False)
             embed.add_field(name="» Присоединился к серверу:", value=member.joined_at.strftime(date_format), inline=False)
             embed.add_field(name="» Аккаунт создан:", value=member.created_at.strftime(date_format), inline=False)
-            icon = str(member.guild.icon_url)
+            icon = str(ctx.guild.icon_url)
             embed.set_thumbnail(url = icon)
             await ctx.send(embed = embed)
 
