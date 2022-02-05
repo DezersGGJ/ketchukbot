@@ -420,5 +420,44 @@ class Basic(commands.Cog):
             )
             await ctx.send(embed = embed)
 
+    @commands.command()
+    async def user(self, ctx, member: discord.Member = None):
+        if member is None:
+            embed = discord.Embed(
+                title = "Информация о пользователе:",
+                color = 0x00ff00
+            )
+            embed.add_field(name="» Пользователь:", value=ctx.author, inline=False)
+            embed.add_field(name="» Айди:", value=ctx.author.id, inline=False)
+            stats = ctx.author.status
+            if stats == discord.Status.online:
+                embed.add_field(name="» Статус:", value="<:online:939411332799803432>В сети", inline=False)
+            elif stats == discord.Status.offline:
+                embed.add_field(name="» Статус:", value="<:offline:939411332602671115>Не в сети", inline=False)
+            elif stats == discord.Status.dnd:
+                embed.add_field(name="» Статус:", value="<:dnd:939411332254535731>Не беспокоить", inline=False)
+            elif stats == discord.Status.idle:
+                embed.add_field(name="» Статус:", value="<:idle:939411332850147368>Не активен", inline=False)
+            embed.add_field(name="» Присоединился к серверу:", value=ctx.author.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC", inline=False)
+            embed.add_field(name="» Аккаунт создан:", value=ctx.author.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline=False)
+        else:
+            embed = discord.Embed(
+                title = "Информация о пользователе:",
+                color = 0x00ff00
+            )
+            embed.add_field(name="» Пользователь:", value=member, inline=False)
+            embed.add_field(name="» Айди:", value=member.id, inline=False)
+            stats = member.status
+            if stats == discord.Status.online:
+                embed.add_field(name="» Статус:", value="<:online:939411332799803432>В сети", inline=False)
+            elif stats == discord.Status.offline:
+                embed.add_field(name="» Статус:", value="<:offline:939411332602671115>Не в сети", inline=False)
+            elif stats == discord.Status.dnd:
+                embed.add_field(name="» Статус:", value="<:dnd:939411332254535731>Не беспокоить", inline=False)
+            elif stats == discord.Status.idle:
+                embed.add_field(name="» Статус:", value="<:idle:939411332850147368>Не активен", inline=False)
+            embed.add_field(name="» Присоединился к серверу:", value=member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC", inline=False)
+            embed.add_field(name="» Аккаунт создан:", value=member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline=False)
+
 def setup(bot):
     bot.add_cog(Basic(bot))
