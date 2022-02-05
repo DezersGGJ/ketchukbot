@@ -438,8 +438,8 @@ class Basic(commands.Cog):
                 embed.add_field(name="» Статус:", value="<:dnd:939411332254535731>Не беспокоить", inline=False)
             elif stats == discord.Status.idle:
                 embed.add_field(name="» Статус:", value="<:idle:939411332850147368>Не активен", inline=False)
-            embed.add_field(name="» Присоединился к серверу:", value=ctx.author.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline=False)
-            embed.add_field(name="» Аккаунт создан:", value=ctx.author.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline=False)
+            embed.add_field(name="» Присоединился к серверу:", value=ctx.message.author.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline=False)
+            embed.add_field(name="» Аккаунт создан:", value=ctx.message.author.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline=False)
         else:
             embed = discord.Embed(
                 title = "Информация о пользователе:",
