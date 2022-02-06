@@ -191,11 +191,11 @@ async def baner(ctx):
     image = Image.open('users.jpg')
     img = image.resize((960, 540))
     idraw = ImageDraw.Draw(img)
-    title = ImageFont.truetype('fint.ttf', size = 70)
+    title = ImageFont.truetype('fint.ttf', size = 80)
     name = str(ctx.guild.member_count)
     idraw.text((285, 355), name, font = title, fill = 'white')
     img.save('image.jpg')
-    await ctx.send(file = discord.File("image.jpg"))
+    await ctx.guild.edit(banner = discord.File('image.jpg'))
 
 #owner command
 @bot.command()
