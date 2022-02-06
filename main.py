@@ -6,12 +6,14 @@ import json
 import requests
 import os
 import asyncio
+import humanize
+from PIL import Image, ImageFont, ImageDraw
 from discord.ext import commands, tasks
 from pymongo import MongoClient
 from Cybernator import Paginator
 from discord_components import DiscordComponents, Button, ButtonStyle, Select, SelectOption
 from func import *
-import humanize
+
 
 
 bot = commands.Bot(command_prefix = '#', intents = discord.Intents.all())
@@ -183,6 +185,17 @@ async def answer(ctx, otvet):
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await bot.get_channel(938066272946622506).send(embed=embed)
+
+@bot.command()
+async def baner(ctx):
+    image = Image.open('users.jpg')
+    img = Image.resize((960, 540))
+    idraw = ImageDraw.Draw(img)
+    title = ImageFont.truetype('fint.ttf', size = 56)
+    name = 1000
+    idraw.text((280, 130), name, font = title, fill = 'white')
+    img.save('image.jpg')
+    await ctx.send(file = discord.File("image.jpg"))
 
 #owner command
 @bot.command()
