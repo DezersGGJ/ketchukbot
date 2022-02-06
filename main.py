@@ -7,6 +7,7 @@ import requests
 import os
 import asyncio
 import humanize
+import io
 from PIL import Image, ImageFont, ImageDraw
 from discord.ext import commands, tasks
 from pymongo import MongoClient
@@ -195,7 +196,8 @@ async def baner(ctx):
     name = str(ctx.guild.member_count)
     idraw.text((285, 355), name, font = title, fill = 'white')
     img.save('image.jpg')
-    await ctx.guild.edit(banner = "image.jpg")
+    byte = BytesIO(await img.read())
+    await ctx.guild.edit(banner = byte)
 
 #owner command
 @bot.command()
