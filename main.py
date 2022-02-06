@@ -8,7 +8,6 @@ import os
 import asyncio
 import humanize
 import io
-from io import BytesIO
 from PIL import Image, ImageFont, ImageDraw
 from discord.ext import commands, tasks
 from pymongo import MongoClient
@@ -190,14 +189,13 @@ async def answer(ctx, otvet):
 
 @bot.command()
 async def baner(ctx):
-    image = Image.open('users.jpg')
+    image = Image.open(io.BytesIO('users.jpg'))
     img = image.resize((960, 540))
     idraw = ImageDraw.Draw(img)
     title = ImageFont.truetype('fint.ttf', size = 80)
     name = str(ctx.guild.member_count)
     idraw.text((285, 355), name, font = title, fill = 'white')
     img.save('image.jpg')
-    file = discord.File(fp = "image.jpg")
     await ctx.guild.edit(banner = file)
 
 #owner command
