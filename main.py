@@ -58,6 +58,17 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
+    image = Image.open('banners.jpg')
+    img = image.resize((960, 540))
+    idraw = ImageDraw.Draw(img)
+    title = ImageFont.truetype('fint.ttf', size = 80)
+    name = str(ctx.guild.member_count)
+    boost = str(ctx.guild.premium_subscription_count)
+    idraw.text((285, 347), name, font = title, fill = '#ffd6da')
+    idraw.text((575, 345), boost, font = title, fill = '#ffd6da')
+    img.save('image.jpg')
+    with open("image.jpg", 'rb') as image:
+        await ctx.guild.edit(banner=image.read())
     mutes = load_json("jsons/mutes.json")
     if str(member.id) in mutes:
         role = discord.utils.get(member.guild.roles, id=902942596962328656)
@@ -99,6 +110,17 @@ async def on_message_delete(message):
 
 @bot.event
 async def on_member_remove(member):
+    image = Image.open('banners.jpg')
+    img = image.resize((960, 540))
+    idraw = ImageDraw.Draw(img)
+    title = ImageFont.truetype('fint.ttf', size = 80)
+    name = str(ctx.guild.member_count)
+    boost = str(ctx.guild.premium_subscription_count)
+    idraw.text((285, 347), name, font = title, fill = '#ffd6da')
+    idraw.text((575, 345), boost, font = title, fill = '#ffd6da')
+    img.save('image.jpg')
+    with open("image.jpg", 'rb') as image:
+        await ctx.guild.edit(banner=image.read())
     if member.bot == False:
       embed = discord.Embed(
           description = f"Участник **{member.name}** вышел с сервера.",
@@ -106,6 +128,7 @@ async def on_member_remove(member):
       )
       icon = str(member.guild.icon_url)
       embed.set_thumbnail(url = icon)
+      image = Image.open('banners.jpg')
       await bot.get_channel(903710414783791114).send(embed=embed)
 
 @bot.event
@@ -186,20 +209,6 @@ async def answer(ctx, otvet):
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await bot.get_channel(938066272946622506).send(embed=embed)
-
-@bot.command()
-async def baner(ctx):
-    image = Image.open('banners.jpg')
-    img = image.resize((960, 540))
-    idraw = ImageDraw.Draw(img)
-    title = ImageFont.truetype('fint.ttf', size = 80)
-    name = str(ctx.guild.member_count)
-    boost = str(ctx.guild.premium_subscription_count)
-    idraw.text((285, 347), name, font = title, fill = '#ffd6da')
-    idraw.text((575, 345), boost, font = title, fill = '#ffd6da')
-    img.save('image.jpg')
-    with open("image.jpg", 'rb') as image:
-        await ctx.guild.edit(banner=image.read())
 
 #owner command
 @bot.command()
