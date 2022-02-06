@@ -192,7 +192,7 @@ async def baner(ctx):
     img = image.resize((960, 540))
     idraw = ImageDraw.Draw(img)
     title = ImageFont.truetype('fint.ttf', size = 56)
-    name = 1000
+    name = str(1000)
     idraw.text((280, 130), name, font = title, fill = 'white')
     img.save('image.jpg')
     await ctx.send(file = discord.File("image.jpg"))
