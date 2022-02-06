@@ -8,6 +8,7 @@ import os
 import asyncio
 import humanize
 import io
+from io import BytesIO
 from PIL import Image, ImageFont, ImageDraw
 from discord.ext import commands, tasks
 from pymongo import MongoClient
