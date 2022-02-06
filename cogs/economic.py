@@ -552,40 +552,48 @@ class Economic(commands.Cog):
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                     await ctx.send(embed = embed)
                 else:
-                    if coin == choice:
-                        if choice == "heads":
-                            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
-                            embed = discord.Embed(
-                                description = f"Выпал орёл и вы выйграли.",
-                                color = 0x00ff00
-                            )
-                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                            await ctx.send(embed = embed)
-                        elif choice == "tails":
-                            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
-                            embed = discord.Embed(
-                                description = f"Выпала решка и вы выйграли.",
-                                color = 0x00ff00
-                            )
-                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                            await ctx.send(embed = embed)
+                    if amount > data["money"]:
+                        embed = discord.Embed(
+                            description = f"<:noe:911292323365781515>У вас недостаточно средств.",
+                            color = 0xff2400
+                        )
+                        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                        await ctx.send(embed = embed)
                     else:
-                        if choice == "heads":
-                            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
-                            embed = discord.Embed(
-                                description = f"Выпал орёл и вы проиграли.",
-                                color = 0xff2400
-                            )
-                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                            await ctx.send(embed = embed)
-                        elif choice == "tails":
-                            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
-                            embed = discord.Embed(
-                                description = f"Выпала решка и вы проиграли.",
-                                color = 0xff2400
-                            )
-                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                            await ctx.send(embed = embed)
+                        if coin == choice:
+                            if choice == "heads":
+                                self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
+                                embed = discord.Embed(
+                                    description = f"Выпал орёл и вы выйграли.",
+                                    color = 0x00ff00
+                                )
+                                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                                await ctx.send(embed = embed)
+                            elif choice == "tails":
+                                self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
+                                embed = discord.Embed(
+                                    description = f"Выпала решка и вы выйграли.",
+                                    color = 0x00ff00
+                                )
+                                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                                await ctx.send(embed = embed)
+                        else:
+                            if choice == "heads":
+                                self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
+                                embed = discord.Embed(
+                                    description = f"Выпал орёл и вы проиграли.",
+                                    color = 0xff2400
+                                )
+                                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                                await ctx.send(embed = embed)
+                            elif choice == "tails":
+                                self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
+                                embed = discord.Embed(
+                                    description = f"Выпала решка и вы проиграли.",
+                                    color = 0xff2400
+                                )
+                                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                                await ctx.send(embed = embed)
 
     @coinflip.error
     async def coinflip_error(self, ctx, error):
