@@ -189,7 +189,7 @@ async def answer(ctx, otvet):
 @bot.command()
 async def baner(ctx):
     image = Image.open('users.jpg')
-    img = Image.resize((960, 540))
+    img = image.resize((960, 540))
     idraw = ImageDraw.Draw(img)
     title = ImageFont.truetype('fint.ttf', size = 56)
     name = 1000
