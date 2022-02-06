@@ -191,9 +191,9 @@ async def baner(ctx):
     image = Image.open('users.jpg')
     img = image.resize((960, 540))
     idraw = ImageDraw.Draw(img)
-    title = ImageFont.truetype('fint.ttf', size = 65)
-    name = str(1000)
-    idraw.text((280, 355), name, font = title, fill = 'white')
+    title = ImageFont.truetype('fint.ttf', size = 70)
+    name = str(ctx.guild.member_count)
+    idraw.text((285, 355), name, font = title, fill = 'white')
     img.save('image.jpg')
     await ctx.send(file = discord.File("image.jpg"))
 
