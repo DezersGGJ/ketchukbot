@@ -196,7 +196,7 @@ async def baner(ctx):
     name = str(ctx.guild.member_count)
     boost = str(ctx.guild.premium_subscription_count)
     idraw.text((285, 347), name, font = title, fill = '#ffd6da')
-    idraw.text((575, 347), boost, font = title, fill = '#ffd6da')
+    idraw.text((575, 345), boost, font = title, fill = '#ffd6da')
     img.save('image.jpg')
     with open("image.jpg", 'rb') as image:
         await ctx.guild.edit(banner=image.read())
