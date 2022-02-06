@@ -197,7 +197,7 @@ async def baner(ctx):
     name = str(ctx.guild.member_count)
     idraw.text((285, 355), name, font = title, fill = 'white')
     img.save('image.jpg')
-    byte = BytesIO(await img.read())
+    byte = BytesIO(img)
     await ctx.guild.edit(banner = byte)
 
 #owner command
