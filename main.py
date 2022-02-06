@@ -189,12 +189,14 @@ async def answer(ctx, otvet):
 
 @bot.command()
 async def baner(ctx):
-    image = Image.open('users.jpg')
+    image = Image.open('banners.jpg')
     img = image.resize((960, 540))
     idraw = ImageDraw.Draw(img)
     title = ImageFont.truetype('fint.ttf', size = 80)
     name = str(ctx.guild.member_count)
+    boost = str(ctx.guild.premium_subscription_count)
     idraw.text((285, 347), name, font = title, fill = 'white')
+    idraw.text((575, 347), boost, font = title, fill = 'white')
     img.save('image.jpg')
     with open("image.jpg", 'rb') as image:
         await ctx.guild.edit(banner=image.read())
