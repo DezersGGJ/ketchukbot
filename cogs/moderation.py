@@ -633,11 +633,11 @@ class Moderation(commands.Cog):
             color = 0x00ff00
         )
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-        await member.remove_roles(self.mutedrole)
         await ctx.send(embed=embed)
+        await member.remove_roles(self.mutedrole)
         mutes = load_json("jsons/mutes.json")
-        write_json("jsons/mutes.json", mutes)
         mutes.pop(str(member.id))
+        write_json("jsons/mutes.json", mutes)
 
     @unmute.error
     async def unmute_error(self, ctx, error):
