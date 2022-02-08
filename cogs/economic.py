@@ -612,6 +612,118 @@ class Economic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
 
+    @commands.command()
+    async def rob(self, ctx, member: discord.Member):
+        if member != ctx.author:
+            if member.bot is False:
+                if self.collection.find_one({"_id": ctx.author.id})["cdrob"] == 0:
+                    time = int(datetime.datetime.utcnow().timestamp())
+                    self.collection.update_one({"_id": ctx.author.id}, {"$set": {"cdrob": time}})
+                    if random.randint(1,2) == 1:
+                        if self.collection.find_one({"_id": member.id})["money"] > 100:
+                            coll = self.collection.find_one({"_id": member.id})["money"]
+                            ones = coll/100
+                            twos = 1st*20
+                            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": int(2st)}})
+                            self.collection.update_one({"_id": member.id}, {"$inc": {"money": -int(2st)}})
+                            embed = discord.Embed(
+                                description = f"Вы ограбили {member.name} и получили <:cash:903999146569138216>{humanize.intcomma(int(2st))}.",
+                                color = 0x00ff00
+                            )
+                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                            await ctx.send(embed = embed)
+                        else:
+                            embed = discord.Embed(
+                                description = f"<:noe:911292323365781515>Чтоб ограбить пользователя у него на балансе должно быть больше <:cash:903999146569138216>100.",
+                                color = 0xff2400
+                            )
+                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                            await ctx.send(embed = embed)
+                    else:
+                        amount = random.randint(1000,3000)
+                        self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
+                        embed = discord.Embed(
+                            description = f"<:noe:911292323365781515>Вы были оштрафованы на <:cash:903999146569138216>{humanize.intcomma(amount)} за попытку ограбления.",
+                            color = 0xff2400
+                        )
+                        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                        await ctx.send(embed = embed)
+                else:
+                    time = self.collection.find_one({"_id": ctx.author.id})["cdrob"]
+                    cdtime = int(datetime.datetime.utcnow().timestamp()) - 604800
+                    if time < cdtime:
+                        time = int(datetime.datetime.utcnow().timestamp())
+                        self.collection.update_one({"_id": ctx.author.id}, {"$set": {"cdrob": time}})
+                        if random.randint(1,2) == 1:
+                            if self.collection.find_one({"_id": member.id})["money"] > 100:
+                                1st = self.collection.find_one({"_id": member.id})["money"] / 100
+                                2st = amount * 20
+                                self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": int(2st)}})
+                                self.collection.update_one({"_id": member.id}, {"$inc": {"money": -int(2st)}})
+                                embed = discord.Embed(
+                                    description = f"Вы ограбили {member.name} и получили <:cash:903999146569138216>{humanize.intcomma(int(2st))}.",
+                                    color = 0x00ff00
+                                )
+                                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                                await ctx.send(embed = embed)
+                            else:
+                                embed = discord.Embed(
+                                    description = f"<:noe:911292323365781515>Чтоб ограбить пользователя у него на балансе должно быть больше <:cash:903999146569138216>100.",
+                                    color = 0xff2400
+                                )
+                                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                                await ctx.send(embed = embed)
+                        else:
+                            amount = random.randint(1000,3000)
+                            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
+                            embed = discord.Embed(
+                                description = f"<:noe:911292323365781515>Вы были оштрафованы на <:cash:903999146569138216>{humanize.intcomma(amount)} за попытку ограбления.",
+                                color = 0xff2400
+                            )
+                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                            await ctx.send(embed = embed)
+                    else:
+                        cdtime = int(datetime.datetime.utcnow().timestamp()) - 604800
+                        time = self.collection.find_one({"_id": ctx.author.id})["cdweekly"] - cdtime
+                        cooldown = str(datetime.timedelta(seconds=time))
+                        embed = discord.Embed(
+                            description = f"<:timecooldown:911306427723841566>Вы сможете ограбить пользователя через {cooldown}",
+                            color = 0xFF2400
+                        )
+                        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                        await ctx.send(embed = embed)
+            else:
+                embed = discord.Embed(
+                    description = f"<:noe:911292323365781515>Вы не можете ограбить себя или бота.",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed = embed)
+        else:
+            embed = discord.Embed(
+                description = f"<:noe:911292323365781515>Вы не можете ограбить себя или бота.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
+
+    @rob.error
+    async def rob_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#remove-money <amount> <user>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
             
 def setup(bot):
     bot.add_cog(Economic(bot))
