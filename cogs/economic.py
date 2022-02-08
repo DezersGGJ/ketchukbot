@@ -621,7 +621,8 @@ class Economic(commands.Cog):
                     self.collection.update_one({"_id": ctx.author.id}, {"$set": {"cdrob": time}})
                     if random.randint(1,2) == 1:
                         if self.collection.find_one({"_id": member.id})["money"] > 100:
-                            1st = self.collection.find_one({"_id": member.id})["money"]/100
+                            coll = self.collection.find_one({"_id": member.id})["money"]
+                            1st = coll/100
                             2st = amount*20
                             self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": int(2st)}})
                             self.collection.update_one({"_id": member.id}, {"$inc": {"money": -int(2st)}})
