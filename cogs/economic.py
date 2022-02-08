@@ -624,10 +624,10 @@ class Economic(commands.Cog):
                             coll = self.collection.find_one({"_id": member.id})["money"]
                             ones = coll/100
                             twos = ones*20
-                            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": int(2st)}})
-                            self.collection.update_one({"_id": member.id}, {"$inc": {"money": -int(2st)}})
+                            self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": int(twos)}})
+                            self.collection.update_one({"_id": member.id}, {"$inc": {"money": -int(twos)}})
                             embed = discord.Embed(
-                                description = f"Вы ограбили {member.name} и получили <:cash:903999146569138216>{humanize.intcomma(int(2st))}.",
+                                description = f"Вы ограбили {member.name} и получили <:cash:903999146569138216>{humanize.intcomma(int(twos))}.",
                                 color = 0x00ff00
                             )
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -658,10 +658,10 @@ class Economic(commands.Cog):
                             if self.collection.find_one({"_id": member.id})["money"] > 100:
                                 1st = self.collection.find_one({"_id": member.id})["money"] / 100
                                 2st = amount * 20
-                                self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": int(2st)}})
-                                self.collection.update_one({"_id": member.id}, {"$inc": {"money": -int(2st)}})
+                                self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": int(twos)}})
+                                self.collection.update_one({"_id": member.id}, {"$inc": {"money": -int(twos)}})
                                 embed = discord.Embed(
-                                    description = f"Вы ограбили {member.name} и получили <:cash:903999146569138216>{humanize.intcomma(int(2st))}.",
+                                    description = f"Вы ограбили {member.name} и получили <:cash:903999146569138216>{humanize.intcomma(int(twos))}.",
                                     color = 0x00ff00
                                 )
                                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
