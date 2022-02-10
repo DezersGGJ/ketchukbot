@@ -395,7 +395,7 @@ class Economic(commands.Cog):
                     self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
                     self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"bank": -amount}})
                     embed = discord.Embed(
-                        description = f"Вы сеяли с банковского счёта <:cash:903999146569138216>{humanize.intcomma(amount)}.",
+                        description = f"Вы cняли с банковского счёта <:cash:903999146569138216>{humanize.intcomma(amount)}.",
                         color = 0x00ff00
                     )
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -736,7 +736,7 @@ class Economic(commands.Cog):
             try:
                 temp = ctx.guild.get_member(x["_id"])
                 tempmoney = x["money"]
-                embed.add_field(name=f"{i}: {temp.name}", value=f"{tempmoney}", inline=False)
+                embed.add_field(value=f"`{i}.` {temp.name} - {humanize.intcomma(int(tempmoney))}", inline=False)
                 i += 1
             except:
                 pass
