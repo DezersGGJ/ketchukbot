@@ -398,7 +398,8 @@ class Moderation(commands.Cog):
     async def ban(self, ctx, member: discord.Member, *, reason="Не указана"):
         if member != ctx.author:
             if member.bot is False:
-                if member.top_role.position >= ctx.author.top_role.position:
+                rolelist = [902849136041295883, 933769903910060153, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461]
+                if any(role.id in rolelist for role in member.roles):
                     embed = discord.Embed(
                         description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
                         color = 0xff2400
@@ -457,7 +458,8 @@ class Moderation(commands.Cog):
     async def kick(self, ctx, member: discord.Member, *, reason="Не указана"):
         if member != ctx.author:
             if member.bot is False:
-                if member.top_role.position >= ctx.author.top_role.position:
+                rolelist = [902849136041295883, 933769903910060153, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461]
+                if any(role.id in rolelist for role in member.roles):
                     embed = discord.Embed(
                         description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
                         color = 0xff2400
@@ -514,6 +516,7 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461)
     async def mute(self, ctx, member: discord.Member, time: str = None, *, reason="Не указана"):
+        rolelist = [902849136041295883, 933769903910060153, 902841113734447214, 903384312303472660, 903646061804023808, 903384319937085461]
         if member.bot is True:
             embed = discord.Embed(
                 description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
@@ -535,7 +538,7 @@ class Moderation(commands.Cog):
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
-        if member and member.top_role.position >= ctx.author.top_role.position:
+        if any(role.id in rolelist for role in member.roles):
             embed = discord.Embed(
                 description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
                 color = 0xff2400
