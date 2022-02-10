@@ -66,7 +66,7 @@ class Economic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
         else:
-            time = self.collection.find_one({"_id": ctx.author.id})["cddaily"]
+            time = self.collection.find_one({"_id": ctx.author.id})["cdweekly"]
             cdtime = int(datetime.datetime.utcnow().timestamp()) - 604800
             if time < cdtime:
                 amount = random.randint(20000,50000)
@@ -650,7 +650,7 @@ class Economic(commands.Cog):
                         await ctx.send(embed = embed)
                 else:
                     time = self.collection.find_one({"_id": ctx.author.id})["cdrob"]
-                    cdtime = int(datetime.datetime.utcnow().timestamp()) - 604800
+                    cdtime = int(datetime.datetime.utcnow().timestamp()) - 86400
                     if time < cdtime:
                         time = int(datetime.datetime.utcnow().timestamp())
                         self.collection.update_one({"_id": ctx.author.id}, {"$set": {"cdrob": time}})
@@ -683,8 +683,8 @@ class Economic(commands.Cog):
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                             await ctx.send(embed = embed)
                     else:
-                        cdtime = int(datetime.datetime.utcnow().timestamp()) - 604800
-                        time = self.collection.find_one({"_id": ctx.author.id})["cdweekly"] - cdtime
+                        cdtime = int(datetime.datetime.utcnow().timestamp()) - 86400
+                        time = self.collection.find_one({"_id": ctx.author.id})["cdrob"] - cdtime
                         cooldown = str(datetime.timedelta(seconds=time))
                         embed = discord.Embed(
                             description = f"<:timecooldown:911306427723841566>Вы сможете ограбить пользователя через {cooldown}",
