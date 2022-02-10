@@ -724,6 +724,26 @@ class Economic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
 
+    @commands.command():
+    async def lb(self, ctx):
+        lb = self.collection.find().sort("money", -1)
+        i = 1
+        embed = discord.Embed(
+            title = "Leaderboard",
+            color = 0x00ff00
+        )
+        for x in lb:
+            try:
+                temp = ctx.guild.get_member(x["_id"])
+                tempmoney = x["money"]
+                embed.add_field(name=f"{i}: {temp.name}", value=f"{tempmoney}", inline=False)
+                i += 1
+            except:
+                pass
+            if i == 11:
+                break
+        await ctx.send(embed=embed)
+
             
 def setup(bot):
     bot.add_cog(Economic(bot))
