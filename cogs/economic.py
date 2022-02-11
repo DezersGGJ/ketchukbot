@@ -745,7 +745,7 @@ class Economic(commands.Cog):
                 try:
                     temp = ctx.guild.get_member(x["_id"])
                     tempmoney = x[f"{types}"]
-                    embed.add_field(name=f"`{i}.` {temp.name} - {humanize.intcomma(int(tempmoney))}", value="\a", inline=False)
+                    embed.add_field(name=f"`{i}.` {temp.name} - {humanize.intcomma(int(tempmoney))}", value="\u200b", inline=False)
                     i += 1
                 except:
                     pass
