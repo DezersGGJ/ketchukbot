@@ -735,7 +735,7 @@ class Economic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
         else:
-            lb = self.collection.find().sort("types", -1)
+            lb = self.collection.find().sort(f"{types}", -1)
             i = 1
             embed = discord.Embed(
                 title = "Leaderboard",
@@ -744,7 +744,7 @@ class Economic(commands.Cog):
             for x in lb:
                 try:
                     temp = ctx.guild.get_member(x["_id"])
-                    tempmoney = x["types"]
+                    tempmoney = x[f"{types}"]
                     embed.add_field(name=f"`{i}.` {temp.name} - {humanize.intcomma(int(tempmoney))}", value="\a", inline=False)
                     i += 1
                 except:
