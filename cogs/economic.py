@@ -725,24 +725,33 @@ class Economic(commands.Cog):
             await ctx.send(embed=embed)
 
     @commands.command()
-    async def lb(self, ctx):
-        lb = self.collection.find().sort("money", -1)
-        i = 1
-        embed = discord.Embed(
-            title = "Leaderboard",
-            color = 0x00ff00
-        )
-        for x in lb:
-            try:
-                temp = ctx.guild.get_member(x["_id"])
-                tempmoney = x["money"]
-                embed.add_field(name=f"`{i}.` {temp.name} - {humanize.intcomma(int(tempmoney))}", value="\a", inline=True)
-                i += 1
-            except:
-                pass
-            if i == 11:
-                break
-        await ctx.send(embed=embed)
+    async def lb(self, ctx, types="money"):
+        lbtype = ["money", "bank", "mes"]
+        if types not in lbtype:
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<money|bank|mes>`.\n\nИспользование:\n`#leaderboard <money|bank|mes>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
+        else:
+            lb = self.collection.find().sort("types", -1)
+            i = 1
+            embed = discord.Embed(
+                title = "Leaderboard",
+                color = 0x00ff00
+            )
+            for x in lb:
+                try:
+                    temp = ctx.guild.get_member(x["_id"])
+                    tempmoney = x["types"]
+                    embed.add_field(name=f"`{i}.` {temp.name} - {humanize.intcomma(int(tempmoney))}", value="\a", inline=False)
+                    i += 1
+                except:
+                    pass
+                if i == 11:
+                    break
+            await ctx.send(embed=embed)
 
             
 def setup(bot):
