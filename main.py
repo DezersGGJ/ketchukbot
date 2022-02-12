@@ -14,6 +14,7 @@ from pymongo import MongoClient
 from Cybernator import Paginator
 from discord_components import DiscordComponents, Button, ButtonStyle, Select, SelectOption
 from func import *
+from traceback import format_exception
 from utils.util import clean_code, Pag
 
 
