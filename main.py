@@ -14,6 +14,7 @@ from pymongo import MongoClient
 from Cybernator import Paginator
 from discord_components import DiscordComponents, Button, ButtonStyle, Select, SelectOption
 from func import *
+from utils import clean_code, Pag
 
 
 
@@ -211,9 +212,43 @@ async def answer(ctx, otvet):
                 await bot.get_channel(938066272946622506).send(embed=embed)
 
 @bot.command()
-async def eval(ctx, *, arg):
-    result = eval(arg)
-    await ctx.send(arg)
+@commands.is_owner()
+async def eval(ctx, *, code):
+    code = clean_code(code)
+
+    local_variables = {
+        "discord": discord,
+        "commands": commands,
+        "bot": bot,
+        "ctx": ctx,
+        "channel": ctx.channel,
+        "author": ctx.author,
+        "guild": ctx.guild,
+        "message": ctx.message
+    }
+
+    stdout = io.StringIO()
+
+    try:
+        with contextlib.redirect_stdout(stdout):
+            exec(
+                f"async def func():\n{textwrap.indent(code, '    ')}", local_variables,
+            )
+
+            obj = await local_variables["func"]()
+            result = f"{stdout.getvalue()}\n-- {obj}\n"
+    except Exception as e:
+        result = "".join(format_exception(e, e, e.__traceback__))
+
+    pager = Pag(
+        timeout=100,
+        entries=[result[i: i + 2000] for i in range(0, len(result), 2000)],
+        length=1,
+        prefix="```py\n",
+        suffix="```"
+    )
+
+    await pager.start(ctx)
 
 #owner command
 @bot.command()
