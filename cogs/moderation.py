@@ -538,13 +538,6 @@ class Moderation(commands.Cog):
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
-        if any(role.id in rolelist for role in member.roles):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
         if time is None:
             embed = discord.Embed(
                 description = "<:noe:911292323365781515>Вы не указали длительность.",
@@ -553,56 +546,64 @@ class Moderation(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
         else:
-            try:
-                seconds = int(time[:-1])
-                duration = time[-1]
-                if duration == "s":
-                    pass
-                if duration == "m":
-                    seconds *= 60
-                if duration == "h":
-                    seconds *= 3600
-                if duration == "d":
-                    seconds *= 86400
-                if duration == "w":
-                    seconds *= 604800
-            except:
+            if any(role.id in rolelist for role in member.roles):
                 embed = discord.Embed(
-                    description = "<:noe:911292323365781515>Указана неправильная длительность.",
+                    description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе, другому модератору или боту.",
                     color = 0xff2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed=embed)
-            mute_expiration = (datetime.datetime.now() + datetime.timedelta(seconds=int(seconds))).strftime("%c")
-            role = self.mutedrole
-            if not role:
-                embed = discord.Embed(
-                    description = "<:noe:911292323365781515>Роль мута не найдена.",
-                    color = 0xff2400
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed=embed)
-            mutes = load_json("jsons/mutes.json")
-            try:
-                member_mute = mutes[str(member.id)]
-                embed = discord.Embed(
-                    description = "<:noe:911292323365781515>Пользователь уже в муте.",
-                    color = 0xff2400
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed=embed)
-            except:
-                mutes[str(member.id)] = str(mute_expiration)
-                write_json("jsons/mutes.json", mutes)
-                timemute = datetime.timedelta(seconds=int(seconds))
-                embed = discord.Embed(
-                    description = f"Участник **{member.name}** был замьючен.\n**Модератор:**\n{ctx.author}\n**Срок:**\n{time}\n**Причина:**\n{reason}",
-                    color = 0x00ff00
-                )
-                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await member.add_roles(role)
-                await member.move_to(channel=None)
-                await ctx.send(embed=embed)
+            else:
+                try:
+                    seconds = int(time[:-1])
+                    duration = time[-1]
+                    if duration == "s":
+                        pass
+                    if duration == "m":
+                        seconds *= 60
+                    if duration == "h":
+                        seconds *= 3600
+                    if duration == "d":
+                        seconds *= 86400
+                    if duration == "w":
+                        seconds *= 604800
+                except:
+                    embed = discord.Embed(
+                        description = "<:noe:911292323365781515>Указана неправильная длительность.",
+                        color = 0xff2400
+                    )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                mute_expiration = (datetime.datetime.now() + datetime.timedelta(seconds=int(seconds))).strftime("%c")
+                role = self.mutedrole
+                if not role:
+                    embed = discord.Embed(
+                        description = "<:noe:911292323365781515>Роль мута не найдена.",
+                        color = 0xff2400
+                    )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                mutes = load_json("jsons/mutes.json")
+                try:
+                    member_mute = mutes[str(member.id)]
+                    embed = discord.Embed(
+                        description = "<:noe:911292323365781515>Пользователь уже в муте.",
+                        color = 0xff2400
+                    )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                except:
+                    mutes[str(member.id)] = str(mute_expiration)
+                    write_json("jsons/mutes.json", mutes)
+                    timemute = datetime.timedelta(seconds=int(seconds))
+                    embed = discord.Embed(
+                        description = f"Участник **{member.name}** был замьючен.\n**Модератор:**\n{ctx.author}\n**Срок:**\n{time}\n**Причина:**\n{reason}",
+                        color = 0x00ff00
+                    )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await member.add_roles(role)
+                    await member.move_to(channel=None)
+                    await ctx.send(embed=embed)
 
     @mute.error
     async def mute_error(self, ctx, error):
