@@ -48,12 +48,14 @@ async def on_ready():
                 "reasons": [],
                 "notes": [],
                 "note": 0,
-                "endurance": 100
+                "endurance": 100,
+                "cdrob": 0
             }
             server = {
                 "_id": guild.id,
                 "case": 0,
-                "note": 0
+                "note": 0,
+                "quiz": []
             }
             if collection.count_documents({"_id": member.id}) == 0:
                 collection.insert_one(user)
@@ -97,7 +99,8 @@ async def on_member_join(member):
         "reasons": [],
         "notes": [],
         "note": 0,
-        "endurance": 100
+        "endurance": 100,
+        "cdrob": 0
     }
     if collection.count_documents({"_id": member.id}) == 0:
         collection.insert_one(user)
