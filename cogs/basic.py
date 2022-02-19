@@ -467,7 +467,7 @@ class Basic(commands.Cog):
             embed.set_thumbnail(url = icon)
             await ctx.send(embed = embed)
 
-    @user.error()
+    @user.error
     async def user_error(self, ctx, error):
         if isinstance(error, commands.errors.MissingRequiredArgument):
             embed = discord.Embed(
