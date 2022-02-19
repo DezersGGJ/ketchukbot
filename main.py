@@ -31,8 +31,8 @@ collserver = cluster.ecodb.collserver
 #umoney = collection.find_one({"_id": ctx.author.id})["money"]
 #collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
 #event
-async def job():
-    await print("hello")
+def job():
+    print("hello")
 
 schedule.every(10).seconds.do(job)
 while True:
