@@ -37,7 +37,7 @@ def job():
 schedule.every().sunday.at("12:00").do(job)
 while True:
     schedule.run_pending()
-    time.sleep(10)
+    time.sleep(10))
     
 @bot.event
 async def on_ready():
