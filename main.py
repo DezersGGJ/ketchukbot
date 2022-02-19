@@ -10,6 +10,8 @@ import asyncio
 import humanize
 import io
 import textwrap
+import schedule
+import time
 from PIL import Image, ImageFont, ImageDraw
 from discord.ext import commands, tasks
 from pymongo import MongoClient
