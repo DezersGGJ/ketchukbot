@@ -31,16 +31,6 @@ collserver = cluster.ecodb.collserver
 #umoney = collection.find_one({"_id": ctx.author.id})["money"]
 #collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
 #event
-def job():
-    for guild in bot.guilds:
-        for member in guild.members:
-            collection.update_one({"_id": member.id}, {"$set": {"weeklymes": 0}})
-
-schedule.every().sunday.at("12:00").do(job)
-while True:
-    schedule.run_pending()
-    time.sleep(10)
-
 @bot.event
 async def on_ready():
     print("Bot connected to the server")
