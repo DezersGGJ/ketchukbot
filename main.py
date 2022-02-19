@@ -29,6 +29,14 @@ collserver = cluster.ecodb.collserver
 #umoney = collection.find_one({"_id": ctx.author.id})["money"]
 #collection.update_one({"_id": ctx.author.id}, {"$set": {"money": umoney + amount}})
 #event
+async def weekmes():
+    print("hello")
+
+schedule.every(10).seconds.do(weekmes)
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+
 @bot.event
 async def on_ready():
     print("Bot connected to the server")
@@ -49,7 +57,8 @@ async def on_ready():
                 "notes": [],
                 "note": 0,
                 "endurance": 100,
-                "cdrob": 0
+                "cdrob": 0,
+                "weeklymes": 0
             }
             server = {
                 "_id": guild.id,
@@ -100,7 +109,8 @@ async def on_member_join(member):
         "notes": [],
         "note": 0,
         "endurance": 100,
-        "cdrob": 0
+        "cdrob": 0,
+        "weeklymes": 0
     }
     if collection.count_documents({"_id": member.id}) == 0:
         collection.insert_one(user)
@@ -154,6 +164,7 @@ async def on_message(message):
         if message.channel.id == 902855972509327400:
             data = collection.find_one({"_id": message.author.id})
             collection.update_one({"_id": message.author.id}, {"$inc": {"mes": 1}})
+            collection.update_one({"_id": message.author.id}, {"$inc": {"weeklymes": 1}})
             collection.update_one({"_id": message.author.id}, {"$inc": {"money": 100}})
             if data["mes"] == 149:
                 guild = bot.get_guild(message.guild.id)
