@@ -1,6 +1,4 @@
 import discord
-import schedule
-import time
 import random
 import datetime
 import humanize
@@ -16,14 +14,6 @@ class Basic(commands.Cog):
         self.cluster = MongoClient("mongodb+srv://DezersGG:Weerweer333@cluster0.b9xjp.mongodb.net/ecodb?retryWrites=true&w=majority")
         self.collection = self.cluster.ecodb.colldb
         self.collserver = self.cluster.ecodb.collserver
-
-    async def weekmes(self):
-        print("hello")
-
-    schedule.every(10).seconds.do(weekmes)
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
 
     @commands.command()
     async def avatar(self, ctx, member: discord.Member=None):
