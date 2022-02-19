@@ -22,7 +22,6 @@ from traceback import format_exception
 from utils.util import clean_code, Pag
 
 
-
 bot = commands.Bot(command_prefix = '#', intents = discord.Intents.all())
 bot.remove_command('help')
 cluster = MongoClient("mongodb+srv://DezersGG:Weerweer333@cluster0.b9xjp.mongodb.net/ecodb?retryWrites=true&w=majority")
@@ -37,7 +36,7 @@ def job():
 schedule.every().sunday.at("12:00").do(job)
 while True:
     schedule.run_pending()
-    time.sleep(10))
+    time.sleep(10)
     
 @bot.event
 async def on_ready():
