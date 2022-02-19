@@ -1,4 +1,6 @@
 import discord
+import schedule
+import time
 import random
 import datetime
 import humanize
@@ -14,6 +16,14 @@ class Basic(commands.Cog):
         self.cluster = MongoClient("mongodb+srv://DezersGG:Weerweer333@cluster0.b9xjp.mongodb.net/ecodb?retryWrites=true&w=majority")
         self.collection = self.cluster.ecodb.colldb
         self.collserver = self.cluster.ecodb.collserver
+
+    async def weekmes(self):
+        print("hello")
+
+    schedule.every(10).seconds.do(weekmes)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
     @commands.command()
     async def avatar(self, ctx, member: discord.Member=None):
@@ -52,7 +62,7 @@ class Basic(commands.Cog):
         await ctx.send(embed = embed)
 
     @commands.command(aliases = ["mes"])
-    async def messages(self, ctx, member: discord.Member = None):
+    async def messages(self, ctx, member: discord.Member):
         if member is None:
             umes = self.collection.find_one({"_id": ctx.author.id})["mes"]
             if umes < 149:
@@ -466,6 +476,24 @@ class Basic(commands.Cog):
             icon = str(ctx.guild.icon_url)
             embed.set_thumbnail(url = icon)
             await ctx.send(embed = embed)
+
+    @user.error()
+    async def user_error(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#user <user>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(Basic(bot))
