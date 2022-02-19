@@ -29,7 +29,7 @@ cluster = MongoClient("mongodb+srv://DezersGG:Weerweer333@cluster0.b9xjp.mongodb
 collection = cluster.ecodb.colldb
 collserver = cluster.ecodb.collserver
 
-async def job():
+def job():
     for guild in bot.guilds:
         for member in guild.members:
             collection.update_one({"_id": member.id}, {"$set": {"weeklymes": 0}})
