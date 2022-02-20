@@ -31,7 +31,7 @@ collserver = cluster.ecodb.collserver
 def job():
     print("I'm working...")
 
-schedule.every().sunday.at("12:00").do(week)
+schedule.every(3).seconds.do(job)
 
 while True:
     schedule.run_pending()
