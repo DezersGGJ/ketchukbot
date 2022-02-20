@@ -27,6 +27,16 @@ bot.remove_command('help')
 cluster = MongoClient("mongodb+srv://DezersGG:Weerweer333@cluster0.b9xjp.mongodb.net/ecodb?retryWrites=true&w=majority")
 collection = cluster.ecodb.colldb
 collserver = cluster.ecodb.collserver
+
+def job():
+    for guild in bot.guilds:
+        for member in guild.members:
+            collection.update_one({"_id": member.id}, {"$set": {"weeklymes": 0}})
+
+schedule.every().sunday.at("12:00").do(job)
+while True:
+    schedule.run_pending()
+    time.sleep(10)
     
 @bot.event
 async def on_ready():
