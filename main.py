@@ -27,15 +27,6 @@ bot.remove_command('help')
 cluster = MongoClient("mongodb+srv://DezersGG:Weerweer333@cluster0.b9xjp.mongodb.net/ecodb?retryWrites=true&w=majority")
 collection = cluster.ecodb.colldb
 collserver = cluster.ecodb.collserver
-
-def job():
-    print("I'm working...")
-
-schedule.every(3).seconds.do(job)
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)
     
 @bot.event
 async def on_ready():
