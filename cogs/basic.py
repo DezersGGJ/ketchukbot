@@ -2,6 +2,8 @@ import discord
 import random
 import datetime
 import humanize
+import schedule
+import time
 from Cybernator import Paginator
 from discord.ext import commands, tasks
 from pymongo import MongoClient
