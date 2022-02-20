@@ -17,15 +17,6 @@ class Basic(commands.Cog):
         self.collection = self.cluster.ecodb.colldb
         self.collserver = self.cluster.ecodb.collserver
 
-    def job():
-        print("I'm working...")
-
-    schedule.every(3).seconds.do(job)
-
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-
     @commands.command()
     async def avatar(self, ctx, member: discord.Member=None):
         if member is None:
