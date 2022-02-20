@@ -18,9 +18,8 @@ class Moderation(commands.Cog):
     async def colorit(self):
         server = self.bot.get_guild(id=902831072247709757)
         role = server.get_role(944888747818901534)
-        colors = ['0xFF0000', '0xFFA500', '0xFFFF00', '0x008000', '0x0000FF', '0x800080']
-        colot = random.choice(colors)
-        await role.edit(color=discord.Color(colot))
+        colour = random.randint(0, 0xFFFFFF)
+        await role.edit(color=discord.Color(colour))
 
     @tasks.loop()
     async def check_mutes(self):
