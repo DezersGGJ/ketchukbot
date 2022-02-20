@@ -14,7 +14,7 @@ class Moderation(commands.Cog):
         self.collection = self.cluster.ecodb.colldb
         self.collserver = self.cluster.ecodb.collserver
 
-    @tasks.loop(minutes=1.0)
+    @tasks.loop(seconds=5)
     async def colorit(self):
         server = self.bot.get_guild(id=902831072247709757)
         role = server.get_role(944888747818901534)
