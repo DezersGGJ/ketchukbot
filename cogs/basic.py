@@ -20,7 +20,7 @@ class Basic(commands.Cog):
     def job(self):
         print("I'm working...")
 
-    schedule.every(3).seconds.do(job)
+    self.schedule.every(3).seconds.do(job)
 
     while True:
         schedule.run_pending()
