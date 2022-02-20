@@ -20,11 +20,11 @@ class Basic(commands.Cog):
     def job(self):
         print("I'm working...")
 
-    self.schedule.every(3).seconds.do(job)
+    schedule.every(3).seconds.do(job)
 
     while True:
-        self.schedule.run_pending()
-        self.time.sleep(1)
+        schedule.run_pending()
+        time.sleep(1)
 
     @commands.command()
     async def avatar(self, ctx, member: discord.Member=None):
