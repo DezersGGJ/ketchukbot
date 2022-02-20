@@ -17,10 +17,10 @@ class Basic(commands.Cog):
         self.collection = self.cluster.ecodb.colldb
         self.collserver = self.cluster.ecodb.collserver
 
-    def job(self):
+    def job():
         print("I'm working...")
 
-    self.schedule.every(3).seconds.do(job)
+    schedule.every(3).seconds.do(job)
 
     while True:
         schedule.run_pending()
