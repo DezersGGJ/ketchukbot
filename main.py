@@ -28,10 +28,8 @@ cluster = MongoClient("mongodb+srv://DezersGG:Weerweer333@cluster0.b9xjp.mongodb
 collection = cluster.ecodb.colldb
 collserver = cluster.ecodb.collserver
 
-def week():
-    for guild in bot.guilds:
-        for member in guild.members:
-            collection.update_one({"_id": member.id}, {"$set": {"weeklymes": 0}})
+def job():
+    print("I'm working...")
 
 schedule.every().sunday.at("12:00").do(week)
 
