@@ -487,7 +487,7 @@ class Basic(commands.Cog):
             await ctx.send(embed=embed)
 
     @commands.command()
-    async def add(self, ctx, role: discord.Role = None, cost: int = None, desc = "Нету"):
+    async def add(self, ctx, role: discord.Role = None, cost: int = None, *, desc = "Нету"):
         if role is None:
             embed = discord.Embed(
                 description = "<:noe:911292323365781515>Укажите роль которую хотите добавить в магазин.",
@@ -520,9 +520,9 @@ class Basic(commands.Cog):
                             "roleshop": {
                                 "roleid": role.id,
                                 "rolename": role.name,
-                                "pos": self.collection.find_one({"_id": ctx.guild.id})["rolepos"],
                                 "desc": desc,
-                                "cost": cost
+                                "cost": cost,
+                                "pos": self.collserver.find_one({"_id": ctx.guild.id})["rolepos"]
                             }
                         },
                         "$inc": {
@@ -534,7 +534,7 @@ class Basic(commands.Cog):
 
     @commands.command()
     async def shop(self, ctx):
-        guild = self.collection.find_one({"_id": ctx.guild.id})
+        guild = self.collserver.find_one({"_id": ctx.guild.id})
         embed = discord.Embed(color = 0x42aaff)
         embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         for value in guild["roleshop"]:
