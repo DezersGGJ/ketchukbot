@@ -523,7 +523,7 @@ class Basic(commands.Cog):
                             "roleshop": {
                                 "position": self.collserver.find_one({"_id": ctx.guild.id})["rolepos"],
                                 "id": role.id,
-                                "name": role.name
+                                "name": role.name,
                                 "cost": cost,
                                 "description": desc
                             }
