@@ -541,7 +541,7 @@ class Basic(commands.Cog):
 
     @commands.command(aliases=["delete-shop"])
     async def delete_shop(self, ctx, name: str = None):
-        if pos is None:
+        if name is None:
             embed = discord.Embed(
                 description = "<:noe:911292323365781515>Укажите номер роли которую хотите удалить с магазина.",
                 color = 0xff2400
