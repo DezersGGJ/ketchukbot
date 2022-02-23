@@ -486,7 +486,7 @@ class Basic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
 
-    @commands.command(aliases=["add-role"])
+    @commands.command(aliases=["add-shop"])
     async def add_shop(self, ctx, role: discord.Role = None, cost: int = None, *, desc = "Нету"):
         if role is None:
             embed = discord.Embed(
