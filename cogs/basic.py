@@ -513,7 +513,7 @@ class Basic(commands.Cog):
             else:
                 self.collection.update_one(
                     {
-                        "_id" ctx.guild.id
+                        "_id": ctx.guild.id
                     },
                     {
                         "$inc": {
