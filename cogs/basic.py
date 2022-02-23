@@ -538,7 +538,7 @@ class Basic(commands.Cog):
         embed = discord.Embed(color = 0x42aaff)
         embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         for value in guild["roleshop"]:
-            embed.add_field(name=f"{pos}. {rolename} - <:cash:903999146569138216>{humanize.intcomma(cost)}", value=f"{desc}", inline=False)
+            embed.add_field(name=f"{value['pos']}. {value['rolename']} - <:cash:903999146569138216>{humanize.intcomma(value['cost'])}", value=f"{value['desc']}", inline=False)
         await ctx.send(embed=embed)
 
 
