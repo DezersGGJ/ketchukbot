@@ -486,6 +486,61 @@ class Basic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
 
+    @commands.command()
+    async def add(self, ctx, role: discord.Role = None, cost: int = None, desc = "Нету"):
+        if role is None:
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Укажите роль которую хотите добавить в магазин.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        else:
+            if cost is None:
+                embed = discord.Embed(
+                    description = "<:noe:911292323365781515>Укажите стоимость роли которую хотите добавить в магазин.",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+            elif cost < 0:
+                embed = discord.Embed(
+                    description = "Введите сумму больше <:cash:903999146569138216>0.",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed = embed)
+            else:
+                self.collection.update_one(
+                    {
+                        "_id" ctx.guild.id
+                    },
+                    {
+                        "$inc": {
+                            "rolepos": 1
+                        },
+                        "$push": {
+                            "roleshop": {
+                                "position": self.collserver.find_one({"_id": ctx.guild.id})["rolepos"],
+                                "id": role.id,
+                                "name": role.name
+                                "cost": cost,
+                                "description": desc
+                            }
+                        }
+                    }
+                )
+                await ctx.message.add_reaction('✅')
+
+    @commands.command()
+    async def shop(self, ctx):
+        guild = self.collection.find_one({"_id": ctx.guild.id})
+        embed = discord.Embed(color = 0x42aaff)
+        embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
+        for value in guild["roleshop"]:
+            embed.add_field(name=f"{position}. {name} - <:cash:903999146569138216>{humanize.intcomma(cost)}", value=f"{description}", inline=False)
+        await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(Basic(bot))
