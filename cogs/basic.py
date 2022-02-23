@@ -549,7 +549,7 @@ class Basic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
         else:
-            if self.collection.count_documents({"roleshop.rolename": name}) == 0:
+            if self.collserver.count_documents({"roleshop.rolename": name}) == 0:
                 await ctx.send("Даной роли не найдено.")
             else:
                 self.collection.update_one(
