@@ -552,7 +552,7 @@ class Basic(commands.Cog):
             if self.collserver.count_documents({"roleshop.rolename": name}) == 0:
                 await ctx.send("Даной роли не найдено.")
             else:
-                self.collection.update_one(
+                self.collserver.update_one(
                     {
                         "roleshop.rolename": name
                     },
