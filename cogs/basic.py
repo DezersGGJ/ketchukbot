@@ -511,22 +511,22 @@ class Basic(commands.Cog):
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed = embed)
             else:
-                self.collection.update_one(
+                self.collserver.update_one(
                     {
                         "_id": ctx.guild.id
                     },
                     {
-                        "$inc": {
-                            "rolepos": 1
-                        },
                         "$push": {
                             "roleshop": {
-                                "position": self.collserver.find_one({"_id": ctx.guild.id})["rolepos"],
-                                "id": role.id,
-                                "name": role.name,
-                                "cost": cost,
-                                "description": desc
+                                "roleid": role.id,
+                                "rolename": role.name,
+                                "pos": self.collection.find_one({"_id": ctx.guild.id})["rolepos"],
+                                "desc": desc,
+                                "cost": cost
                             }
+                        },
+                        "$inc": {
+                            "rolepos": 1
                         }
                     }
                 )
