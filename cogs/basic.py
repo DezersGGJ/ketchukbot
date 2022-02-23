@@ -486,8 +486,8 @@ class Basic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
 
-    @commands.command()
-    async def add(self, ctx, role: discord.Role = None, cost: int = None, *, desc = "Нету"):
+    @commands.command(aliases=["add-role"])
+    async def add_shop(self, ctx, role: discord.Role = None, cost: int = None, *, desc = "Нету"):
         if role is None:
             embed = discord.Embed(
                 description = "<:noe:911292323365781515>Укажите роль которую хотите добавить в магазин.",
@@ -522,11 +522,7 @@ class Basic(commands.Cog):
                                 "rolename": role.name,
                                 "desc": desc,
                                 "cost": cost,
-                                "pos": self.collserver.find_one({"_id": ctx.guild.id})["rolepos"]
                             }
-                        },
-                        "$inc": {
-                            "rolepos": 1
                         }
                     }
                 )
@@ -537,9 +533,44 @@ class Basic(commands.Cog):
         guild = self.collserver.find_one({"_id": ctx.guild.id})
         embed = discord.Embed(color = 0x42aaff)
         embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
+        i = 1
         for value in guild["roleshop"]:
-            embed.add_field(name=f"{value['pos']}. {value['rolename']} - <:cash:903999146569138216>{humanize.intcomma(value['cost'])}", value=f"{value['desc']}", inline=False)
+            embed.add_field(name=f"{i}. {value['rolename']} - <:cash:903999146569138216>{humanize.intcomma(value['cost'])}", value=f"{value['desc']}", inline=False)
+            i += 1
         await ctx.send(embed=embed)
+
+    @commands.command(aliases=["delete-shop"])
+    async def delete_shop(self, ctx, name: str = None):
+        if pos is None:
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Укажите номер роли которую хотите удалить с магазина.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        else:
+            if self.collection.count_documents({"roleshop.rolename": name}) == 0:
+                await ctx.send("Даной роли не найдено.")
+            else:
+                self.collection.update_one(
+                    {
+                        "roleshop.rolename": name
+                    },
+                    {
+                        "$pull": {
+                            "roleshop": {
+                                "rolename": name
+                            }
+                        }
+                    }
+                )
+                embed = discord.Embed(
+                    description = "Вы успешно удалили указанную роль.",
+                    color = 0x42aaff
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+
 
 
 def setup(bot):
