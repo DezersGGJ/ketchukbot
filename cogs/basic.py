@@ -598,7 +598,8 @@ class Basic(commands.Cog):
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                     await ctx.send(embed=embed)
                 else:
-                    if self.collserver.find_one({"roleshop.roleid": role.id})['cost'] > self.collection.find_one({"_id": ctx.author.id})['money']:
+                    costrole = self.collserver.find_one({"roleshop.roleid": role.id})
+                    if costrole['cost'] > self.collection.find_one({"_id": ctx.author.id})['money']:
                         embed = discord.Embed(
                             description = f"<:noe:911292323365781515>У вас недостаточно средств.",
                             color = 0xff2400
