@@ -566,11 +566,47 @@ class Basic(commands.Cog):
                     }
                 )
                 embed = discord.Embed(
-                    description = "Вы успешно удалили указанную роль.",
+                    description = "<:check:930367892455850014>Вы успешно удалили указанную роль.",
                     color = 0x42aaff
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed=embed)
+
+    @commands.command()
+    async def buy(self, ctx, *, role: discord.Role = None):
+        if role is None:
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Укажите роль, которую вы желаете приобрести.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        else:
+            if role in ctx.author.roles:
+                embed = discord.Embed(
+                    description = "<:noe:911292323365781515>У вас уже имеется данная роль.",
+                    color = 0xff2400
+                )
+                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+            else:
+                if self.collserver.count_documents({"roleshop.roleid": role.id}) == 0:
+                    embed = discord.Embed(
+                        description = "<:noe:911292323365781515>Данной роли нет в магазине.",
+                        color = 0xff2400
+                    )
+                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                    await ctx.send(embed=embed)
+                else:
+                    if self.collserver.find_one({"roleshop.roleid": role.id})['cost'] > self.collection.find_one({"_id": ctx.author.id})['money']:
+                        embed = discord.Embed(
+                            description = f"<:noe:911292323365781515>У вас недостаточно средств.",
+                            color = 0xff2400
+                        )
+                        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                        await ctx.send(embed = embed)
+                    else:
+                        await ctx.send('Вы купили роль.')
 
 
 
