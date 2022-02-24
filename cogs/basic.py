@@ -18,7 +18,7 @@ class Basic(commands.Cog):
         self.collserver = self.cluster.ecodb.collserver
 
     @commands.command()
-    async def avatar(self, ctx, member: discord.Member=None):
+    async def avatar(self, ctx, *, member: discord.Member=None):
         if member is None:
             embed = discord.Embed(
                 title = f"Аватар {ctx.author.name}",
@@ -54,7 +54,7 @@ class Basic(commands.Cog):
         await ctx.send(embed = embed)
 
     @commands.command(aliases = ["mes"])
-    async def messages(self, ctx, member: discord.Member):
+    async def messages(self, ctx, *, member: discord.Member = None):
         if member is None:
             umes = self.collection.find_one({"_id": ctx.author.id})["mes"]
             if umes < 149:
@@ -171,6 +171,16 @@ class Basic(commands.Cog):
                 )
                 embed.set_author(name=member, icon_url=member.avatar_url)
                 await ctx.send(embed = embed)
+
+    @messages.error
+    async def messages_error(self, ctx, error):
+        if isinstance(error, commands.errors.MemberNotFound):
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Пользователь не найден.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
 
 
     @commands.command(aliases = ["add-messages"])
