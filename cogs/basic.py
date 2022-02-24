@@ -172,15 +172,6 @@ class Basic(commands.Cog):
                 embed.set_author(name=member, icon_url=member.avatar_url)
                 await ctx.send(embed = embed)
 
-    @messages.error
-    async def messages_error(self, ctx, error):
-        if isinstance(error, commands.errors.MemberNotFound):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Пользователь не найден.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
 
     @commands.command(aliases = ["add-messages"])
     @commands.has_any_role(902849136041295883, 506864696562024448, 902841113734447214, 933769903910060153)
@@ -526,7 +517,7 @@ class Basic(commands.Cog):
                         }
                     }
                 )
-                await ctx.message.add_reaction('✅')
+                await ctx.message.add_reaction('<:check:930367892455850014>')
 
     @commands.command()
     async def shop(self, ctx):
@@ -540,8 +531,8 @@ class Basic(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["delete-shop"])
-    async def delete_shop(self, ctx, name: str = None):
-        if name is None:
+    async def delete_shop(self, ctx, *, role: discord.Role = None):
+        if role is None:
             embed = discord.Embed(
                 description = "<:noe:911292323365781515>Укажите номер роли которую хотите удалить с магазина.",
                 color = 0xff2400
@@ -549,17 +540,17 @@ class Basic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
         else:
-            if self.collserver.count_documents({"roleshop.rolename": name}) == 0:
+            if self.collserver.count_documents({"roleshop.roleid": role.id}) == 0:
                 await ctx.send("Даной роли не найдено.")
             else:
                 self.collserver.update_one(
                     {
-                        "roleshop.rolename": name
+                        "roleshop.roleid": role.id
                     },
                     {
                         "$pull": {
                             "roleshop": {
-                                "rolename": name
+                                "roleid": role.id
                             }
                         }
                     }
