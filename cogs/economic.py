@@ -725,30 +725,34 @@ class Economic(commands.Cog):
             await ctx.send(embed=embed)
 
     @commands.command()
-    async def lb(self, ctx):
-        lbmoney = self.collection.find().sort("money", -1)
-        lbbank = self.collection.find().sort("bank", -1)
-        lbmes = self.collection.find().sort("mes", -1)
-        i = 1
-        n = 0
-        embed = discord.Embed(
-            title = "🏆Топ участников",
-            color = 0x03a8f4
-        )
-        for name in lbmoney:
-            n += 1
-            if n == 1:
-                break
-                for leaderboard in lbmoney, lbbank, lbmes:
-                    temp = ctx.guild.get_member(name["_id"])
-                    tempmoney = leaderboard['money']
-                    tempbank = leaderboard['bank']
-                    tempmes = leaderboard['mes']
-                    embed.add_field(name=f"#{i}. {temp.name}", value=f"**Деньги:** {humanize.intcomma(int(tempmoney))} | **Банк:** {humanize.intcomma(int(tempbank))} |  **Сообщения:** {humanize.intcomma(int(tempmes))}", inline=False)
+    async def lb(self, ctx, types="money"):
+        lbtype = ["money", "bank", "mes"]
+        if types not in lbtype:
+            embed = discord.Embed(
+                description = "<:noe:911292323365781515>Неправильно указан аргумент `<money|bank|mes>`.\n\nИспользование:\n`#leaderboard <money|bank|mes>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
+        else:
+            lb = self.collection.find().sort(f"{types}", -1)
+            i = 1
+            embed = discord.Embed(
+                title = "🏆Топ участников",
+                color = 0x00ff00
+            )
+            for x in lb:
+                try:
+                    temp = ctx.guild.get_member(x["_id"])
+                    tempmoney = x[f"{types}"]
+                    embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
                     i += 1
-                    if i == 11:
-                        break
-        await ctx.send(embed=embed)
+                except:
+                    pass
+                if i == 11:
+                    break
+            await ctx.send(embed=embed)
+
             
 def setup(bot):
     bot.add_cog(Economic(bot))
