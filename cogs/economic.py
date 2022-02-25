@@ -745,27 +745,36 @@ class Economic(commands.Cog):
                 try:
                     temp = ctx.guild.get_member(x["_id"])
                     tempmoney = x[f"{types}"]
-                    i += 1
                     if i == 1:
                         embed.add_field(name=f"<:gold_star:946801674343833631>#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
+                        i += 1
                     elif i == 2:
                         embed.add_field(name=f"<:silver_star:946802012044034069>#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
+                        i += 1
                     elif i == 3:
                         embed.add_field(name=f"<:bronze_star:946802088950779934>#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
+                        i += 1
                     elif i == 4:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
+                        i += 1
                     elif i == 5:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
+                        i += 1
                     elif i == 6:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
+                        i += 1
                     elif i == 7:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
+                        i += 1
                     elif i == 8:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
+                        i += 1
                     elif i == 9:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
+                        i += 1
                     elif i == 10:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
+                        i += 1
                 except:
                     pass
                 if i == 11:
