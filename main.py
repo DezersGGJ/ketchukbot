@@ -224,7 +224,7 @@ async def select(ctx):
     await ctx.send('Пункт', components=[
         Select(
             placeholder="Выберите пункт",
-            components=[
+            options=[
                 SelectOption(
                     emoji='💵',
                     label='Экономика',
@@ -243,7 +243,7 @@ async def select(ctx):
     i = 1
     while i == 1:
         try:
-            res = await bot.wait_for("select_option")
+            res = await bot.wait_for("select_option", check=None)
             label = res.component[0].label
             if res.channel == ctx.channel:
                 if label == "Экономика":
