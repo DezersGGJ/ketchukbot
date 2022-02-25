@@ -742,7 +742,7 @@ class Economic(commands.Cog):
                         tempmoney = leaderboard['money']
                         tempbank = leaderboard['bank']
                         tempmes = leaderboard['mes']
-                        embed.add_field(name=f"{i}. {temp.name}" value=f"**Деньги:** {humanize.intcomma(int(tempmoney))} | **Банк:** {humanize.intcomma(int(tempbank))} |  **Сообщения:** {humanize.intcomma(int(tempmes))}", inline=False)
+                        embed.add_field(name=f"{i}. {temp.name}", value=f"**Деньги:** {humanize.intcomma(int(tempmoney))} | **Банк:** {humanize.intcomma(int(tempbank))} |  **Сообщения:** {humanize.intcomma(int(tempmes))}", inline=False)
                         i += 1
                     except:
                         pass
