@@ -226,29 +226,28 @@ async def select(ctx):
     [Select(placeholder="Выберите пункт",
                         options=[
                             SelectOption(
-                                emoji='💵',
-                                label='Экономика',
-                                description='Экономика',
-                                value='e1'
+                                emoji="💵",
+                                label="Экономика",
+                                description="Экономика",
+                                value="e"'
                             ),
                             SelectOption(
-                                emoji='📜',
-                                label='Модерация',
-                                description='Модерация',
-                                value='e2'
+                                emoji="📜",
+                                label="Модерация",
+                                description="Модерация",
+                                value="e2"
                             ),
                         ])]
                         )
     i = 1
     while i == 1:
         try:
-            res = await bot.wait_for("select_option", check=None)
-            label = res.component[0].label
-            if res.channel == ctx.channel:
+            event = await bot.wait_for("select_option", check=None)
+            label = event.component[0].label
                 if label == "Экономика":
-                    await res.respond(content="Экономика")
+                    await event.respond(content="Экономика")
                 else:
-                    await res.respond(content="Модерация")
+                    await event.respond(content="Модерация")
         except discord.NotFound:
             print('error')
     await asyncio.sleep(60)
