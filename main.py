@@ -244,7 +244,7 @@ async def select(ctx):
     while i == 1:
         try:
             res = await bot.wait_for("select_option", check=None)
-            label = res.component[0]
+            label = res.component[0].label
             if res.channel == ctx.channel:
                 if label == "Экономика":
                     await res.respond(content="Экономика")
