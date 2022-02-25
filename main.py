@@ -221,25 +221,24 @@ async def answer(ctx, otvet):
                 
 @bot.command()
 async def select(ctx):
-    await ctx.send('Пункт', components=[
-        Select(
-            placeholder="Выберите пункт",
-            options=[
-                SelectOption(
-                    emoji='💵',
-                    label='Экономика',
-                    description='Экономика',
-                    value='e1'
-                ),
-                SelectOption(
-                    emoji='📜',
-                    label='Модерация',
-                    description='Модерация',
-                    value='e2'
-                )
-            ]
-        )
-    ])
+    await ctx.send("Пункт", 
+    components=
+    [Select(placeholder="Выберите пункт",
+                        options=[
+                            SelectOption(
+                                emoji='💵',
+                                label='Экономика',
+                                description='Экономика',
+                                value='e1'
+                            ),
+                            SelectOption(
+                                emoji='📜',
+                                label='Модерация',
+                                description='Модерация',
+                                value='e2'
+                            ),
+                        ])]
+                        )
     i = 1
     while i == 1:
         try:
