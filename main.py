@@ -241,7 +241,7 @@ async def select(ctx):
         )
     ])
     res = await bot.wait_for('select_option')
-    await res.respond(content=f'Вы выбрали:'+ str(res.component.emoji))
+    await res.respond(content='Вы выбрали:')
 
 @bot.command()
 @commands.is_owner()
