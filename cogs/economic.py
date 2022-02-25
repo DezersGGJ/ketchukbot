@@ -739,17 +739,17 @@ class Economic(commands.Cog):
             i = 1
             if types == "money":
                 embed = discord.Embed(
-                    title = "🏆Топ участников по деньгам на счёте",
+                    title = "🏆Таблица лидеров по деньгам",
                     color = 0x03a8f4
                 )
             elif types == "bank":
                 embed = discord.Embed(
-                    title = "🏆Топ участников по деньгам в банке",
+                    title = "🏆Таблица лидеров по деньгам в банке",
                     color = 0x03a8f4
                 )
             elif types == "mes":
                 embed = discord.Embed(
-                    title = "🏆Топ участников по сообщениям",
+                    title = "🏆Таблица лидеров по сообщениям",
                     color = 0x03a8f4
                 )
             for x in lb:
@@ -758,34 +758,25 @@ class Economic(commands.Cog):
                     tempmoney = x[f"{types}"]
                     if i == 1:
                         embed.add_field(name=f"<:gold_star:946801674343833631>#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                        i += 1
                     elif i == 2:
                         embed.add_field(name=f"<:silver_star:946802012044034069>#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                        i += 1
                     elif i == 3:
                         embed.add_field(name=f"<:bronze_star:946802088950779934>#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                        i += 1
                     elif i == 4:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                        i += 1
                     elif i == 5:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                        i += 1
                     elif i == 6:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                        i += 1
                     elif i == 7:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                        i += 1
                     elif i == 8:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                        i += 1
                     elif i == 9:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                        i += 1
                     elif i == 10:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                        i += 1
+                    i += 1
                     icon = str(ctx.author.guild.icon_url)
                     embed.set_thumbnail(url = icon)
                 except:
