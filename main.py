@@ -224,7 +224,7 @@ async def select(ctx):
     await ctx.send('Пункт', components=[
         Select(
             placeholder="Выберите пункт",
-            options=[
+            components=[
                 SelectOption(
                     emoji='💵',
                     label='Экономика',
