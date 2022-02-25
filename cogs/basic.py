@@ -598,16 +598,25 @@ class Basic(commands.Cog):
                     embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                     await ctx.send(embed=embed)
                 else:
-                    costrole = self.collserver.find_one({"roleshop.roleid": role.id})
-                    if costrole['cost'] > self.collection.find_one({"_id": ctx.author.id})['money']:
-                        embed = discord.Embed(
-                            description = f"<:noe:911292323365781515>У вас недостаточно средств.",
-                            color = 0xff2400
-                        )
-                        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                        await ctx.send(embed = embed)
-                    else:
-                        await ctx.send('Вы купили роль.')
+                    guild = self.collserver.find_one({"_id": ctx.guild.id})
+                    for value in guild['roleshop']:
+                        if value['roleid'] == role.id:
+                            if value['cost'] > self.collection.find_one({"_id": ctx.author.id})['money']:
+                                embed = discord.Embed(
+                                    description = f"<:noe:911292323365781515>У вас недостаточно средств.",
+                                    color = 0xff2400
+                                )
+                                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                                await ctx.send(embed = embed)
+                            else:
+                                await ctx.send('Вы купили роль.')
+                        else:
+                            embed = discord.Embed(
+                                description = f"<:noe:911292323365781515>Данной роли нет в магазине.",
+                                color = 0xff2400
+                            )
+                            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                            await ctx.send(embed = embed)
 
 
 
