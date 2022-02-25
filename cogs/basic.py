@@ -533,7 +533,7 @@ class Basic(commands.Cog):
     @commands.command()
     async def shop(self, ctx):
         guild = self.collserver.find_one({"_id": ctx.guild.id})
-        embed = discord.Embed(description = "Купите роль с помощью команды `buy-shop <role name or id>`", color = 0x03a8f4)
+        embed = discord.Embed(description = "Купите роль с помощью команды: `buy-shop <role name or id>`.", color = 0x03a8f4)
         embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         i = 1
         for value in guild["roleshop"]:
