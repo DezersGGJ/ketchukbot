@@ -243,8 +243,7 @@ async def select(ctx):
     while i == 1:
         try:
             event = await bot.wait_for("select_option", check=None)
-            label = event.component[0].label
-            if label == "Экономика":
+            if event.component.value == "e1":
                 await event.respond(content="Экономика")
             else:
                 await event.respond(content="Модерация")
