@@ -242,12 +242,16 @@ async def select(ctx):
     ])
     i = 1
     while i == 1:
-        res = await bot.wait_for("select_option")
-        if res.channel == ctx.channel:
-            if res.component.label == "Экономика":
-                await res.respond(content="Экономика")
-            else:
-                await res.respond(content="Модерация")
+        try:
+            res = await bot.wait_for("select_option")
+            label = res.component[0].label
+            if res.channel == ctx.channel:
+                if label == "Экономика":
+                    await res.respond(content="Экономика")
+                else:
+                    await res.respond(content="Модерация")
+        except discord.NotFound:
+            print('error')
     await asyncio.sleep(60)
     i += 1
 
