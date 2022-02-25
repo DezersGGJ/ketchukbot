@@ -737,10 +737,21 @@ class Economic(commands.Cog):
         else:
             lb = self.collection.find().sort(f"{types}", -1)
             i = 1
-            embed = discord.Embed(
-                title = "🏆Топ участников",
-                color = 0x03a8f4
-            )
+            if types == "money":
+                embed = discord.Embed(
+                    title = "🏆Топ участников по деньгам на счёте",
+                    color = 0x03a8f4
+                )
+            elif types == "bank":
+                embed = discord.Embed(
+                    title = "🏆Топ участников по деньгам в банке",
+                    color = 0x03a8f4
+                )
+            elif types == "mes":
+                embed = discord.Embed(
+                    title = "🏆Топ участников по сообщениям",
+                    color = 0x03a8f4
+                )
             for x in lb:
                 try:
                     temp = ctx.guild.get_member(x["_id"])
