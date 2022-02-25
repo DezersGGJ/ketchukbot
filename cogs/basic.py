@@ -609,7 +609,14 @@ class Basic(commands.Cog):
                                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                                 await ctx.send(embed = embed)
                             else:
-                                await ctx.send('Вы купили роль.')
+                                embed = discord.Embed(
+                                    description = f"<:check:930367892455850014>Вы купили <@&{value['roleid']}> за <:cash:903999146569138216>{humanize.intcomma(value['cost'])}.",
+                                    color = 0x00ff00
+                                )
+                                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                                self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -value['cost']}})
+                                await ctx.author.add_roles(role)
+                                await ctx.send(embed=embed)
                         else:
                             embed = discord.Embed(
                                 description = f"<:noe:911292323365781515>Данной роли нет в магазине.",
