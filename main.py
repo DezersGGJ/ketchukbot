@@ -229,7 +229,7 @@ async def select(ctx):
                                 emoji="💵",
                                 label="Экономика",
                                 description="Экономика",
-                                value="e2"
+                                value="e1"
                             ),
                             SelectOption(
                                 emoji="📜",
