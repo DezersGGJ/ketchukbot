@@ -244,10 +244,10 @@ async def select(ctx):
         try:
             event = await bot.wait_for("select_option", check=None)
             label = event.component[0].label
-                if label == "Экономика":
-                    await event.respond(content="Экономика")
-                else:
-                    await event.respond(content="Модерация")
+            if label == "Экономика":
+                await event.respond(content="Экономика")
+            else:
+                await event.respond(content="Модерация")
         except discord.NotFound:
             print('error')
     await asyncio.sleep(60)
