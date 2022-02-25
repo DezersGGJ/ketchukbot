@@ -298,7 +298,7 @@ class Basic(commands.Cog):
 
     @commands.command()
     async def help(self, ctx):
-        embed1 = discord.Embed(title="⚙️Навигация по командам:", description='💎Основные:\n```\n▫️#avatar - Аватар пользователя.\n▫️#servericon - Аватар сервера.\n▫️#mes - Посмотреть сообщений пользователя.\n▫️#ping - Пинг бота.\n```', color = 0x00ff00)
+        embed1 = discord.Embed(title="⚙️Навигация по командам:", description='💎Основные:\n```\n▫️#avatar - Аватар пользователя.\n▫️#servericon - Аватар сервера.\n▫️#mes - Посмотреть сообщений пользователя.\n▫️#ping - Пинг бота.\n▫️#shop - Магазин ролей.\n▫️#buy-shop - Купить роль.\n```', color = 0x00ff00)
         embed2 = discord.Embed(title="⚙️Навигация по командам:", description='📜Модерация:\n```\n▫️#clear - Очистить сообщения.\n▫️#delnote - Удалить заметку.\n▫️#note - Выдать заметку.\n▫️#delwarn - Удалить предупреждение.\n▫️#warn - Выдать предупреждение.\n▫️#ban - Забанить пользователя.\n▫️#kick - Кикнуть пользователя\n▫️#mute - Замьютить пользователя.\n▫️#unmute - Размьютить пользователя.\n▫️#warnings - Посмотреть предупреждения пользователя.\n▫️#notes - Посмотреть заметки пользователя.\n```', color = 0x00ff00)
         embed3 = discord.Embed(title="⚙️Навигация по командам:", description='<:cash:903999146569138216>Экономика:\n```\n▫️#bal - Посмотреть баланс пользователя.\n▫️#daily - Ежедневная награда.\n▫️#weekly - Еженедельная награда.\n▫️#dep - Положить деньги на банковский счёт.\n▫️#with - Снять деньги с банковского счёта.\n▫️#pay - Перевести деньги другому пользователю.\n▫️#roulette - Рулетка.\n▫️#add-money - Выдать деньги полльзователю.\n▫️#remove-money - Забрать деньги у пользователя.\n▫️#add-messages - Выдать сообщения пользователю.\n▫️#remove-messages - Забрать сообщения у пользователя.\n```', color = 0x00ff00)
         embeds = [embed1, embed2, embed3]
@@ -507,7 +507,7 @@ class Basic(commands.Cog):
                 await ctx.send(embed=embed)
             elif cost < 0:
                 embed = discord.Embed(
-                    description = "Введите сумму больше <:cash:903999146569138216>0.",
+                    description = "<:noe:911292323365781515>Введите сумму больше <:cash:903999146569138216>0.",
                     color = 0xff2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -533,7 +533,7 @@ class Basic(commands.Cog):
     @commands.command()
     async def shop(self, ctx):
         guild = self.collserver.find_one({"_id": ctx.guild.id})
-        embed = discord.Embed(color = 0x42aaff)
+        embed = discord.Embed(description = "Купите роль с помощью команды `buy-shop <role name or id>`", color = 0x03a8f4)
         embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         i = 1
         for value in guild["roleshop"]:
@@ -574,7 +574,7 @@ class Basic(commands.Cog):
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(aliases=["buy-shop"])
     async def buy(self, ctx, *, role: discord.Role = None):
         if role is None:
             embed = discord.Embed(
