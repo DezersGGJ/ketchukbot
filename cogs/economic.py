@@ -726,23 +726,28 @@ class Economic(commands.Cog):
 
     @commands.command()
     async def lb(self, ctx):
-        lbmoney = self.collection.find().sort("money")
-        lbbank = self.collection.find().sort("bank")
-        lbmes = self.collection.find().sort("mes")
+        lbmoney = self.collection.find().sort("money", -1)
+        lbbank = self.collection.find().sort("bank", -1)
+        lbmes = self.collection.find().sort("mes", -1)
         i = 1
+        n = 0
         embed = discord.Embed(
             title = "🏆Топ участников",
             color = 0x03a8f4
         )
-        for leaderboard in lbmoney, lbbank, lbmes:
-            temp = ctx.guild.get_member(leaderboard["_id"])
-            tempmoney = leaderboard['money']
-            tempbank = leaderboard['bank']
-            tempmes = leaderboard['mes']
-            embed.add_field(name=f"#{i}. {temp.name}", value=f"**Деньги:** {humanize.intcomma(int(tempmoney))} | **Банк:** {humanize.intcomma(int(tempbank))} |  **Сообщения:** {humanize.intcomma(int(tempmes))}", inline=False)
-            i += 1
-            if i == 11:
+        for name in lbmoney:
+            n += 1
+            if n == 1:
                 break
+                for leaderboard in lbmoney, lbbank, lbmes:
+                    temp = ctx.guild.get_member(name["_id"])
+                    tempmoney = leaderboard['money']
+                    tempbank = leaderboard['bank']
+                    tempmes = leaderboard['mes']
+                    embed.add_field(name=f"#{i}. {temp.name}", value=f"**Деньги:** {humanize.intcomma(int(tempmoney))} | **Банк:** {humanize.intcomma(int(tempbank))} |  **Сообщения:** {humanize.intcomma(int(tempmes))}", inline=False)
+                    i += 1
+                    if i == 11:
+                        break
         await ctx.send(embed=embed)
             
 def setup(bot):
