@@ -745,8 +745,15 @@ class Economic(commands.Cog):
                 try:
                     temp = ctx.guild.get_member(x["_id"])
                     tempmoney = x[f"{types}"]
-                    embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
                     i += 1
+                    if i == 2:
+                        embed.add_field(name=f"<:gold_star:946801674343833631>#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
+                    elif i == 3:
+                        embed.add_field(name=f"<:silver_star:946802012044034069>#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
+                    elif i == 4:
+                        embed.add_field(name=f"<:bronze_star:946802088950779934>#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
+                    else:
+                        embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
                 except:
                     pass
                 if i == 11:
