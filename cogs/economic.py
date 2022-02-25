@@ -762,19 +762,7 @@ class Economic(commands.Cog):
                         embed.add_field(name=f"<:silver_star:946802012044034069>#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
                     elif i == 3:
                         embed.add_field(name=f"<:bronze_star:946802088950779934>#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                    elif i == 4:
-                        embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                    elif i == 5:
-                        embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                    elif i == 6:
-                        embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                    elif i == 7:
-                        embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                    elif i == 8:
-                        embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                    elif i == 9:
-                        embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
-                    elif i == 10:
+                    else:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
                     i += 1
                     icon = str(ctx.author.guild.icon_url)
