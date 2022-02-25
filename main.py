@@ -226,7 +226,7 @@ async def select(ctx):
             placeholder="Выберите пункт",
             options=[
                 SelectOption(
-                    emoji='<:cash:903999146569138216>',
+                    emoji='💵',
                     label='Экономика',
                     description='Экономика',
                     value='e1'
