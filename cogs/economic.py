@@ -775,6 +775,8 @@ class Economic(commands.Cog):
                     elif i == 10:
                         embed.add_field(name=f"#{i}. {temp.name}", value=f"{humanize.intcomma(int(tempmoney))}", inline=False)
                         i += 1
+                    icon = str(ctx.author.guild.icon_url)
+                    embed.set_thumbnail(url = icon)
                 except:
                     pass
                 if i == 11:
