@@ -734,20 +734,18 @@ class Economic(commands.Cog):
             title = "🏆Топ участников",
             color = 0x03a8f4
         )
-        for leaderboard in lbmoney:
-            for leaderboard in lbbank:
-                for leaderboard in lbmes:
-                    try:
-                        temp = ctx.guild.get_member(leaderboard["_id"])
-                        tempmoney = leaderboard['money']
-                        tempbank = leaderboard['bank']
-                        tempmes = leaderboard['mes']
-                        embed.add_field(name=f"#{i}. {temp.name}", value=f"**Деньги:** {humanize.intcomma(int(tempmoney))} | **Банк:** {humanize.intcomma(int(tempbank))} |  **Сообщения:** {humanize.intcomma(int(tempmes))}", inline=False)
-                        i += 1
-                    except:
-                        pass
-                    if i == 6:
-                        break
+        for leaderboard in lbmoney, lbbank, lbmes:
+            try:
+                temp = ctx.guild.get_member(leaderboard["_id"])
+                tempmoney = leaderboard['money']
+                tempbank = leaderboard['bank']
+                tempmes = leaderboard['mes']
+                embed.add_field(name=f"#{i}. {temp.name}", value=f"**Деньги:** {humanize.intcomma(int(tempmoney))} | **Банк:** {humanize.intcomma(int(tempbank))} |  **Сообщения:** {humanize.intcomma(int(tempmes))}", inline=False)
+                i += 1
+            except:
+                pass
+            if i == 11:
+                break
         await ctx.send(embed=embed)
             
 def setup(bot):
