@@ -603,25 +603,22 @@ class Basic(commands.Cog):
                     guild = self.collserver.find_one({"_id": ctx.guild.id})
                     for value in guild['roleshop']:
                         if value['roleid'] == role.id:
-                            if role in ctx.author.roles:
-                                break
+                            if value['cost'] > self.collection.find_one({"_id": ctx.author.id})['money']:
+                                embed = discord.Embed(
+                                    description = f"<:noe:911292323365781515>У вас недостаточно средств.",
+                                    color = 0xff2400
+                                )
+                                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                                await ctx.send(embed = embed)
                             else:
-                                if value['cost'] > self.collection.find_one({"_id": ctx.author.id})['money']:
-                                    embed = discord.Embed(
-                                        description = f"<:noe:911292323365781515>У вас недостаточно средств.",
-                                        color = 0xff2400
-                                    )
-                                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                                    await ctx.send(embed = embed)
-                                else:
-                                    embed = discord.Embed(
-                                        description = f"<:check:930367892455850014>Вы купили <@&{value['roleid']}> за <:cash:903999146569138216>{humanize.intcomma(value['cost'])}.",
-                                        color = 0x00ff00
-                                    )
-                                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                                    self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -value['cost']}})
-                                    await ctx.author.add_roles(role)
-                                    await ctx.send(embed=embed)
+                                embed = discord.Embed(
+                                    description = f"<:check:930367892455850014>Вы купили <@&{value['roleid']}> за <:cash:903999146569138216>{humanize.intcomma(value['cost'])}.",
+                                    color = 0x00ff00
+                                )
+                                embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+                                self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": -value['cost']}})
+                                await ctx.author.add_roles(role)
+                                await ctx.send(embed=embed)
                         else:
                             embed = discord.Embed(
                                 description = f"<:noe:911292323365781515>Данной роли нет в магазине.",
