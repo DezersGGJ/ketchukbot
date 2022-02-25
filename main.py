@@ -243,8 +243,8 @@ async def select(ctx):
     i = 1
     while i == 1:
         try:
-            interaction = await bot.wait_for("select_option", check=None)
-            label = interaction.labels[0]
+            res = await bot.wait_for("select_option", check=None)
+            label = res.component[0]
             if res.channel == ctx.channel:
                 if label == "Экономика":
                     await res.respond(content="Экономика")
