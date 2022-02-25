@@ -739,7 +739,7 @@ class Economic(commands.Cog):
             i = 1
             embed = discord.Embed(
                 title = "🏆Топ участников",
-                color = 0x00ff00
+                color = 0x03a8f4
             )
             for x in lb:
                 try:
