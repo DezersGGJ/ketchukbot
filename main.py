@@ -221,27 +221,36 @@ async def answer(ctx, otvet):
                 
 @bot.command()
 async def select(ctx):
-    await ctx.send('Список', components=[
+    await ctx.send('Пункт', components=[
         Select(
-            placeholder="Выберите эмоджи",
+            placeholder="Выберите пункт",
             options=[
                 SelectOption(
-                    emoji='😀',
-                    label='Эмодзи',
-                    description='Эмоджи 1',
+                    emoji='<:cash:903999146569138216>',
+                    label='Экономика',
+                    description='Экономика',
                     value='e1'
                 ),
                 SelectOption(
-                    emoji='🤣',
-                    label='Эмодзи 2',
-                    description='Эмоджи 2',
+                    emoji='📜',
+                    label='Модерация',
+                    description='Модерация',
                     value='e2'
                 )
             ]
         )
     ])
-    res = await bot.wait_for('select_option')
-    await res.respond(content='Вы выбрали:')
+    i = 1
+    while i == 1:
+        res = await bot.wait_for("select_option")
+        if res.channel == ctx.channel:
+            if res.component.label == "Экономика":
+                await res.respond(content="Экономика")
+            else:
+                await res.respond(content="Модерация")
+    await asyncio.sleep(60)
+    i += 1
+
 
 @bot.command()
 @commands.is_owner()
