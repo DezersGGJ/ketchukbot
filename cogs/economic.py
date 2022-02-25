@@ -726,9 +726,9 @@ class Economic(commands.Cog):
 
     @commands.command()
     async def lb(self, ctx):
-        lbmoney = self.collection.find().sort("money", -1)
-        lbbank = self.collection.find().sort("bank", -1)
-        lbmes = self.collection.find().sort("mes", -1)
+        lbmoney = self.collection.find().sort("money")
+        lbbank = self.collection.find().sort("bank")
+        lbmes = self.collection.find().sort("mes")
         i = 1
         embed = discord.Embed(
             title = "🏆Топ участников",
