@@ -218,6 +218,30 @@ async def answer(ctx, otvet):
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await bot.get_channel(938066272946622506).send(embed=embed)
+                
+@bot.command()
+async def select(ctx):
+    await ctx.send('Список', components=[
+        Select(
+            placeholder="Выберите эмоджи",
+            options=[
+                SelectOption(
+                    emoji='😀',
+                    label='Эмодзи',
+                    description='Эмоджи 1',
+                    value='e1'
+                ),
+                SelectOption(
+                    emoji='🤣',
+                    label='Эмодзи 2',
+                    description='Эмоджи 2',
+                    value='e2'
+                )
+            ]
+        )
+    ])
+    res = await bot.wait_for('select_option')
+    await res.respond(content=f'Вы выбрали: {str(res.component.emoji)}')
 
 @bot.command()
 @commands.is_owner()
