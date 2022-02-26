@@ -43,12 +43,12 @@ class Basic(commands.Cog):
         while time.monotonic() < deadline:
             interaction = await self.bot.wait_for("select_option", check=lambda inter: inter.custom_id == "help1")
             res = interaction.values[0]
-                if res == "e1":
-                    await interaction.respond(embed=embed1)
-                elif res == "e2":
-                    await interaction.respond(embed=embed2)
-                elif res == "e3":
-                    await interaction.respond(embed=embed3)
+            if res == "e1":
+                await interaction.respond(embed=embed1)
+            elif res == "e2":
+                await interaction.respond(embed=embed2)
+            elif res == "e3":
+                await interaction.respond(embed=embed3)
 
     @commands.command()
     async def avatar(self, ctx, *, member: discord.Member=None):
