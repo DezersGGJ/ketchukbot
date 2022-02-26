@@ -22,11 +22,12 @@ class Basic(commands.Cog):
     @commands.command()
     async def select(self, ctx):
         coin = self.bot.get_emoji(903999146569138216)
+        embed = discord.Embed(title="⚙️Навигация по командам:", description='💎Основные:\n```\n▫️#avatar - Аватар пользователя.\n▫️#servericon - Аватар сервера.\n▫️#mes - Посмотреть сообщений пользователя.\n▫️#ping - Пинг бота.\n▫️#shop - Магазин ролей.\n▫️#buy-shop - Купить роль.\n```', color = 0x00ff00)
         await ctx.send(
-            "Выберете группу",
+            embed=embed,
             components=[
                 Select(
-                    placeholder="Выберете группу",
+                    placeholder="Выберете группу...",
                     options=[
                         SelectOption(label='Основное', value='e1', emoji='💎'),
                         SelectOption(label='Модерирование', value='e2', emoji='📜'),
