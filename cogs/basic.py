@@ -34,11 +34,12 @@ class Basic(commands.Cog):
                 )
             ],
         )
-        current = int(time.time())
-        end = int(time.time()) + 60
-        while current < end:
+        i = 0
+        while i < 60:
             interaction = await self.bot.wait_for("select_option", check=lambda inter: inter.custom_id == "select1")
             res = interaction.values[0]
+            await asyncio.sleep(1)
+            i += 1
             if res == "e1":
                 await interaction.respond(content="Экономика")
             else:
