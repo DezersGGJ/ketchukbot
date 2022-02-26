@@ -37,14 +37,15 @@ class Basic(commands.Cog):
                                     description="Модерация",
                                     value="e2"
                                 ),
+                            custom_id="select1",
                             ])]
                             )
         i = 1
         while i == 1:
             try:
-                event = await self.bot.wait_for("select_option", check=None)
-                label = event.component[0].label
-                if label == "e1":
+                interaction = await self.bot.wait_for("select_option", check=lambda inter: inter.custom_id == "select1")
+                res = interaction.values[0]
+                if res == "e1":
                     await event.respond(content="Экономика")
                 else:
                     await event.respond(content="Модерация")
