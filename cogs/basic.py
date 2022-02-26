@@ -34,21 +34,15 @@ class Basic(commands.Cog):
                 )
             ],
         )
-        st = 0
-        while st == 0:
-            try:
-                interaction = await self.bot.wait_for("select_option", check=lambda inter: inter.custom_id == "select1")
-                res = interaction.values[0]
-                if res == "e1":
-                    await interaction.respond(content="Экономика")
-                    await asyncio.sleep(10)
-                    st += 1
-                else:
-                    await interaction.respond(content="Модерация")
-                    await asyncio.sleep(10)
-                    st += 1
-            except discord.NotFound:
-                print('error')
+        current = int(time.time())
+        end = int(time.time()) + 60
+        while current < end:
+            interaction = await self.bot.wait_for("select_option", check=lambda inter: inter.custom_id == "select1")
+            res = interaction.values[0]
+            if res == "e1":
+                await interaction.respond(content="Экономика")
+            else:
+                await interaction.respond(content="Модерация")
 
     @commands.command()
     async def avatar(self, ctx, *, member: discord.Member=None):
