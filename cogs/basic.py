@@ -40,9 +40,9 @@ class Basic(commands.Cog):
                 interaction = await self.bot.wait_for("select_option", check=lambda inter: inter.custom_id == "select1")
                 res = interaction.values[0]
                 if res == "e1":
-                    await event.respond(content="Экономика")
+                    await interaction.respond(content="Экономика")
                 else:
-                    await event.respond(content="Модерация")
+                    await interaction.respond(content="Модерация")
             except discord.NotFound:
                 print('error')
         await asyncio.sleep(60)
