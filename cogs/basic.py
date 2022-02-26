@@ -34,8 +34,8 @@ class Basic(commands.Cog):
                 )
             ],
         )
-        i = 1
-        while i == 1:
+        st = True
+        while st == True:
             try:
                 interaction = await self.bot.wait_for("select_option", check=lambda inter: inter.custom_id == "select1")
                 res = interaction.values[0]
@@ -46,7 +46,7 @@ class Basic(commands.Cog):
             except discord.NotFound:
                 print('error')
         await asyncio.sleep(60)
-        i += 1
+        st += False
 
     @commands.command()
     async def avatar(self, ctx, *, member: discord.Member=None):
