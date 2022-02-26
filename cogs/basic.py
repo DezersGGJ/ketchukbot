@@ -22,7 +22,11 @@ class Basic(commands.Cog):
     @commands.command()
     async def help(self, ctx):
         coin = self.bot.get_emoji(903999146569138216)
-        embed = discord.Embed(title="⚙️Навигация по командам:", description='💎Основные:\n```\n▫️#avatar - Аватар пользователя.\n▫️#servericon - Аватар сервера.\n▫️#mes - Посмотреть сообщений пользователя.\n▫️#ping - Пинг бота.\n▫️#shop - Магазин ролей.\n▫️#buy-shop - Купить роль.\n```', color = 0x00ff00)
+        embed = discord.Embed(title="Доступные команды:", color = 0x00ff00)
+        embed.add_field(name="💎 Основное", value="`#avatar` `#servericon` `#mes` `#ping` `#shop` `#buy-shop`", inline=False)
+        embed.add_field(name="🛡️ Модерирование", value="`#clear` `#delnote` `#note` `#delwarn` `#warn` `#ban` `#kick` `#mute` `#unmute` `#warnings` `#notes`", inline=False)
+        embed.add_field(name="<:cash:903999146569138216> Экономические", value="`#bal` `#daily` `#weekly` `#deposit` `#withdraw` `#pay` `#roulette` `#add-money` `#remove-money` `#add-messages` `#remove-messages`", inline=False)
+        embed.set_footer(text = 'Dezers', icon_url = "https://cdn.discordapp.com/avatars/810182387089932298/a_2bf1eab9a6b50fae544e22ba4442a43d.gif?size=1024")
         await ctx.send(
             embed=embed,
             components=[
@@ -30,8 +34,8 @@ class Basic(commands.Cog):
                     placeholder="Выберите группу...",
                     options=[
                         SelectOption(label='Основное', value='e1', emoji='💎'),
-                        SelectOption(label='Модерирование', value='e2', emoji='📜'),
-                        SelectOption(label='Экономика', value='e3', emoji=coin),
+                        SelectOption(label='Модерирование', value='e2', emoji='🛡️'),
+                        SelectOption(label='Экономические', value='e3', emoji=coin),
                     ],
                     custom_id="help1",
                 )
@@ -45,15 +49,11 @@ class Basic(commands.Cog):
             interaction = await self.bot.wait_for("select_option", check=lambda inter: inter.custom_id == "help1" and inter.user == ctx.author)
             res = interaction.values[0]
             if res == "e1":
-                msg = ctx.send(embed=embed)
-                await msg.edit(content=embed1)
+                await interaction.respond(embed=embed1)
             elif res == "e2":
-                msg = ctx.send(embed=embed)
-                await msg.edit(content=embed2)
+                await interaction.respond(embed=embed2)
             elif res == "e3":
-                msg = ctx.send(embed=embed)
-                await msg.edit(content=embed3)
-
+                await interaction.respond(embed=embed3)
 
     @commands.command()
     async def avatar(self, ctx, *, member: discord.Member=None):
