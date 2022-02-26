@@ -23,17 +23,18 @@ class Basic(commands.Cog):
     async def help(self, ctx):
         coin = self.bot.get_emoji(903999146569138216)
         embed = discord.Embed(title="Доступные команды:", color = 0x00ff00)
-        embed.add_field(name="💎 Основное", value="`#avatar` `#servericon` `#mes` `#ping` `#shop` `#buy-shop`", inline=False)
+        embed.add_field(name="💎 Основные", value="`#avatar` `#servericon` `#mes` `#ping` `#shop` `#buy-shop`", inline=False)
         embed.add_field(name="🛡️ Модерирование", value="`#clear` `#delnote` `#note` `#delwarn` `#warn` `#ban` `#kick` `#mute` `#unmute` `#warnings` `#notes`", inline=False)
         embed.add_field(name="<:cash:903999146569138216> Экономические", value="`#bal` `#daily` `#weekly` `#deposit` `#withdraw` `#pay` `#roulette` `#add-money` `#remove-money` `#add-messages` `#remove-messages`", inline=False)
         embed.set_footer(text = 'Dezers', icon_url = "https://cdn.discordapp.com/avatars/810182387089932298/a_2bf1eab9a6b50fae544e22ba4442a43d.gif?size=1024")
+        embed.set_thumbnail(url = "https://cdn.discordapp.com/avatars/840153710365376583/d419845380a3201bdd092cdefd281fda.webp?size=1024")
         await ctx.send(
             embed=embed,
             components=[
                 Select(
                     placeholder="Выберите группу...",
                     options=[
-                        SelectOption(label='Основное', value='e1', emoji='💎'),
+                        SelectOption(label='Основные', value='e1', emoji='💎'),
                         SelectOption(label='Модерирование', value='e2', emoji='🛡️'),
                         SelectOption(label='Экономические', value='e3', emoji=coin),
                     ],
