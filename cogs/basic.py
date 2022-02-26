@@ -41,12 +41,14 @@ class Basic(commands.Cog):
                 res = interaction.values[0]
                 if res == "e1":
                     await interaction.respond(content="Экономика")
+                    await asyncio.sleep(10)
+                    st += 1
                 else:
                     await interaction.respond(content="Модерация")
+                    await asyncio.sleep(10)
+                    st += 1
             except discord.NotFound:
                 print('error')
-        await asyncio.sleep(10)
-        st += 1
 
     @commands.command()
     async def avatar(self, ctx, *, member: discord.Member=None):
