@@ -21,25 +21,19 @@ class Basic(commands.Cog):
 
     @commands.command()
     async def select(self, ctx):
-        await ctx.send("Пункт", 
-        components=
-        [Select(placeholder="Выберите пункт",
-                            options=[
-                                SelectOption(
-                                    emoji="💵",
-                                    label="Экономика",
-                                    description="Экономика",
-                                    value="e1"
-                                ),
-                                SelectOption(
-                                    emoji="📜",
-                                    label="Модерация",
-                                    description="Модерация",
-                                    value="e2"
-                                ),
-                            custom_id="select1",
-                            ])]
-                            )
+        await ctx.send(
+            "Выберете группу",
+            components=[
+                Select(
+                    placeholder="Выберете группу",
+                    options=[
+                        SelectOption(label='Option 1', value='e1'),
+                        SelectOption(label='Option 2', value='e2'),
+                    ],
+                    custom_id="select1",
+                )
+            ],
+        )
         i = 1
         while i == 1:
             try:
