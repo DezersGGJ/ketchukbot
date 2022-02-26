@@ -45,7 +45,7 @@ class Basic(commands.Cog):
             res = interaction.values[0]
             await asyncio.sleep(1)
             i += 1
-            if i < 60
+            if i < 60:
                 if res == "e1":
                     await interaction.respond(embed=embed1)
                 elif res == "e2":
