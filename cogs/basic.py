@@ -4,6 +4,8 @@ import datetime
 import humanize
 import schedule
 import time
+import asyncio
+from discord_components import DiscordComponents, Button, ButtonStyle, Select, SelectOption
 from Cybernator import Paginator
 from discord.ext import commands, tasks
 from pymongo import MongoClient
@@ -16,6 +18,40 @@ class Basic(commands.Cog):
         self.cluster = MongoClient("mongodb+srv://DezersGG:Weerweer333@cluster0.b9xjp.mongodb.net/ecodb?retryWrites=true&w=majority")
         self.collection = self.cluster.ecodb.colldb
         self.collserver = self.cluster.ecodb.collserver
+
+    @commands.command()
+    async def select(self, ctx):
+        await ctx.send("Пункт", 
+        components=
+        [Select(placeholder="Выберите пункт",
+                            options=[
+                                SelectOption(
+                                    emoji="💵",
+                                    label="Экономика",
+                                    description="Экономика",
+                                    value="e1"
+                                ),
+                                SelectOption(
+                                    emoji="📜",
+                                    label="Модерация",
+                                    description="Модерация",
+                                    value="e2"
+                                ),
+                            ])]
+                            )
+        i = 1
+        while i == 1:
+            try:
+                event = await self.bot.wait_for("select_option", check=None)
+                label = event.component[0].label
+                if label == "e1":
+                    await event.respond(content="Экономика")
+                else:
+                    await event.respond(content="Модерация")
+            except discord.NotFound:
+                print('error')
+        await asyncio.sleep(60)
+        i += 1
 
     @commands.command()
     async def avatar(self, ctx, *, member: discord.Member=None):
