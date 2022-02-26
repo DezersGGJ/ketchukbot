@@ -20,7 +20,7 @@ class Basic(commands.Cog):
         self.collserver = self.cluster.ecodb.collserver
 
     @commands.command()
-    async def select(self, ctx):
+    async def help(self, ctx):
         coin = self.bot.get_emoji(903999146569138216)
         embed = discord.Embed(title="⚙️Навигация по командам:", description='💎Основные:\n```\n▫️#avatar - Аватар пользователя.\n▫️#servericon - Аватар сервера.\n▫️#mes - Посмотреть сообщений пользователя.\n▫️#ping - Пинг бота.\n▫️#shop - Магазин ролей.\n▫️#buy-shop - Купить роль.\n```', color = 0x00ff00)
         await ctx.send(
