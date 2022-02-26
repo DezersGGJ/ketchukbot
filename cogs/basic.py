@@ -41,7 +41,7 @@ class Basic(commands.Cog):
         embed3 = discord.Embed(title="⚙️Навигация по командам:", description='<:cash:903999146569138216>Экономика:\n```\n▫️#bal - Посмотреть баланс пользователя.\n▫️#daily - Ежедневная награда.\n▫️#weekly - Еженедельная награда.\n▫️#dep - Положить деньги на банковский счёт.\n▫️#with - Снять деньги с банковского счёта.\n▫️#pay - Перевести деньги другому пользователю.\n▫️#roulette - Рулетка.\n▫️#add-money - Выдать деньги полльзователю.\n▫️#remove-money - Забрать деньги у пользователя.\n▫️#add-messages - Выдать сообщения пользователю.\n▫️#remove-messages - Забрать сообщения у пользователя.\n```', color = 0x00ff00)
         i = 0
         await asyncio.sleep(1)
-        i += 1
+        i = i + 1
         while i < 60:
             interaction = await self.bot.wait_for("select_option", check=lambda inter: inter.custom_id == "help1")
             res = interaction.values[0]
