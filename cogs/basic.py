@@ -27,7 +27,7 @@ class Basic(commands.Cog):
             embed=embed,
             components=[
                 Select(
-                    placeholder="Выберете группу...",
+                    placeholder="Выберите группу...",
                     options=[
                         SelectOption(label='Основное', value='e1', emoji='💎'),
                         SelectOption(label='Модерирование', value='e2', emoji='📜'),
@@ -42,14 +42,18 @@ class Basic(commands.Cog):
         embed3 = discord.Embed(title="⚙️Навигация по командам:", description='<:cash:903999146569138216>Экономика:\n```\n▫️#bal - Посмотреть баланс пользователя.\n▫️#daily - Ежедневная награда.\n▫️#weekly - Еженедельная награда.\n▫️#dep - Положить деньги на банковский счёт.\n▫️#with - Снять деньги с банковского счёта.\n▫️#pay - Перевести деньги другому пользователю.\n▫️#roulette - Рулетка.\n▫️#add-money - Выдать деньги полльзователю.\n▫️#remove-money - Забрать деньги у пользователя.\n▫️#add-messages - Выдать сообщения пользователю.\n▫️#remove-messages - Забрать сообщения у пользователя.\n```', color = 0x00ff00)
         deadline = time.monotonic() + 60
         while time.monotonic() < deadline:
-            interaction = await self.bot.wait_for("select_option", check=lambda inter: inter.custom_id == "help1")
+            interaction = await self.bot.wait_for("select_option", check=lambda inter: inter.custom_id == "help1" and inter.user == ctx.author)
             res = interaction.values[0]
             if res == "e1":
-                await interaction.respond(embed=embed1)
+                msg = ctx.send(embed=embed)
+                await msg.edit(content=embed1)
             elif res == "e2":
-                await interaction.respond(embed=embed2)
+                msg = ctx.send(embed=embed)
+                await msg.edit(content=embed2)
             elif res == "e3":
-                await interaction.respond(embed=embed3)
+                msg = ctx.send(embed=embed)
+                await msg.edit(content=embed3)
+
 
     @commands.command()
     async def avatar(self, ctx, *, member: discord.Member=None):
