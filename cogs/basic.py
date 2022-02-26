@@ -42,9 +42,9 @@ class Basic(commands.Cog):
                 )
             ],
         )
-        embed1 = discord.Embed(title="⚙️Навигация по командам:", color = 0x00ff00)
+        embed1 = discord.Embed(title="Доступные команды группы **Основные** 💎", color = 0x00ff00)
         embed2 = discord.Embed(title="Доступные команды группы **Модерирование** 🛡️", color = 0x00ff00)
-        embed3 = discord.Embed(title="⚙️Навигация по командам:", color = 0x00ff00)
+        embed3 = discord.Embed(title="Доступные команды группы **Экономические** <:cash:903999146569138216>", color = 0x00ff00)
         embed2.add_field(name="#mute", value="Заглушить участника", inline=False)
         embed2.add_field(name="#unmute", value="Снять с участника мьют", inline=False)
         embed2.add_field(name="#ban", value="Заблокировать участника", inline=False)
