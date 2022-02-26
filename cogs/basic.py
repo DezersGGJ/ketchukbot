@@ -42,7 +42,7 @@ class Basic(commands.Cog):
         i = 0
         await asyncio.sleep(1)
         i = i + 1
-        while i < 60:
+        while i < 10:
             interaction = await self.bot.wait_for("select_option", check=lambda inter: inter.custom_id == "help1")
             res = interaction.values[0]
             if res == "e1":
