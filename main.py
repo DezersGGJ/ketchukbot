@@ -218,39 +218,6 @@ async def answer(ctx, otvet):
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await bot.get_channel(938066272946622506).send(embed=embed)
-                
-@bot.command()
-async def select(ctx):
-    await ctx.send("Пункт", 
-    components=
-    [Select(placeholder="Выберите пункт",
-                        options=[
-                            SelectOption(
-                                emoji="💵",
-                                label="Экономика",
-                                description="Экономика",
-                                value="e1"
-                            ),
-                            SelectOption(
-                                emoji="📜",
-                                label="Модерация",
-                                description="Модерация",
-                                value="e2"
-                            ),
-                        ])]
-                        )
-    i = 1
-    while i == 1:
-        try:
-            event = await bot.wait_for("select_option", check=None)
-            if event.component.value == "e1":
-                await event.respond(content="Экономика")
-            else:
-                await event.respond(content="Модерация")
-        except discord.NotFound:
-            print('error')
-    await asyncio.sleep(60)
-    i += 1
 
 
 @bot.command()
