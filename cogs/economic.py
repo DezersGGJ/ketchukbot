@@ -619,7 +619,7 @@ class Economic(commands.Cog):
                 if self.collection.find_one({"_id": ctx.author.id})["cdrob"] == 0:
                     time = int(datetime.datetime.utcnow().timestamp())
                     self.collection.update_one({"_id": ctx.author.id}, {"$set": {"cdrob": time}})
-                    if random.randint(1,2) == 1:
+                    if random.randint(0,100) <= 70:
                         if self.collection.find_one({"_id": member.id})["money"] > 100:
                             coll = self.collection.find_one({"_id": member.id})["money"]
                             ones = coll/100
@@ -654,7 +654,7 @@ class Economic(commands.Cog):
                     if time < cdtime:
                         time = int(datetime.datetime.utcnow().timestamp())
                         self.collection.update_one({"_id": ctx.author.id}, {"$set": {"cdrob": time}})
-                        if random.randint(1,2) == 1:
+                        if random.randint(0,100) <= 70:
                             if self.collection.find_one({"_id": member.id})["money"] > 100:
                                 ones = self.collection.find_one({"_id": member.id})["money"] / 100
                                 twos = ones * 20
