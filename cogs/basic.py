@@ -705,8 +705,8 @@ class Basic(commands.Cog):
                 color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await embed.add_reaction('✔')
-            await embed.add_reaction('❌')
+            await message.add_reaction('✔')
+            await message.add_reaction('❌')
             await self.bot.get_channel(902856181566038027).send(embed=embed)
 
 
