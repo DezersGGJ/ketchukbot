@@ -690,6 +690,23 @@ class Basic(commands.Cog):
                             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                             await ctx.send(embed = embed)
 
+    @commands.command()
+    async def suggest(self, ctx, idea = None):
+        if idea is None:
+            embed = discord.Embed(
+                description = f"<:noe:911292323365781515>Укажите идею.",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed = embed)
+        else:
+            embed = discord.Embed(
+                description = f"{idea}",
+                color = 0x00ff00
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await bot.get_channel(902856181566038027).send(embed=embed)
+
 
 
 def setup(bot):
