@@ -14,6 +14,13 @@ class Moderation(commands.Cog):
         self.collection = self.cluster.ecodb.colldb
         self.collserver = self.cluster.ecodb.collserver
 
+    @tasks.loop(minutes=1.0)
+    async def colorit(self):
+        server = self.bot.get_guild(id=902831072247709757)
+        role = server.get_role(944888747818901534)
+        colors = ['0xFF0000', '0xFFA500', '0xFFFF00', '0x008000', '0x0000FF', '0x800080']
+        await role.edit(color=random.choice(colors))
+
     @tasks.loop()
     async def check_mutes(self):
         current = datetime.datetime.now()
@@ -672,7 +679,6 @@ class Moderation(commands.Cog):
         self.guild = await self.bot.fetch_guild(902831072247709757)
         self.mutedrole = discord.utils.get(self.guild.roles, id=906283550641365005)
         self.check_mutes.start()
-        self.colorit.start()
 
 
 def setup(bot):
