@@ -701,11 +701,13 @@ class Basic(commands.Cog):
             await ctx.send(embed = embed)
         else:
             embed = discord.Embed(
-                description = f"{idea}",
+                description = idea,
                 color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await bot.get_channel(902856181566038027).send(embed=embed)
+            await embed.add_reaction('✔')
+            await embed.add_reaction('❌')
+            await self.bot.get_channel(902856181566038027).send(embed=embed)
 
 
 
