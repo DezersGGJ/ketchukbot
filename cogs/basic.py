@@ -606,7 +606,7 @@ class Basic(commands.Cog):
 
     @commands.command(aliases=["delete-shop"])
     @commands.has_any_role(902849136041295883, 902841113734447214, 933769903910060153)
-    async def delete_shop(self, ctx, *, role: discord.Role = None):
+    async def delete_shop(self, ctx, *, role = None):
         if role is None:
             embed = discord.Embed(
                 description = "<:noe:911292323365781515>Укажите номер роли которую хотите удалить с магазина.",
@@ -615,17 +615,17 @@ class Basic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
         else:
-            if self.collserver.count_documents({"roleshop.roleid": role.id}) == 0:
+            if self.collserver.count_documents({"roleshop.rolename": role}) == 0:
                 await ctx.send("Даной роли не найдено.")
             else:
                 self.collserver.update_one(
                     {
-                        "roleshop.roleid": role.id
+                        "roleshop.rolename": role
                     },
                     {
                         "$pull": {
                             "roleshop": {
-                                "roleid": role.id
+                                "rolename": role
                             }
                         }
                     }
