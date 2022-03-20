@@ -11,3 +11,4 @@ typing==3.7.4.3
 Pillow==9.0.1
 buttons==0.1.9
 schedule==1.1.0
+pydealer==1.4.0
