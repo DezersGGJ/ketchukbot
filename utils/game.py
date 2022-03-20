@@ -2,7 +2,7 @@ import discord
 import asyncio
 from discord.ext import commands
 import pydealer
-from player import Player
+from utils.player import Player
 
 suit_map = {'Diamonds': '\u2662',
             'Clubs': '\u2667',
