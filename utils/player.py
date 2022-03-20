@@ -1,5 +1,5 @@
 import pydealer
-from global_vars import tracked_players
+from utils.global_vars import tracked_players
 
 class Player(object):
     def __init__(self, id=''):
