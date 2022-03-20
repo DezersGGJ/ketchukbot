@@ -2,9 +2,9 @@ import discord
 import asyncio
 from discord.ext import commands
 import pydealer
-from player import Player
-from global_vars import tracked_players, ingame_channels
-from game import Game
+from utils.player import Player
+from utils.global_vars import tracked_players, ingame_channels
+from utils.game import Game
 
 class Blackjack(object):
     """To start a blackjack game in your channel use the `start` command. You
