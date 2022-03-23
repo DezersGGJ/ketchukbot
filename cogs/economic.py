@@ -50,7 +50,7 @@ class Economic(commands.Cog):
                     color = 0xFF2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                await ctx.send(embed = embed)
+                await ctx.send(embed=embed)
 
     @commands.command()
     async def weekly(self, ctx):
