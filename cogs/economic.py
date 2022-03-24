@@ -236,8 +236,8 @@ class Economic(commands.Cog):
 
     @commands.command(aliases=["bal", "cash", "money"], brief="Показывает баланс пользователя", usage="balance <@member>")
     async def balance(self, ctx, member: discord.Member = None):
-    	if member is None:
-    		total = self.user.find_one({'_id': ctx.author.id})['money'] + self.user.find_one({'_id': ctx.author.id})['bank']
+        if member is None:
+            total = self.user.find_one({'_id': ctx.author.id})['money'] + self.user.find_one({'_id': ctx.author.id})['bank']
             embed = discord.Embed(
                 description = f"Баланс:\n<:cash:903999146569138216>{humanize.intcomma(self.user.find_one({'_id': ctx.author.id})['money'])}\nБанк:\n<:cash:903999146569138216>{humanize.intcomma(self.user.find_one({'_id': ctx.author.id})['bank'])}\nОбщий баланс:\n<:cash:903999146569138216>{humanize.intcomma(total)}",
                 color = 0x00ff00
@@ -245,7 +245,7 @@ class Economic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
         else:
-        	total = self.user.find_one({'_id': member.id})['money'] + self.user.find_one({'_id': member.id})['bank']
+            total = self.user.find_one({'_id': member.id})['money'] + self.user.find_one({'_id': member.id})['bank']
             embed = discord.Embed(
                 description = f"Баланс:\n<:cash:903999146569138216>{humanize.intcomma(self.user.find_one({'_id': member.id})['money'])}\nБанк:\n<:cash:903999146569138216>{humanize.intcomma(self.user.find_one({'_id': member.id})['bank'])}\nОбщий баланс:\n<:cash:903999146569138216>{humanize.intcomma(total)}",
                 color = 0x00ff00
@@ -265,59 +265,59 @@ class Economic(commands.Cog):
 
     @commands.command(aliases=["give-money"], brief="Перевод денег другому пользователю", usage="give-money <@member> <amount or all>")
     async def pay(self, ctx, member: discord.Member, amount: Union[int, str]):
-    	if member.bot is True:
-    		embed = discord.Embed(
+        if member.bot is True:
+            embed = discord.Embed(
                 description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе или боту.",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
-    	if member == ctx.author:
-    		embed = discord.Embed(
+        if member == ctx.author:
+            embed = discord.Embed(
                 description = "<:noe:911292323365781515>Вы не можете применить эту команду к себе или боту.",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
         if amount == 'all':
-        	if self.user.find_one({"_id": ctx.author.id})['money'] <= 0:
-        		embed = discord.Embed(
+            if self.user.find_one({"_id": ctx.author.id})['money'] <= 0:
+                embed = discord.Embed(
                     description = f"<:noe:911292323365781515>Вы не можете дать <:cash:903999146569138216>0.",
                     color = 0xff2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed=embed)
             else:
-            	embed = discord.Embed(
+                embed = discord.Embed(
                     description = f"{ctx.author} перевёл {member} <:cash:903999146569138216>{humanize.intcomma(self.user.find_one({"_id": ctx.author.id})['money'])}.",
                     color = 0x00ff00
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            	self.user.update_one({"_id": member.id}, {"$inc": {"money": self.user.find_one({"_id": ctx.author.id})['money']}})
+                self.user.update_one({"_id": member.id}, {"$inc": {"money": self.user.find_one({"_id": ctx.author.id})['money']}})
                 self.user.update_one({"_id": ctx.author.id}, {"$inc": {"money": -self.user.find_one({"_id": ctx.author.id})['money']}})
                 await ctx.send(embed=embed)
         else:
-        	if amount <= 0:
-        		embed = discord.Embed(
+            if amount <= 0:
+                embed = discord.Embed(
                     description = f"<:noe:911292323365781515>Вы не можете дать <:cash:903999146569138216>0.",
                     color = 0xff2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed=embed)
             if self.user.find_one({"_id": ctx.author.id})['money'] > amount:
-            	embed = discord.Embed(
+                embed = discord.Embed(
                     description = f"<:noe:911292323365781515>У вас недостаточно средств. В настоящее время у вас <:cash:903999146569138216>{humanize.intcomma(self.user.find_one({"_id": ctx.author.id})['money'])}.",
                     color = 0xff2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed=embed)
             else:
-            	embed = discord.Embed(
+                embed = discord.Embed(
                     description = f"{ctx.author} перевёл {member} <:cash:903999146569138216>{humanize.intcomma(amount)}.",
                     color = 0x00ff00
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            	self.user.update_one({"_id": member.id}, {"$inc": {"money": amount}})
+                self.user.update_one({"_id": member.id}, {"$inc": {"money": amount}})
                 self.user.update_one({"_id": ctx.author.id}, {"$inc": {"money": -amount}})
                 await ctx.send(embed=embed)
 
