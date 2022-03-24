@@ -289,7 +289,7 @@ class Economic(commands.Cog):
                 await ctx.send(embed=embed)
             else:
                 embed = discord.Embed(
-                    description = f"{ctx.author} перевёл {member} <:cash:903999146569138216>{humanize.intcomma(self.user.find_one({"_id": ctx.author.id})['money'])}.",
+                    description = f"{ctx.author} перевёл {member} <:cash:903999146569138216>{humanize.intcomma(self.user.find_one({'_id': ctx.author.id})['money'])}.",
                     color = 0x00ff00
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
@@ -306,7 +306,7 @@ class Economic(commands.Cog):
                 await ctx.send(embed=embed)
             if self.user.find_one({"_id": ctx.author.id})['money'] > amount:
                 embed = discord.Embed(
-                    description = f"<:noe:911292323365781515>У вас недостаточно средств. В настоящее время у вас <:cash:903999146569138216>{humanize.intcomma(self.user.find_one({"_id": ctx.author.id})['money'])}.",
+                    description = f"<:noe:911292323365781515>У вас недостаточно средств. В настоящее время у вас <:cash:903999146569138216>{humanize.intcomma(self.user.find_one({'_id': ctx.author.id})['money'])}.",
                     color = 0xff2400
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
