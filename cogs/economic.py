@@ -253,16 +253,6 @@ class Economic(commands.Cog):
             embed.set_author(name=member, icon_url=member.avatar_url)
             await ctx.send(embed=embed)
 
-    @bal.error
-    async def balance_error(self, ctx, error):
-        if isinstance(error, commands.errors.MemberNotFound):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>Пользователь не найден.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
-
     @commands.command(aliases=["give-money"], brief="Перевод денег другому пользователю", usage="give-money <@member> <amount or all>")
     async def pay(self, ctx, member: discord.Member, amount: Union[int, str]):
         if member.bot is True:
