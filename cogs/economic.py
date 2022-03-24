@@ -294,7 +294,7 @@ class Economic(commands.Cog):
                 )
                 embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
                 await ctx.send(embed=embed)
-            if self.collection.find_one({"_id": ctx.author.id})['money'] > amount:
+            if self.collection.find_one({"_id": ctx.author.id})['money'] < amount:
                 embed = discord.Embed(
                     description = f"<:noe:911292323365781515>У вас недостаточно средств. В настоящее время у вас <:cash:903999146569138216>{humanize.intcomma(self.collection.find_one({'_id': ctx.author.id})['money'])}.",
                     color = 0xff2400
