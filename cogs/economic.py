@@ -4,7 +4,7 @@ import datetime
 import humanize
 from discord.ext import commands, tasks
 from pymongo import MongoClient
-from typing import Union
+from typing import Union, Optional
 
 class Economic(commands.Cog):
 
