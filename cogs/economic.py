@@ -437,70 +437,28 @@ class Economic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed = embed)
 
-    @commands.command(aliases = ["add-money"])
-    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214)
-    async def add_money(self, ctx,member: discord.Member = None, amount: int = None):
-        if amount > 0:
-            if member is None:
-                if amount is None:
-                    embed = discord.Embed(
-                        description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`#add-money <amount> <user>`",
-                        color = 0xff2400
-                    )
-                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                    await ctx.send(embed=embed)
-                else:
-                    self.collection.update_one({"_id": ctx.author.id}, {"$inc": {"money": amount}})
-                    embed = discord.Embed(
-                        description = f"<:check:930367892455850014>Добавлено<:cash:903999146569138216>**{humanize.intcomma(amount)}** на баланс {ctx.author.mention}.",
-                        color = 0x00ff00
-                    )
-                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                    await ctx.send(embed = embed)
-            else:
-                if amount is None:
-                    embed = discord.Embed(
-                        description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`#add-money <amount> <user>`",
-                        color = 0xff2400
-                    )
-                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                    await ctx.send(embed=embed)
-                else:
-                    self.collection.update_one({"_id": member.id}, {"$inc": {"money": amount}})
-                    embed = discord.Embed(
-                        description = f"<:check:930367892455850014>Добавлено<:cash:903999146569138216>**{humanize.intcomma(amount)}** на баланс {member.mention}.",
-                        color = 0x00ff00
-                    )
-                    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-                    await ctx.send(embed = embed)
-
-    @add_money.error
-    async def addm(self, ctx, error):
-        if isinstance(error, commands.errors.MissingRequiredArgument):
+    @commands.command(aliases=["add-money"], brief="Выдаёт деньги пользователю", usage="add-money [cash | bank] <@member> <amount>")
+    async def add_money(self, ctx, destination: Optional[str] = 'cash', member: discord.Member, amount: int):
+        if destination.lower() not in ["cash", "bank"]:
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Аргумент не указан.\n\nИспользование:\n`#add-money <amount> <user>`",
+                description = f"<:noe:911292323365781515>Неправильно указан аргумент `[cash | bank]`.\n\nИспользование:\n`#add-money [cash | bank] <@member> <amount>`",
                 color = 0xff2400
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.BadArgument):
+        if destination.lower() == "bank":
+            self.user.update_one({"_id": member.id}, {"$inc": {"bank": amount}})
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Неправильно указан аргумент `<amount>`.\n\nИспользование:\n`#add-money <amount> <user>`",
-                color = 0xff2400
+                description = f"<:check:930367892455850014>Добавлено<:cash:903999146569138216>**{humanize.intcomma(amount)}** на баланс {ctx.author.mention}.",
+                color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.MemberNotFound):
+        else:
+            self.user.update_one({"_id": member.id}, {"$inc": {"money": amount}})
             embed = discord.Embed(
-                description = "<:noe:911292323365781515>Пользователь не найден.",
-                color = 0xff2400
-            )
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
-        elif isinstance(error, commands.errors.MissingAnyRole):
-            embed = discord.Embed(
-                description = "<:noe:911292323365781515>У вас недостаточно прав.",
-                color = 0xff2400
+                description = f"<:check:930367892455850014>Добавлено<:cash:903999146569138216>**{humanize.intcomma(amount)}** на баланс {ctx.author.mention}.",
+                color = 0x00ff00
             )
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
