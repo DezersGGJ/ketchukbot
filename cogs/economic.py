@@ -438,7 +438,21 @@ class Economic(commands.Cog):
             await ctx.send(embed = embed)
 
     @commands.command(aliases=["add-money"], brief="Выдаёт деньги пользователю", usage="add-money [cash | bank] <@member> <amount>")
-    async def add_money(self, ctx, amount: int, member: discord.Member, destination: Optional[str] = 'cash'):
+    async def add_money(self, ctx, destination: Optional[str] = 'cash', member: discord.Member = None, amount: int = None):
+        if amount is None:
+            embed = discord.Embed(
+                description = f"<:noe:911292323365781515>Указано мало аргументов.\n\nИспользование:\n`#add-money [cash | bank] <@member> <amount>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
+        if member is None:
+            embed = discord.Embed(
+                description = f"<:noe:911292323365781515>Указано мало аргументов.\n\nИспользование:\n`#add-money [cash | bank] <@member> <amount>`",
+                color = 0xff2400
+            )
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=embed)
         if destination.lower() not in ["cash", "bank"]:
             embed = discord.Embed(
                 description = f"<:noe:911292323365781515>Неправильно указан аргумент `[cash | bank]`.\n\nИспользование:\n`#add-money [cash | bank] <@member> <amount>`",
