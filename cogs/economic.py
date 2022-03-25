@@ -447,7 +447,7 @@ class Economic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
         if destination.lower() == "bank":
-            self.user.update_one({"_id": member.id}, {"$inc": {"bank": amount}})
+            self.collection.update_one({"_id": member.id}, {"$inc": {"bank": amount}})
             embed = discord.Embed(
                 description = f"<:check:930367892455850014>Добавлено<:cash:903999146569138216>**{humanize.intcomma(amount)}** на баланс {ctx.author.mention}.",
                 color = 0x00ff00
@@ -455,7 +455,7 @@ class Economic(commands.Cog):
             embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
             await ctx.send(embed=embed)
         else:
-            self.user.update_one({"_id": member.id}, {"$inc": {"money": amount}})
+            self.collection.update_one({"_id": member.id}, {"$inc": {"money": amount}})
             embed = discord.Embed(
                 description = f"<:check:930367892455850014>Добавлено<:cash:903999146569138216>**{humanize.intcomma(amount)}** на баланс {ctx.author.mention}.",
                 color = 0x00ff00
