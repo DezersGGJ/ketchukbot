@@ -438,6 +438,7 @@ class Economic(commands.Cog):
             await ctx.send(embed = embed)
 
     @commands.command(aliases=["add-money"], brief="Выдаёт деньги пользователю", usage="add-money [cash | bank] <@member> <amount>")
+    @commands.has_any_role(902849136041295883, 933769903910060153, 902841113734447214)
     async def add_money(self, ctx, amount: int, member: discord.Member, destination: Optional[str] = 'cash'):
         if destination.lower() not in ["cash", "bank"]:
             embed = discord.Embed(
